@@ -1,9 +1,9 @@
 <?php
 
-	class Photo_Model extends ORM {
+class Photo_Model extends ORM {
 
-		protected $belongs_to = array('gallery');
+	protected $belongs_to = array('gallery');
 
-	}
+}
 
 ?>

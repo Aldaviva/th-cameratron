@@ -29,7 +29,7 @@ $config['default'] = array
 	'persistent'    => FALSE,
 	'connection'    => array
 	(
-		'type'     => 'postgresql',
+		'type'     => 'pgsql',
 		'user'     => 'photo',
 		'pass'     => '!photo!',
 		'host'     => 'localhost',

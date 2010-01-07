@@ -3,3 +3,6 @@ syntax: glob
 *.ai
 */Thumbs.db
 nbproject/*
+application/logs/*
+application/cache/*
+data/*
