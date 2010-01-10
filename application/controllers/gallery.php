@@ -1,45 +1,34 @@
 <?php
 
-class Gallery_Controller extends Controller {
+class Gallery_Controller extends Template_Controller {
 
 	protected $gallery;
 
-	function __construct(){
-		parent::__construct();
-		$this->gallery = new Gallery_Model;
-	}
+	public $template = 'html';
 
 	function index(){
-		$this->menu();
+		echo "no gallery specified";
 	}
 
-	function menu(){
-		echo "<h1>Galleries</h1>";
-
-		$result = $this->gallery->get_all();
-
-		$view = new View('overview');
-
-		$view->galleries = $result;
-
-		$view->render(true);
-	}
-
-	function view($id = NULL){
+	function view($id = NULL, $photoId = null){
 		if(is_null($id)){
-			$this->menu();
+			$this->index();
 			return;
 		}
 
-		$gallery = $this->gallery->get($id);
-
-		echo "<h1>".$gallery->title."</h1>";
-
-		foreach($gallery->photos as $photo){
-			echo "<div>";
-			echo html::image($photo->getURL(), array('width'=>100));
-			echo "</div>";
+		if(is_null($photoId)){
+			$photoId = 0;
 		}
+
+		$this->gallery = Gallery_Model::get($id);
+
+		$view = new View('gallery');
+
+		$view->gallery = $this->gallery;
+
+		$view->selectedPhoto = $this->gallery->getPhoto($photoId);
+
+		$view->render(true);
 	}
 
 }

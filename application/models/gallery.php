@@ -12,6 +12,12 @@ class Gallery_Model extends ORM {
 		return self::factory('gallery')->orderBy('date', 'desc')->find_all();
 	}
 
+	function getPhoto($id){
+		if($id >= 0 && $id < $this->photos->count()){
+			return $this->photos[$id];
+		}
+	}
+
 	function numPhotos(){
 		return $this->photos->count();
 	}
