@@ -5,7 +5,13 @@ class Gallery_Controller extends SiteTemplate_Controller {
 	protected $gallery;
 
 	function index(){
-		echo "no gallery specified";
+		$view = new View('overview');
+
+		$view->galleries = Gallery_Model::get_all();
+
+		$this->content = $view;
+		$this->title = 'Photo Gallery';
+
 	}
 
 	function view($id = NULL, $photoBasename = null){
@@ -16,20 +22,39 @@ class Gallery_Controller extends SiteTemplate_Controller {
 
 		$this->gallery = Gallery_Model::get($id);
 
-		$view = new View('gallery');
+		$this->content = new View('gallery');
 
-		$view->gallery = $this->gallery;
-
-//		$view->selectedPhoto = $this->gallery->getPhoto($photoId);
+		$this->content->gallery = $this->gallery;
 
 		if(is_null($photoBasename)){
-			$view->selectedPhoto = $this->gallery->getFirstPhoto();
+			$this->content->selectedPhoto = $this->gallery->getFirstPhoto();
 		} else {
-			$view->selectedPhoto = $this->gallery->getPhoto($photoBasename);
+			$this->content->selectedPhoto = $this->gallery->getPhoto($photoBasename);
 		}
 
-		$this->content = $view;
 		$this->title = array('Photo Gallery', $this->gallery->title);
+	}
+
+	function searchAll($question){
+		$this->content = new View('overview');
+
+		$this->content->galleries = Gallery_Model::search($question);
+		$this->content->searchTerm = $question;
+
+		$this->title = array('Photo Gallery', 'Search');
+	}
+
+	function search($gallery_id, $question){
+		$this->content = new View('gallery');
+
+		$this->gallery = Gallery_Model::get($gallery_id);
+		$this->gallery->where('people ILIKE \'%'.$question.'%\'')->photos;
+//		$this->gallery->photos = Photo_Model::search($question, $gallery_id);
+		$this->content->gallery = $this->gallery;
+		$this->content->selectedPhoto = $this->gallery->getFirstPhoto();
+
+
+		$this->title = array('Photo Gallery', 'Search', $question);
 	}
 
 }

@@ -12,6 +12,27 @@ class Gallery_Model extends ORM {
 		return self::factory('gallery')->orderBy('date', 'desc')->find_all();
 	}
 
+	static function search($question){
+
+		$db = new Database();
+
+		$foundGalleries = $db->
+				select('gallery_id')->
+				from('photos')->
+				where('description ILIKE \'%'.$question.'%\'')->
+				orwhere('people ILIKE \'%'.$question.'%\'')->get();
+
+		$galleryIds = array();
+
+		foreach($foundGalleries as $foundGallery){
+			$galleryIds[] = $foundGallery->gallery_id;
+		}
+
+		$result = self::factory('gallery')->in('id', $galleryIds)->orderBy('date', 'desc')->find_all();
+
+		return $result;
+	}
+
 	function getPhoto($basename){
 		$answer = $this->where('basename', $basename)->photos->current();
 		$this->reload();

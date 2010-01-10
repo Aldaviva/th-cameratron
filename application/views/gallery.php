@@ -10,7 +10,7 @@ echo "<dl>";
 foreach(array('description', 'people', 'datetime', 'location', 'photographer') as $field){
 	echo "<dt>$field</dt>";
 	if($field =='datetime'){
-		echo "<dd>".date('F j, Y \a\t g:ia')."</dd>";
+		echo "<dd>".date('F j, Y \a\t g:ia', $selectedPhoto->$field)."</dd>";
 	} else {
 		echo "<dd>{$selectedPhoto->$field}</dd>";
 	}
