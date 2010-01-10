@@ -5,21 +5,25 @@ class Gallery_Model extends ORM {
 	protected $has_many	= array('photos');
 
 	static function get($id){
-		return self::factory('gallery')->find($id);
+		return self::factory('gallery', $id);
 	}
 
 	static function get_all(){
 		return self::factory('gallery')->orderBy('date', 'desc')->find_all();
 	}
 
-	function getPhoto($id){
-		if($id >= 0 && $id < $this->photos->count()){
-			return $this->photos[$id];
-		}
+	function getPhoto($basename){
+		$answer = $this->where('basename', $basename)->photos->current();
+		$this->reload();
+		return $answer;
 	}
 
 	function numPhotos(){
 		return $this->photos->count();
+	}
+
+	function getFirstPhoto(){
+		return $this->photos[0];
 	}
 
 	function __get($key){

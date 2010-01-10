@@ -1,16 +1,8 @@
 <?php
 
-class Overview_Controller extends MyTemplate_Controller {
-
-	public $title = 'my title';
-
-	function __construct(){
-		parent::__construct();
-	}
+class Overview_Controller extends SiteTemplate_Controller {
 
 	function index(){
-		$this->content = 'bar';
-
 		$result = Gallery_Model::get_all();
 
 		$view = new View('overview');
@@ -18,10 +10,7 @@ class Overview_Controller extends MyTemplate_Controller {
 		$view->galleries = $result;
 
 		$this->content = $view;
-
-//		print_r($this->content);
-
-		$this->_render();
+		$this->title = 'Photo Gallery';
 
 	}
 

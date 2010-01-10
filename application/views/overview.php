@@ -1,5 +1,3 @@
-<h1>Galleries</h1>
-
 <?php
 
 foreach($galleries as $gallery){

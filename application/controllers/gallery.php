@@ -1,23 +1,17 @@
 <?php
 
-class Gallery_Controller extends Template_Controller {
+class Gallery_Controller extends SiteTemplate_Controller {
 
 	protected $gallery;
-
-	public $template = 'html';
 
 	function index(){
 		echo "no gallery specified";
 	}
 
-	function view($id = NULL, $photoId = null){
+	function view($id = NULL, $photoBasename = null){
 		if(is_null($id)){
 			$this->index();
 			return;
-		}
-
-		if(is_null($photoId)){
-			$photoId = 0;
 		}
 
 		$this->gallery = Gallery_Model::get($id);
@@ -26,9 +20,16 @@ class Gallery_Controller extends Template_Controller {
 
 		$view->gallery = $this->gallery;
 
-		$view->selectedPhoto = $this->gallery->getPhoto($photoId);
+//		$view->selectedPhoto = $this->gallery->getPhoto($photoId);
 
-		$view->render(true);
+		if(is_null($photoBasename)){
+			$view->selectedPhoto = $this->gallery->getFirstPhoto();
+		} else {
+			$view->selectedPhoto = $this->gallery->getPhoto($photoBasename);
+		}
+
+		$this->content = $view;
+		$this->title = array('Photo Gallery', $this->gallery->title);
 	}
 
 }

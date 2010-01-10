@@ -1,6 +1,5 @@
 <?php
 
-echo "<h1>".$gallery->title."</h1>";
 echo html::anchor('', 'back');
 
 echo "<br>";
@@ -17,10 +16,10 @@ foreach(array('description', 'people', 'datetime', 'location', 'photographer') a
 	}
 }
 
-foreach($gallery->photos as $i => $photo){
+foreach($gallery->photos as $photo){
 	echo "<div>";
 	$thumb = html::image($photo->getURL(), array('width'=>100));
-	echo html::anchor("gallery/view/{$gallery->id}/$i", $thumb);
+	echo html::anchor("gallery/view/{$gallery->id}/{$photo->basename}", $thumb);
 	echo "</div>";
 }
 
