@@ -12,8 +12,8 @@ class Gallery_Model extends ORM {
 		return self::factory('gallery')->orderBy('date', 'desc')->find_all();
 	}
 
-	static function search($question){
-
+	//find galleries with photos that match this question
+	static function searchAll($question){
 		$db = new Database();
 
 		$foundGalleries = $db->
@@ -33,6 +33,12 @@ class Gallery_Model extends ORM {
 		return $result;
 	}
 
+	//find photos in this gallery that match this question
+	function search($question){
+		return $this->where('people ILIKE \'%'.$question.'%\'')->photos;
+
+	}
+
 	function getPhoto($basename){
 		$answer = $this->where('basename', $basename)->photos->current();
 		$this->reload();
@@ -43,8 +49,14 @@ class Gallery_Model extends ORM {
 		return $this->photos->count();
 	}
 
-	function getFirstPhoto(){
+	/*function getFirstPhoto(){
 		return $this->photos[0];
+	}*/
+
+	function getPhotoByIndex($index){
+		$result = array_slice($this->photos, $index, 1);
+		$result = $result[0];
+		return $result;
 	}
 
 	function __get($key){

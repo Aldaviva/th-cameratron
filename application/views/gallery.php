@@ -2,10 +2,16 @@
 
 echo html::anchor('', 'back');
 
-echo "<br>";
+echo "<br/>";
 
-echo html::image($selectedPhoto->getURL(), array('height' => 400));
+//the selected photo
+echo html::image($selectedPhoto->getURL(640,480));
 
+//navigation
+echo html::anchor("gallery/view/{$gallery->id}/{$selectedPhoto->previousPhoto()->basename}", 'Previous');
+echo html::anchor("gallery/view/{$gallery->id}/{$selectedPhoto->nextPhoto()->basename}", 'Next');
+
+//attributes for the selected photo
 echo "<dl>";
 foreach(array('description', 'people', 'datetime', 'location', 'photographer') as $field){
 	echo "<dt>$field</dt>";
@@ -16,9 +22,10 @@ foreach(array('description', 'people', 'datetime', 'location', 'photographer') a
 	}
 }
 
+//all photos in gallery
 foreach($gallery->photos as $photo){
 	echo "<div>";
-	$thumb = html::image($photo->getURL(), array('width'=>100));
+	$thumb = html::image($photo->getURL(100));
 	echo html::anchor("gallery/view/{$gallery->id}/{$photo->basename}", $thumb);
 	echo "</div>";
 }
