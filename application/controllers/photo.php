@@ -15,9 +15,10 @@ class Photo_Controller extends Controller {
 		$id = str_replace('.jpg','', $id);
 		list($newWidth, $newHeight) = explode('x', $size);
 		
-		$photo = Photo_Model::get($id);
+		$photo = new Photo_Model($id);
 		$filename = $photo->getURL();
 
+		//choose compression based on whether the client is on the lan or not
 		$client_ip = $this->input->ip_address();
 		$quality= (ip::inSubnet($client_ip, "138.16.0.0", 16)
 				|| ip::inSubnet($client_ip, "128.148.0.0", 16)
@@ -32,14 +33,14 @@ class Photo_Controller extends Controller {
 		// Get new dimensions
 		list($oldWidth, $oldHeight) = getimagesize($filename);
 
-		if($newHeight <= $oldHeight && $newWidth <= $oldWidth){
-			$ratio_orig = $oldWidth/$oldHeight;
+		$ratio_orig = $oldWidth/$oldHeight;
 
-			if ($newWidth/$newHeight > $ratio_orig) {
-			   $newWidth = $newHeight*$ratio_orig;
-			} else {
-			   $newHeight = $newWidth/$ratio_orig;
-			}
+		if ($newWidth/$newHeight > $ratio_orig) {
+		   $newWidth = $newHeight*$ratio_orig;
+		} else {
+		   $newHeight = $newWidth/$ratio_orig;
+		}
+		if($newHeight <= $oldHeight || $newWidth <= $oldWidth){
 
 			// Resample
 			$image_p = imagecreatetruecolor($newWidth, $newHeight);

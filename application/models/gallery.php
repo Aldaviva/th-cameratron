@@ -4,16 +4,12 @@ class Gallery_Model extends ORM {
 
 	protected $has_many	= array('photos');
 
-	static function get($id){
-		return self::factory('gallery', $id);
-	}
-
 	static function get_all(){
 		return self::factory('gallery')->orderBy('date', 'desc')->find_all();
 	}
 
 	//find galleries with photos that match this question
-	static function searchAll($question){
+	/*static function searchAll($question){
 		$db = new Database();
 
 		$foundGalleries = $db->
@@ -31,13 +27,16 @@ class Gallery_Model extends ORM {
 		$result = self::factory('gallery')->in('id', $galleryIds)->orderBy('date', 'desc')->find_all();
 
 		return $result;
-	}
+	}*/
 
 	//find photos in this gallery that match this question
-	function search($question){
-		return $this->where('people ILIKE \'%'.$question.'%\'')->photos;
+	/*function search($question){
+		
+		$result = $this->where('people ILIKE \'%'.$question.'%\'')->photos;
 
-	}
+		echo "Found ".$this->numPhotos()." photos";
+		return $result[0]->gallery;
+	}*/
 
 	function getPhoto($basename){
 		$answer = $this->where('basename', $basename)->photos->current();
@@ -49,14 +48,8 @@ class Gallery_Model extends ORM {
 		return $this->photos->count();
 	}
 
-	/*function getFirstPhoto(){
+	function getFirstPhoto(){
 		return $this->photos[0];
-	}*/
-
-	function getPhotoByIndex($index){
-		$result = array_slice($this->photos, $index, 1);
-		$result = $result[0];
-		return $result;
 	}
 
 	function __get($key){

@@ -3,12 +3,12 @@ if(!isset($searchTerm)){
 	$searchTerm = '';
 }
 
-echo form::open('gallery/searchAll');
+/*echo form::open('gallery/searchAll');
 echo form::input('question', $searchTerm);
 echo form::submit('submit', 'Search');
 echo form::close();
 
-echo "<br/>";
+echo "<br/>";*/
 
 foreach($galleries as $gallery){
 

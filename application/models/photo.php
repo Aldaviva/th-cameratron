@@ -4,10 +4,6 @@ class Photo_Model extends ORM {
 
 	protected $belongs_to = array('gallery');
 
-	static function get($id){
-		return self::factory('photo', $id);
-	}
-
 	function getURL($width = null, $height = null){
 		if(is_null($width) && is_null($height)){ //original size
 			return implode('/', array('data', $this->gallery_id, $this->basename . '.jpg'));
@@ -19,22 +15,18 @@ class Photo_Model extends ORM {
 		}
 	}
 
-	static function search($question, $gallery_id = null){
-		$db = new Database();
-		$question = $db->escape($question);
+	static function search($question){
 
-		$results = self::factory('photo')->
-			where('description ILIKE \'%'.$question.'%\'')->
-			orwhere('people ILIKE \'%'.$question.'%\'')->
-			orderBy('datetime', 'desc');
-		
-		if(!is_null($gallery_id)){
-			$results = $results->where('gallery_id', $gallery_id);
-		}
+		$question = "%".$question."%";
+		$question = Database::instance()->escape_str($question);
 
-		$results = $results->find_all();
+		$results = ORM::factory('photo')->
+			where("description ILIKE '$question'")->
+			orwhere("people ILIKE '$question'")->
+			orderBy('datetime', 'desc')->find_all();
 
 		return $results;
+
 	}
 
 	function nextPhoto(){
