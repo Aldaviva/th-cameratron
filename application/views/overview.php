@@ -1,14 +1,4 @@
 <?php
-if(!isset($searchTerm)){
-	$searchTerm = '';
-}
-
-/*echo form::open('gallery/searchAll');
-echo form::input('question', $searchTerm);
-echo form::submit('submit', 'Search');
-echo form::close();
-
-echo "<br/>";*/
 
 foreach($galleries as $gallery){
 
@@ -18,11 +8,7 @@ foreach($galleries as $gallery){
 	echo "<br />";
 	echo date('F Y', $gallery->date);
 	echo "<br />";
-	if(empty($searchTerm)){
-		echo html::anchor('gallery/view/'.$gallery->id, 'View');
-	} else {
-		echo html::anchor('gallery/search/'.$gallery->id.'/'.$searchTerm, 'Search inside');
-	}
+	echo html::anchor('gallery/view/'.$gallery->id, 'View');
 	
 	echo "</div>";
 }

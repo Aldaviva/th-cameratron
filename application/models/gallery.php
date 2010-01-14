@@ -4,6 +4,10 @@ class Gallery_Model extends ORM {
 
 	protected $has_many	= array('photos');
 
+	static function getByName($title){
+		return self::factory('gallery')->where('title',$title)->find();
+	}
+
 	static function get_all(){
 		return self::factory('gallery')->orderBy('date', 'desc')->find_all();
 	}

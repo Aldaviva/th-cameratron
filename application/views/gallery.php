@@ -21,7 +21,9 @@ foreach(array('description', 'people', 'datetime', 'location', 'photographer') a
 		echo "<dd>{$selectedPhoto->$field}</dd>";
 	}
 }
+echo "</dl>";
 
+echo "<div class='thumbs'>";
 //all photos in gallery
 foreach($gallery->photos as $photo){
 	echo "<div>";
@@ -29,5 +31,6 @@ foreach($gallery->photos as $photo){
 	echo html::anchor("gallery/view/{$gallery->id}/{$photo->basename}", $thumb);
 	echo "</div>";
 }
+echo "</div>";
 
 ?>
