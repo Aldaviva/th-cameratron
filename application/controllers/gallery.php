@@ -5,11 +5,10 @@ class Gallery_Controller extends SiteTemplate_Controller {
 	protected $gallery;
 
 	function index(){
-		$view = new View('overview');
+		$this->content = new View('overview');
 
-		$view->galleries = Gallery_Model::get_all();
+		$this->content->galleries = Gallery_Model::get_all();
 
-		$this->content = $view;
 		$this->title = 'Photo Gallery';
 	}
 
@@ -29,8 +28,8 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		} else {
 			$this->content->selectedPhoto = $this->gallery->getPhoto($photoBasename);
 		}
-			$this->content->previousPhoto = $this->content->selectedPhoto->previousPhoto();
-			$this->content->nextPhoto = $this->content->selectedPhoto->nextPhoto();
+		$this->content->previousPhoto = $this->content->selectedPhoto->previousPhoto();
+		$this->content->nextPhoto = $this->content->selectedPhoto->nextPhoto();
 		
 
 		$this->title = array('Photo Gallery', $this->gallery->title);

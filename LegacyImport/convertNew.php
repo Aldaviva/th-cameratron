@@ -62,6 +62,16 @@ class Photo {
 	}
 
 	function __set($name, $value){
+
+		$value = preg_replace('/<a href=\".+?\">(.+?)<\/a>/i', '$1', $value);
+
+		$value = str_ireplace(
+				array('^M', '<unknown>'),
+				array(' ', ''),
+				$value);
+
+		$value = html_entity_decode($value);
+
 		switch($name){
 			case 'locationDate':
 				if(strpos($value, ',') !== false){
@@ -82,14 +92,32 @@ class Photo {
 				}
 				break;
 			case 'description2':
-				$this->data['description'] .= ' '.trim(stripslashes($value));
+				$value = trim(stripslashes($value));
+
+				if(empty($this->data['description'])){
+					$this->data['description'] = $value;
+				} else {
+					$value = ' '.$value;
+
+					$lastChar = $this->data['description'];
+					$lastChar = $lastChar[strlen($lastChar)-1];
+
+					if(!in_array($lastChar, array('.', '?', '!'))){
+						$value = '.'.$value;
+					}
+
+					$this->data['description'] .= $value;
+				}
 				break;
-			case 'photographer':
 			case 'location':
 				if($value == 'time'){
 					$value = '';
 				}
 				//no break here, fall through
+			case 'photographer':
+				if($value == str_repeat('?', strlen($value))){
+					$value = '';
+				}
 			case 'basename':
 			case 'description':
 			case 'people':
@@ -151,9 +179,9 @@ class Photo {
 		$description = $this->description;
 		$people = $this->people;
 		if(is_int($this->datetime)){
-			$datetime = date('Y-m-d H:i:s', $this->datetime);
+			$datetime = "'".date('Y-m-d H:i:s', $this->datetime)."'";
 		} else {
-			$datetime = '';
+			$datetime = 'NULL';
 		}
 		$photographer = $this->photographer;
 		$location = $this->location;
@@ -268,14 +296,20 @@ foreach(glob("*", GLOB_ONLYDIR) as $galleryDirName){
 	pullData("$galleryDirName/photo.db", $inputSchemas['old']);
 }
 
-/*
- * Show SQL
- */
+//
+// SQL
+//
 
-/*/echo "\n-- Galleries\n";
-foreach($galleries as $gallery){
-	echo $gallery->toSQL();
-}
+/**/
+
+echo "\\set ON_ERROR_STOP 1\n";
+
+echo "begin;\n";
+
+//echo "\n-- Galleries\n";
+//foreach($galleries as $gallery){
+//	echo $gallery->toSQL();
+//}
 
 echo "\n-- Photos\n";
 foreach($photos as $photo){
@@ -283,23 +317,25 @@ foreach($photos as $photo){
 }
 
 echo "\n-- ".count($galleries)." galleries, with a sum of ".count($photos)." photos.\n";
-/**/
 
-/*
- * Show CSV
- */
+echo "commit;\n";
+/*/
 
-/**/
+//
+// CSV
+//
 
-echo "id\ttitle\n";
-foreach($galleries as $gallery){
-	echo $gallery->toCSV();
-}
 
-echo "\nid\tbasename\tgallery_id\tdescription\tpeople\tdatetime\tphotographer\tlocation\n";
-foreach($photos as $photo){
-	echo $photo->toCSV();
-}
+//echo "id\ttitle\n";
+//foreach($galleries as $gallery){
+//	echo $gallery->toCSV();
+//}
+//echo "\n";
+
+//echo "id\tbasename\tgallery_id\tdescription\tpeople\tdatetime\tphotographer\tlocation\n";
+//foreach($photos as $photo){
+//	echo $photo->toCSV();
+//}
 
 /**/
 
