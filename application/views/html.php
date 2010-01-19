@@ -4,21 +4,19 @@
 	<head>
 		<title><?= $title ?></title>
 
-		<?
+		<?= html::stylesheet($stylesheets, array(), false); ?>
 
-		echo html::stylesheet($stylesheets, array(), false);
-
-		echo html::script($scripts, false);
-
-		echo html::meta('charset', 'utf-8');
-
-		?>
+		<?= html::meta('charset', 'utf-8'); ?>
 
 	</head>
+
+	<? flush(); ?>
 
 	<body>
 
 		<?= $body ?>
+
+		<?= html::script($scripts, false); ?>
 
 	</body>
 

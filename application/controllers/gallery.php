@@ -7,17 +7,25 @@ class Gallery_Controller extends SiteTemplate_Controller {
 	function index(){
 		$this->content = new View('overview');
 
-		$this->content->galleries = Gallery_Model::get_all();
+		$this->content->pagination = new Pagination(array(
+				'total_items'=>Gallery_Model::numGalleries(),
+				'items_per_page' => 5)
+		);
+
+		$this->content->galleries = Gallery_Model::get_all(
+				$this->content->pagination->items_per_page,
+				$this->content->pagination->sql_offset
+		);
 
 		$this->title = 'Photo Gallery';
 	}
 
-	function view($id = NULL, $photoBasename = null){
-		if(is_null($id)){
+	function view($title_url = NULL, $photoBasename = null){
+		if(is_null($title_url)){
 			url::redirect('gallery');
 		}
 
-		$this->gallery = new Gallery_Model($id);
+		$this->gallery = Gallery_Model::getByTitleUrl($title_url);
 
 		$this->content = new View('gallery');
 

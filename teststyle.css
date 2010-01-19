@@ -1,0 +1,102 @@
+﻿body {
+	background: white url(media/img/bg_gradient.png) repeat-x;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Badge
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+header {
+	background: url(media/img/badge_bg.png) no-repeat bottom;
+	left: 13px;
+	position: absolute;
+	width: 131px;
+}
+
+header h1 {
+	display: block;
+}
+
+header h1 a {
+	background: url(media/img/badge_title.png) no-repeat center center;
+	display: inherit;
+	height: 112px;
+	margin: 16px auto 15px;
+	width: 103px;
+}
+
+header h1 a span {
+	display: none;
+}
+
+header nav ul {
+	font: 8px/16px "Gros Extended";
+	margin: 0 4px 22px;
+	
+}
+
+header nav a, header .nav a:visited {
+	color: #1a1a1a;
+	padding: 1px 12px;
+	display: block;
+}
+
+header nav a:hover {
+	color: white;
+	background: #ed1c24;
+	border-width: 1px;
+	border-color: #9e0b0f;
+	border-style: solid none;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Metadata
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#metadata {
+	position: relative;
+}
+
+#metadata label span {
+	display: none;
+}
+
+#metadata input[type='text'] {
+	border: none;
+	font: 12px "Delicious";
+	text-align: right;
+	position: absolute;
+}
+
+#metadata input[name='description'] {
+	font-size: 20px;
+	text-align: left;
+	top: 13px;
+}
+
+#metadata input[name='people'] {
+	font-size: 14px;
+	text-align: left;
+	left: 5px;
+	top: 37px;
+}
+
+#metadata input[name='datetime'] {
+	right: 0;
+	top: 12px;
+}
+
+#metadata input[name='location'] {
+	right: 5px;
+	top: 26px;
+}
+
+#metadata input[name='photographer'] {
+	right: 10px;
+	top: 41px;
+}

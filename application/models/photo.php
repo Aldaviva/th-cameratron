@@ -4,23 +4,12 @@ class Photo_Model extends ORM {
 
 	protected $belongs_to = array('gallery');
 
-	function getURL($width = null, $height = null){
-		if(is_null($width) && is_null($height)){ //original size
-			return implode('/', array('data', $this->gallery_id, $this->basename . '.jpg'));
-		} else {//resized
-			if(is_null($height)){
-				$height = $width;
-			}
-			return implode('/', array('photo/resample', $width.'x'.$height, $this->id, )).'.jpg';
-		}
-	}
-
 	static function search($question){
 
 		$question = "%".$question."%";
 		$question = Database::instance()->escape_str($question);
 
-		$results = ORM::factory('photo')->
+		$results = self::factory('photo')->
 			where("description ILIKE '$question'")->
 			orwhere("people ILIKE '$question'")->
 			orderBy('datetime', 'desc')->find_all();
@@ -28,6 +17,33 @@ class Photo_Model extends ORM {
 		return $results;
 
 	}
+	
+	static function getByGalleryBasename($gallery_id, $basename){
+		return self::factory('photo')->where(array(
+			'gallery_id' => $gallery_id,
+			'basename' => $basename))->find();
+	}
+
+
+	function getURL($width = null, $height = null){
+
+		if(is_null($width) && is_null($height)){ //original size
+			$url = "original/{$this->gallery_id}/{$this->basename}";
+		} else {//resized
+			if(is_null($height)){
+				$height = $width;
+			}
+			$url = "resample/{$width}x{$height}/{$this->id}.jpg";
+		}
+
+		return "photo/$url";
+	}
+
+	function getFilename(){
+		return implode('/', array('data', $this->gallery_id, $this->basename));
+	}
+
+	
 
 	function nextPhoto(){
 		return $this->_getOffsetPhoto(1);

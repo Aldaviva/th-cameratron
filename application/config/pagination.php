@@ -18,8 +18,8 @@ $config['default'] = array
 (
 	'directory'      => 'pagination',
 	'style'          => 'classic',
-	'uri_segment'    => 3,
-	'query_string'   => '',
-	'items_per_page' => 20,
+	//'uri_segment'    => 3,
+	'query_string'   => 'page',
+	'items_per_page' => 36,
 	'auto_hide'      => FALSE,
 );

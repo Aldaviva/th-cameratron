@@ -4,47 +4,28 @@ class Gallery_Model extends ORM {
 
 	protected $has_many	= array('photos');
 
-	static function getByName($title){
-		return self::factory('gallery')->where('title',$title)->find();
+	static function getByTitleUrl($title_url){
+//		return self::factory('gallery')->where('title',$title)->find();
+		return self::factory('gallery')->where('title_url', $title_url)->find();
 	}
 
-	static function get_all(){
-		return self::factory('gallery')->orderBy('date', 'desc')->find_all();
-	}
+	static function get_all($limit = null, $offset = null){
+		$query = self::factory('gallery')->orderBy('date', 'desc');
 
-	//find galleries with photos that match this question
-	/*static function searchAll($question){
-		$db = new Database();
-
-		$foundGalleries = $db->
-				select('gallery_id')->
-				from('photos')->
-				where('description ILIKE \'%'.$question.'%\'')->
-				orwhere('people ILIKE \'%'.$question.'%\'')->get();
-
-		$galleryIds = array();
-
-		foreach($foundGalleries as $foundGallery){
-			$galleryIds[] = $foundGallery->gallery_id;
+		if(!is_null($offset) && !is_null($limit)){
+			$query->limit($limit, $offset);
 		}
 
-		$result = self::factory('gallery')->in('id', $galleryIds)->orderBy('date', 'desc')->find_all();
+		return $query->find_all();
+	}
 
-		return $result;
-	}*/
-
-	//find photos in this gallery that match this question
-	/*function search($question){
-		
-		$result = $this->where('people ILIKE \'%'.$question.'%\'')->photos;
-
-		echo "Found ".$this->numPhotos()." photos";
-		return $result[0]->gallery;
-	}*/
+	static function numGalleries(){
+		return self::factory('gallery')->count_all();
+	}	
 
 	function getPhoto($basename){
 		$answer = $this->where('basename', $basename)->photos->current();
-		$this->reload();
+		$this->reload(); //otherwise, the photos array is permanently filtered to this one photo
 		return $answer;
 	}
 
@@ -60,13 +41,23 @@ class Gallery_Model extends ORM {
 		switch ($key){
 
 			//if no poster image specified, return a random image from this gallery as poster
-			case "poster_photo":
-				$answer = ORM::factory('photo')->where(array('id'=>$this->poster_photo_id, 'gallery_id'=>$this->id))->find();
+			/*case "poster_photo":
+//				$answer = ORM::factory('photo')->where(array('id'=>$this->poster_photo_id, 'gallery_id'=>$this->id))->find();
+				$answer = new Photo_Model($this->poster_photo_id);
 				if(!$answer->loaded){
 					$random = mt_rand(0, $this->numPhotos() - 1);
-					$answer = ORM::factory('photo')->where('gallery_id', $this->id)->find_all(1, $random)->current();
+					//$answer = self::factory('photo')->where('gallery_id', $this->id)->find_all(1, $random)->current();
+					$answer = $this->photos[$random];
 				}
-				return $answer;
+				return $answer;*/
+
+			case 'poster_photo':
+				if(is_null($this->poster_photo_id)){
+					return $this->photos[0];
+				} else {
+					return $this->poster_photo;
+				}
+
 
 			//change date field to unix timestamp
 			case 'date':
