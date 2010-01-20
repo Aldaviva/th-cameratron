@@ -1,5 +1,7 @@
 ﻿body {
 	background: white url(media/img/bg_gradient.png) repeat-x;
+	overflow: hidden;
+	width: 100%;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -7,49 +9,82 @@
 *	Badge
 *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 header {
-	background: url(media/img/badge_bg.png) no-repeat bottom;
+	background: url(media/img/badge_bg_bottom.png) no-repeat bottom;
+	padding-bottom: 16px;
 	left: 13px;
 	position: absolute;
-	width: 131px;
+	z-index: 8;
+	width: 133px;
+}
+
+header div {
+	background: #c8cacf url(media/img/badge_bg_repeat.png) repeat-y;
+}
+
+header a#badge-title {
+	background: url(media/img/badge_title.png) no-repeat center 18px;
+	display: block;
+	height: 93px;
+	margin: 0 auto;
+	width: 115px;
+	padding: 18px 0 15px;
+	border-bottom: 1px solid #e4e5e7;
 }
 
 header h1 {
-	display: block;
-}
-
-header h1 a {
-	background: url(media/img/badge_title.png) no-repeat center center;
-	display: inherit;
-	height: 112px;
-	margin: 16px auto 15px;
-	width: 103px;
-}
-
-header h1 a span {
 	display: none;
 }
 
-header nav ul {
-	font: 8px/16px "Gros Extended";
-	margin: 0 4px 22px;
-	
-}
-
-header nav a, header .nav a:visited {
-	color: #1a1a1a;
-	padding: 1px 12px;
+header a {
 	display: block;
 }
 
-header nav a:hover {
+header nav ul {
+	padding: 14px 5px 21px;
+	font: 8px/16px "Gros Extended";
+}
+
+header nav a, header nav a:visited {
+	text-decoration: none;
+	padding: 0 12px;
+	border-width: 1px 0;
+	border-style: solid;
+	border-color: transparent;
 	color: white;
+}
+
+header nav a:hover {
 	background: #ed1c24;
-	border-width: 1px;
 	border-color: #9e0b0f;
-	border-style: solid none;
-	padding-top: 0;
-	padding-bottom: 0;
+	color: white;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Big
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.big{
+	margin-top: 15px;
+	position: absolute;
+	right: 50%;
+	z-index: 7;
+}
+
+.big div {
+	margin-left: 145px;
+	position: relative;
+	right: -50%;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Selected Photo
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#selectedPhoto {
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -57,8 +92,8 @@ header nav a:hover {
 *	Metadata
 *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 #metadata {
+	height: 56px;
 	position: relative;
 }
 
@@ -69,21 +104,19 @@ header nav a:hover {
 #metadata input[type='text'] {
 	border: none;
 	font: 12px "Delicious";
-	text-align: right;
 	position: absolute;
+	background: transparent;
 }
 
 #metadata input[name='description'] {
 	font-size: 20px;
-	text-align: left;
-	top: 13px;
+	top: 12px;
 }
 
 #metadata input[name='people'] {
 	font-size: 14px;
-	text-align: left;
 	left: 5px;
-	top: 37px;
+	top: 38px;
 }
 
 #metadata input[name='datetime'] {
@@ -98,5 +131,59 @@ header nav a:hover {
 
 #metadata input[name='photographer'] {
 	right: 10px;
-	top: 41px;
+	top: 40px;
+}
+
+#metadata input[name='description'], #metadata input[name='people'] {
+	width: 73%;
+}
+
+#metadata input[name='datetime'], #metadata input[name='location'], #metadata input[name='photographer'] {
+	text-align: right;
+	width: 25%;
+}
+
+#metadata input[type='submit'] {
+	display: none;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Thumbnails
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#thumbs {
+	background: #f7f8fa;
+	border-top: 1px solid #d5dbe3;
+	bottom: 0;
+	clear: both;
+	height: 52px;
+	left: 0;
+	overflow: scroll;
+	overflow-y: hidden;
+	padding: 12px 46px 26px;
+	position: fixed;
+	right: 0;
+	white-space: nowrap;
+}
+
+#thumbs a {
+	
+	vertical-align: text-bottom;
+	line-height: 0;
+	display: inline-block;
+	min-width: 75px;
+	text-align: center;
+}
+
+#thumbs img {
+	/*border: 1px solid black;*/
+	padding: 1px;
+	border: none;
+}
+
+#thumbs img.active {
+	/*border: 1px solid red;*/
+	padding: 0;
+	border: 1px solid #9e0b0f;
 }
