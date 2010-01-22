@@ -14,7 +14,6 @@ echo html::anchor("gallery/view/{$gallery->title_url}/{$selectedPhoto->nextPhoto
 //attributes for the selected photo
 echo form::open('photo/edit', array('method' => 'get'));
 echo form::hidden('photo_id', $selectedPhoto->id);
-//echo "<dl>";
 foreach(array('description', 'people', 'datetime', 'location', 'photographer') as $field){
 	echo "<p><label>$field";
 	if($field =='datetime'){
@@ -23,16 +22,14 @@ foreach(array('description', 'people', 'datetime', 'location', 'photographer') a
 		$value = $selectedPhoto->$field;
 	}
 
-//	echo "<dd>";
 	echo form::input($field, $value);
 	echo "</label></p>";
 }
-//echo "</dl>";
 echo form::submit('submit', 'Save');
 echo form::close();
 
-echo "<div class='thumbs'>";
 //all photos in gallery
+echo "<div class='thumbs'>";
 foreach($gallery->photos as $photo){
 	echo "<div>";
 	$thumb = html::image($photo->getURL(100));

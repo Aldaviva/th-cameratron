@@ -1,6 +1,6 @@
 <?php
 
-class Photo_Controller extends Controller {
+class Photo_Controller extends SiteTemplate_Controller {
 
 	//find any photo that matches this question
 	function search($question){
@@ -13,11 +13,12 @@ class Photo_Controller extends Controller {
 
 	function original($gallery_id, $basename){
 		if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])){
-			header('HTTP/1.1 304 Not Modified');
+			header('HTTP/1.1 304 Not Modified'); //complete hack to let the browser use its cache if it has one
 			exit();
 		}
 
-		$photo = Photo_Model::getByGalleryBasename($gallery_id, $basename);
+		$gallery = new Gallery_Model($gallery_id);
+		$photo = $gallery->getPhoto($basename);
 
 		$filename = $photo->getFilename();
 
@@ -108,6 +109,43 @@ class Photo_Controller extends Controller {
 		}
 	}
 
+	function view($gallery_title_url, $photo_basename){
+		$this->stylesheets[] = 'photo_view.css';
+
+		$gallery = Gallery_Model::getByTitleUrl($gallery_title_url);
+
+		$this->content = new View('photo');
+
+		$this->content->gallery_title_url = $gallery_title_url;
+
+		$this->content->selectedPhoto = $gallery->getPhoto($photo_basename);
+
+		$this->content->siblingPhotos = $gallery->photos;
+
+		$this->badge = new View('badge');
+		$this->badge->links = array(
+			array(
+				'text'	=> 'All galleries',
+				'title'	=> 'See all of our galleries',
+				'href'	=> '/gallery'
+			)
+			,array(
+				'text'	=> 'This gallery',
+				'title'	=> 'See a grid of all the photos in this gallery',
+				'href'	=> 'gallery/view/'.$gallery_title_url
+			)
+			/*,array(
+				'text'	=> 'Edit metadata',
+				'title'	=> 'Make a correction to this photo\'s metadata',
+				'href'	=> 'edit'
+			)*/
+		);
+
+		$this->title = array('Photo Gallery', $gallery->title);
+
+
+
+	}
 }
 
 ?>

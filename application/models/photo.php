@@ -18,11 +18,11 @@ class Photo_Model extends ORM {
 
 	}
 	
-	static function getByGalleryBasename($gallery_id, $basename){
+	/*static function getByGalleryBasename($gallery_id, $basename){
 		return self::factory('photo')->where(array(
 			'gallery_id' => $gallery_id,
 			'basename' => $basename))->find();
-	}
+	}*/
 
 
 	function getURL($width = null, $height = null){
@@ -42,8 +42,6 @@ class Photo_Model extends ORM {
 	function getFilename(){
 		return implode('/', array('data', $this->gallery_id, $this->basename));
 	}
-
-	
 
 	function nextPhoto(){
 		return $this->_getOffsetPhoto(1);

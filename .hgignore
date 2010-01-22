@@ -6,3 +6,5 @@ nbproject/*
 application/logs/*
 application/cache/*
 data/*
+LegacyImport/*
+Design/*

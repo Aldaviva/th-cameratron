@@ -4,9 +4,9 @@
 	<head>
 		<title><?= $title ?></title>
 
-		<?= html::stylesheet($stylesheets, array(), false); ?>
+		<meta charset="utf-8" />
 
-		<?= html::meta('charset', 'utf-8'); ?>
+		<?= html::stylesheet($stylesheets, array(), false); ?>
 
 	</head>
 
