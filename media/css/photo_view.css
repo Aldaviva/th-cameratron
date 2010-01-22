@@ -24,7 +24,7 @@
 *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #selectedPhoto {
-	border: 2px solid white;
+	border: 1px solid white;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -44,53 +44,45 @@
 }
 
 #metadata input[type='text'] {
-	border: none;
 	font: 12px "Delicious";
 	position: absolute;
+	border: none;
 	background: transparent;
-	padding: 0 2px;
-	/*border-bottom: 1px dotted transparent;*/
 }
 
-#metadata input[type='text']:hover {
-	border-color: #9e0b0f;
-}
-
-#metadata input[name='description'] {
+#metadata input#description {
 	font-size: 20px;
 	top: 12px;
 }
 
-#metadata input[name='people'] {
+#metadata input#people {
 	font-size: 14px;
 	left: 5px;
 	top: 38px;
 }
 
-#metadata input[name='datetime'] {
+#metadata input#datetime {
 	right: 0;
 	top: 12px;
 }
 
-#metadata input[name='location'] {
+#metadata input#location {
 	right: 5px;
 	top: 26px;
 }
 
-#metadata input[name='photographer'] {
+#metadata input#photographer {
 	right: 10px;
 	top: 40px;
 }
 
-#metadata input[name='description'], #metadata input[name='people'] {
+#metadata input#description, #metadata input#people {
 	width: 73%;
-	border-left: 1px dotted transparent;
 }
 
-#metadata input[name='datetime'], #metadata input[name='location'], #metadata input[name='photographer'] {
+#metadata input#datetime, #metadata input#location, #metadata input#photographer {
 	text-align: right;
 	width: 25%;
-	border-right: 1px dotted transparent;
 }
 
 #metadata input[type='submit'] {
