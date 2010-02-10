@@ -47,7 +47,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 				array(
 				'text'	=> 'All galleries',
 				'title'	=> 'See all of our galleries',
-				'href'	=> url::base().'/gallery'
+				'href'	=> '/gallery'
 				)
 				, array(
 				'text'	=> 'Add photos',
