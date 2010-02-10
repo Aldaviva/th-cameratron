@@ -1,18 +1,24 @@
+<div class="big">
+
 <?php
+
+$title_max_chars = 11;
 
 foreach($galleries as $gallery){
 
-	echo "<div>";
-	echo "<h3>{$gallery->title}</h3>";
-	echo html::image($gallery->poster_photo->getURL(100));
-	echo "<br />";
-	echo date('F Y', $gallery->date);
-	echo "<br />";
-	echo html::anchor('gallery/view/'.$gallery->title_url, 'View');
+	echo "<div class='polaroid'>";
+	echo html::anchor('gallery/view/'.$gallery->title_url,
+			html::image($gallery->poster_photo->getURL(109, 82))
+			. "<h3>".text::limit_chars($gallery->title, $title_max_chars)."</h3>"
+			. "<div class='date'>".date('F Y', $gallery->date)."</div>",
+		array('title' => $gallery->title_url)
+		);
 	
-	echo "</div>";
+	echo "</div>\n";
 }
 
 echo $pagination;
 
 ?>
+
+</div>

@@ -1,0 +1,48 @@
+.big {
+	margin-left: 145px;
+	padding: 2em;
+}
+
+.polaroid {
+	width: 120px;
+	height: 144px;
+	padding: 1px 4px 6px;
+	margin: 0 9px;
+	float: left;
+	background: url(../img/polaroid_bg.png) no-repeat;
+	position: relative;
+}
+
+.polaroid .poster_photo {
+	height: 82px;
+	vertical-align: middle;
+	background-color: green;
+}
+
+.polaroid img {
+	display: block;
+	margin: 4px auto;
+	border: none;
+}
+
+.polaroid h3, .polaroid .date {
+	color: black;
+	position: absolute;
+	font-family: "Museo Slab 500";
+	margin: 0 6px 0;
+	display: block;
+}
+
+.polaroid h3 {
+	top: 99px;
+	font-size: 16px;
+}
+
+.polaroid .date {
+	top: 117px;
+	font-size: 12px;
+}
+
+.pagination {
+	clear: both;
+}
