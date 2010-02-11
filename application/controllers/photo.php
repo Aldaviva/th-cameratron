@@ -98,7 +98,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 			$photo->$field = $_GET[$field] or '';
 		}
 
-		if($datetime = strtotime($_GET['datetime'])){
+		if($datetime = strtotime($_GET['datetime'])){ /* not a mistake, strtotime will return 0 if failure */
 			$photo->datetime = date('Y-m-d H:i:s', $datetime);
 		}
 
@@ -109,16 +109,21 @@ class Photo_Controller extends SiteTemplate_Controller {
 		}
 	}
 
-	function view($gallery_title_url, $photo_basename){
+	function view($gallery_title_url, $photo_basename = null){
 		$this->stylesheets[] = 'photo_view.css';
 
 		$gallery = Gallery_Model::getByTitleUrl($gallery_title_url);
+
 
 		$this->content = new View('photo');
 
 		$this->content->gallery_title_url = $gallery_title_url;
 
-		$this->content->selectedPhoto = $gallery->getPhoto($photo_basename);
+		if(is_null($photo_basename)){
+			$this->content->selectedPhoto = $gallery->getFirstPhoto();
+		} else {
+			$this->content->selectedPhoto = $gallery->getPhoto($photo_basename);
+		}
 
 		$this->content->siblingPhotos = $gallery->photos;
 
