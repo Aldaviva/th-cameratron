@@ -52,7 +52,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 				? 95 : 85;
 		
 		if(!file_exists($filename)){
-			throw new Kohana_404_Exception("Image with id = $id, filename = $filename");
+			throw new Kohana_404_Exception("Image with id = $id, cwd = ".getcwd().", filename = $filename");
 		}
 
 		$image = new Image($filename);

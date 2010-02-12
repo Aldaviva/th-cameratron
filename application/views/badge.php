@@ -1,7 +1,7 @@
 <header>
 
 	<div>
-		<a id="badge-title" href="/gallery" title="See all of our galleries">
+		<a id="badge-title" href="<?= Kohana::config('core.site_domain') ?>" title="See all of our galleries">
 			<h1>Tech House Photography</h1>
 		</a>
 

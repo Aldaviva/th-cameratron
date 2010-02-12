@@ -14,7 +14,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 					array(
 					'text' => 'Create gallery',
 					'title' => 'Make a new blank gallery to put photos in',
-					'href' => url::base().'newgallery'
+					'href' => 'gallery/create'
 					)
 				)
 			)
@@ -22,7 +22,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 
 		$this->content->pagination = new Pagination(array(
 			'total_items'=>Gallery_Model::numGalleries(),
-			'items_per_page' => 5)
+			'items_per_page' => 18)
 		);
 
 		$this->content->galleries = Gallery_Model::get_all(
@@ -71,6 +71,10 @@ class Gallery_Controller extends SiteTemplate_Controller {
 
 		$this->title = array('Photo Gallery', $this->content->gallery->title);
     }
+
+	function create(){
+		echo "It looks like you want to create a new gallery";
+	}
 
 }
 

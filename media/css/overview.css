@@ -7,10 +7,15 @@
 	width: 157px;
 	height: 168px;
 	padding: 1px 4px 6px;
-	margin: 0 9px 17px;
+	margin: 0 5px 17px;
 	float: left;
 	background: url(../img/polaroid_bg.png) no-repeat;
 	position: relative;
+	overflow: hidden;
+}
+
+.polaroid:hover {
+	overflow: visible;
 }
 
 .polaroid .poster_photo {
@@ -44,6 +49,23 @@
 .polaroid h3 {
 	top: 123px;
 	font-size: 16px;
+	max-height: 19px;
+	width: 142px;
+	overflow: hidden;
+}
+
+.polaroid h3 span {
+	background: white;
+}
+
+.polaroid:hover h3 {
+	width: 500px;
+	overflow: visible;
+	z-index: 2;
+}
+
+.polaroid:hover h3 span {
+	padding-right: 2em;
 }
 
 .polaroid .date {

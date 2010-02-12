@@ -40,7 +40,7 @@ class Photo_Model extends ORM {
 	}
 
 	function getFilename(){
-		return implode('/', array('data', $this->gallery_id, $this->basename));
+		return implode('/', array('../photos1', $this->gallery_id, $this->basename));
 	}
 
 	function nextPhoto(){
