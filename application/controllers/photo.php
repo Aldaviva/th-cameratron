@@ -3,7 +3,11 @@
 class Photo_Controller extends SiteTemplate_Controller {
 
 	//find any photo that matches this question
-	function search($question){
+	function search($question = null){
+		if(is_null($question)){
+			echo "What is your search term? (not yet implemented)";
+		}
+
 		$results = Photo_Model::search($question);
 
 		foreach($results as $result){
@@ -111,6 +115,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 	function view($gallery_title_url, $photo_basename = null){
 		$this->stylesheets[] = 'photo_view.css';
+		$this->scripts[] = 'photo_view.js';
 
 		$gallery = Gallery_Model::getByTitleUrl($gallery_title_url);
 
@@ -139,11 +144,6 @@ class Photo_Controller extends SiteTemplate_Controller {
 				'title'	=> 'See a grid of all the photos in this gallery',
 				'href'	=> 'gallery/view/'.$gallery_title_url
 			)
-			/*,array(
-				'text'	=> 'Edit metadata',
-				'title'	=> 'Make a correction to this photo\'s metadata',
-				'href'	=> 'edit'
-			)*/
 		);
 
 		$this->title = array('Photo Gallery', $gallery->title);

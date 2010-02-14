@@ -12,9 +12,19 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			array(
 				'links' => array(
 					array(
-					'text' => 'Create gallery',
-					'title' => 'Make a new blank gallery to put photos in',
-					'href' => 'gallery/create'
+						'text'	=> 'Home',
+						'title'	=> 'Go back to Tech House\'s home page',
+						'href'	=> 'https://techhouse.org'
+					)
+					,array(
+						'text'	=> 'Create gallery',
+						'title'	=> 'Make a new blank gallery to put photos in',
+						'href'	=> 'gallery/create'
+					),
+					array(
+						'text'	=> 'Search',
+						'title'	=> 'Search for a picture',
+						'href'	=> 'photo/search'
 					)
 				)
 			)
@@ -73,7 +83,37 @@ class Gallery_Controller extends SiteTemplate_Controller {
     }
 
 	function create(){
-		echo "It looks like you want to create a new gallery";
+		echo "It looks like you want to create a new gallery. (not yet implemented)";
+	}
+
+	function edit(){
+		echo "It looks like you want to edit an existing gallery (not yet implemented)";
+	}
+
+	function raw($title_url = null){
+		header('Content-Type: application/json');
+		
+		$this->_cancelTemplate();
+
+		if(is_null($title_url)){
+			echo "/* No gallery requested */";
+			return;
+		}
+
+		$title_url = str_replace('.json', '', $title_url);
+
+		$gallery = Gallery_Model::getByTitleUrl($title_url);
+
+		echo "/* Gallery data for ".$gallery->title." */\n";
+
+
+		$data = $gallery->as_array();
+
+		foreach($gallery->photos as $photo){
+			$data['photos'][] = $photo->as_array();
+		}
+
+		echo json_encode($data);
 	}
 
 }

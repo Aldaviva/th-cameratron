@@ -41,14 +41,13 @@
 .polaroid h3, .polaroid .date {
 	color: black;
 	position: absolute;
-	font-family: "Museo Slab 500";
 	margin: 0 10px 0;
 	display: block;
 }
 
 .polaroid h3 {
+	font: 16px "Museo Slab", "Trebuchet MS", Helvetica, Arial;
 	top: 123px;
-	font-size: 16px;
 	max-height: 19px;
 	width: 142px;
 	overflow: hidden;
@@ -70,7 +69,7 @@
 
 .polaroid .date {
 	top: 141px;
-	font-size: 12px;
+	font: 12px "Delicious", "Trebuchet MS", Helvetica, Arial;
 	color: #535353;
 }
 

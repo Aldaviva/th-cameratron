@@ -52,6 +52,10 @@ class Gallery_Model extends ORM {
 				return $answer;*/
 
 			case 'poster_photo':
+				if($this->numPhotos() == 0){
+					return null;
+				}
+				
 				if(is_null($this->poster_photo_id)){
 					return $this->photos[0];
 				} else {

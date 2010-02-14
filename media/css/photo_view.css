@@ -44,14 +44,14 @@
 }
 
 #metadata input[type='text'] {
-	font: 12px "Museo Slab 500";
+	font: 12px "Delicious";
 	position: absolute;
 	border: none;
 	background: transparent;
 }
 
 #metadata input#description {
-	font-size: 20px;
+	font: 20px "Museo Slab", "Trebuchet MS", Helvetica, Arial;
 	top: 12px;
 }
 

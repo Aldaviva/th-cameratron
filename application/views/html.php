@@ -4,9 +4,11 @@
 	<head>
 		<title><?= $title ?></title>
 
-		<meta charset="utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
 		<?= html::stylesheet($stylesheets, array(), false); ?>
+
+		<?= html::script($scripts, false); ?>
 
 	</head>
 
@@ -15,8 +17,6 @@
 	<body>
 
 		<?= $body ?>
-
-		<?= html::script($scripts, false); ?>
 
 	</body>
 
