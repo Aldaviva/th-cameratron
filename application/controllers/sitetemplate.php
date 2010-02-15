@@ -22,7 +22,7 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 	function __construct(){
 		parent::__construct();
 
-		$this->scripts[] = "dojo.js";
+		$this->scripts[] = "dojo/dojo/dojo.js";
 		$this->scripts[] = "init.js";
 
 		$this->stylesheets[] = "reset.css";

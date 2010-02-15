@@ -22,14 +22,14 @@
 			$img = html::image($photo->getURL(75, 50));
 
 			$a = html::anchor('photo/view/'.$gallery_title_url.'/'.$photo->basename, $img, $attribs);
-			echo "<span>$a</span>\n";
+			echo "<span>$a</span>";
 		}
 	?>
 </div>
 
 <script type="text/javascript">
 	dojo.addOnLoad(function(){
-		var nav = new Cameratron.Navigation('<?= $gallery_title_url ?>', <?= $selectedPhoto->id ?>);
+		cameratron.navigation = new Cameratron.Navigation('<?= $gallery_title_url ?>', <?= $selectedPhoto->id ?>);
 	});
 
 </script>
