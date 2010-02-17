@@ -41,6 +41,9 @@ dojo.declare('Cameratron.Navigation', null, {
 
 		/* bind keyboard event handlers */
 		dojo.connect(dojo.doc, 'onkeypress', dojo.hitch(this, 'keyHandler'));
+		dojo.query('input').onkeypress(function(event){
+			event.stopPropagation();
+		});
 
 		dojo.connect(dojo.doc, 'onresize', dojo.hitch(this, 'resizeWindowHandler'));
 		this.resizeWindowHandler();
@@ -52,6 +55,11 @@ dojo.declare('Cameratron.Navigation', null, {
 				return false;
 			});
 		}, this);
+
+		dojo.connect(dojo.doc, (!dojo.isMozilla ? "onmousewheel" : "DOMMouseScroll"), function(e){
+			var scroll = e[(!dojo.isMozilla ? "wheelDelta" : "detail")] * (!dojo.isMozilla ? 1 : -1);
+			dojo.byId('thumbs').scrollLeft -= scroll;
+		});
 
 		this.scrollThumbs();
 	},

@@ -129,8 +129,8 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$originalWidth = $image->width;
 		$originalHeight = $image->height;
 		$ratio = min(1, $maxWidth/$originalWidth, $maxHeight/$originalHeight);
-		$newWidth = floor($originalWidth * $ratio);
-		$newHeight = floor($originalHeight * $ratio);
+		$newWidth = round($originalWidth * $ratio);
+		$newHeight = round($originalHeight * $ratio);
 
 		/*echo "original: ($originalWidth x $originalHeight)<br>";
 		echo "max: ($maxWidth x $maxHeight)<br>";
