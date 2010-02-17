@@ -80,6 +80,8 @@ class Photo_Controller extends SiteTemplate_Controller {
 			exit();
 		}
 
+		$this->_cancelTemplate();
+
 		$gallery = new Gallery_Model($gallery_id);
 		$photo = $gallery->getPhoto($basename);
 
@@ -94,13 +96,17 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 	function resample($size, $id){
 
+		$this->_cancelTemplate();
+
+		$epsilon = 2;
+
 		if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])){
 			header('HTTP/1.1 304 Not Modified'); //really cheap hack to let browsers use cache
 			exit();
 		}
 
 		$id = str_replace('.jpg','', $id);
-		list($newWidth, $newHeight) = explode('x', $size);
+		list($maxWidth, $maxHeight) = explode('x', $size);
 		
 		$photo = new Photo_Model($id);
 		$filename = $photo->getFilename();
@@ -111,13 +117,27 @@ class Photo_Controller extends SiteTemplate_Controller {
 				|| ip::inSubnet($client_ip, "128.148.0.0", 16)
 				|| (ip::inSubnet($client_ip, "192.168.1.0", 24) && $client_ip != '192.168.1.1')
 				|| $client_ip == '127.0.0.1')
-				? 95 : 85;
+			? 95 //on resnet
+			: 85; //otherwise
 		
 		if(!file_exists($filename)){
 			throw new Kohana_404_Exception("Image with id = $id, cwd = ".getcwd().", filename = $filename");
 		}
 
 		$image = new Image($filename);
+
+		$originalWidth = $image->width;
+		$originalHeight = $image->height;
+		$ratio = min(1, $maxWidth/$originalWidth, $maxHeight/$originalHeight);
+		$newWidth = floor($originalWidth * $ratio);
+		$newHeight = floor($originalHeight * $ratio);
+
+		/*echo "original: ($originalWidth x $originalHeight)<br>";
+		echo "max: ($maxWidth x $maxHeight)<br>";
+		echo "ratio: $ratio<br>";
+		echo "new: ($newWidth x $newHeight)<br>";*/
+
+
 		$image->resize($newWidth, $newHeight);
 		header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', strtotime('+1 month')));
 		header('Last-Modified: '.gmdate('D, d M Y H:i:s \G\M\T', filemtime($filename)));

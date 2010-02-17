@@ -1,19 +1,19 @@
-dojo.addOnLoad(function(){
-	dojo.style('submit', 'display', 'none');
-})
+var cameratron = new Cameratron();
 
-var cameratron = function(){
+function Cameratron(){
 
 	this.base_url = '/cameratron/';
 
 	this.getBigPhotoSize = function(dimension){
 		switch(dimension){
 			case 'width':
-				return 870;
+				//return 870;
+				return window.innerWidth - 186;
 			case 'height':
-				return 390;
+				return window.innerHeight - 210;
+				//return 390;
 		}
 	}
 
 	return this;
-}();
+}

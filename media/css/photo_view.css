@@ -4,11 +4,11 @@
 *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 .big{
-	margin: 15px 0 0;
+	/*margin: 15px 0 0;*/
 	position: absolute;
 	right: 50%;
 	z-index: 7;
-	padding: 0 0 117px;
+	padding: 0 0 95px;
 }
 
 .big div {

@@ -8,4 +8,12 @@ h2 {
 	vertical-align: middle;
 	margin: 0.5em;
 	border: 3px solid white;
+	margin: 0 auto;
+}
+
+#thumbs span {
+	width: 106px;
+	display: inline-block;
+	text-align: center;
+	margin: 0 0.8em 1em 0;
 }
