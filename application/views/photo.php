@@ -29,7 +29,7 @@
 
 <script type="text/javascript">
 	dojo.addOnLoad(function(){
-		cameratron.navigation = new Cameratron.Navigation('<?= $gallery_title_url ?>', <?= $selectedPhoto->id ?>);
+		cameratron.navigation = new Cameratron.Navigation(cameratron, '<?= $gallery_title_url ?>', <?= $selectedPhoto->id ?>);
 	});
 
 </script>

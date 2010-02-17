@@ -48,7 +48,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			url::redirect('gallery');
 		}
 
-		$this->content = new View('gallery');
+		$this->stylesheets[] = 'gallery.css';
 
 		$this->badge = new View(
 			'badge',
@@ -68,16 +68,9 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			)
 		);
 
+		$this->content = new View('gallery');
+
 		$this->content->gallery = Gallery_Model::getByTitleUrl($title_url);
-
-		if(is_null($photoBasename)){
-			$this->content->selectedPhoto = $this->content->gallery->getFirstPhoto();
-		} else {
-			$this->content->selectedPhoto = $this->content->gallery->getPhoto($photoBasename);
-		}
-		$this->content->previousPhoto = $this->content->selectedPhoto->previousPhoto();
-		$this->content->nextPhoto = $this->content->selectedPhoto->nextPhoto();
-
 
 		$this->title = array('Photo Gallery', $this->content->gallery->title);
     }

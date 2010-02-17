@@ -1,4 +1,8 @@
-cameratron = function(){
+dojo.addOnLoad(function(){
+	dojo.style('submit', 'display', 'none');
+})
+
+var cameratron = function(){
 
 	this.base_url = '/cameratron/';
 
