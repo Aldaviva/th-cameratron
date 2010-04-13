@@ -9,7 +9,7 @@
 			<label><span>Location</span><?= form::input('location', $selectedPhoto->location) ?></label>
 			<label><span>Photographer</span><?= form::input('photographer', $selectedPhoto->photographer) ?></label>
 			<?= form::submit('submit', 'Save'); ?>
-		</form>
+		<?= form::close(); ?>
 	</div>
 </div>
 

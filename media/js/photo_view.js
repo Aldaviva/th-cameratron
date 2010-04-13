@@ -38,6 +38,10 @@ dojo.declare('Cameratron.Navigation', null, {
 		}, this);
 
 		this.galleryData = data;
+		
+		this.resizeWindowHandler();
+		
+		this.scrollThumbs(true);
 
 		/* bind keyboard event handlers */
 		dojo.connect(dojo.doc, 'onkeypress', dojo.hitch(this, 'keyHandler'));
@@ -45,8 +49,7 @@ dojo.declare('Cameratron.Navigation', null, {
 			event.stopPropagation();
 		});
 
-		dojo.connect(dojo.doc, 'onresize', dojo.hitch(this, 'resizeWindowHandler'));
-		this.resizeWindowHandler();
+		dojo.connect(window, 'onresize', dojo.hitch(this, 'resizeWindowHandler'));
 
 		dojo.query('#thumbs a').forEach(function(node, index){
 			dojo.connect(node, 'onclick', this, function(event){
@@ -61,7 +64,6 @@ dojo.declare('Cameratron.Navigation', null, {
 			dojo.byId('thumbs').scrollLeft -= scroll;
 		});
 
-		this.scrollThumbs();
 	},
 	isValidIndex: function(index){
 		return 0 <= index && index < this.galleryData.photos.length;
@@ -101,7 +103,10 @@ dojo.declare('Cameratron.Navigation', null, {
 			var newValue = ( this.selectedPhoto[item] !== null)
 					? this.selectedPhoto[item]
 					: '';
-			dojo.byId(item).value = newValue;
+			dojo.byId(item).value = '';
+			setTimeout(dojo.hitch(this, function(el, newValue){ //this is to make sure that the text area is scrolled all the way to the left
+				el.value = newValue;
+			}, dojo.byId(item), newValue), 10);
 		}, this);
 		dojo.byId('datetime').value = this.selectedPhoto.getDateTime();
 		
@@ -150,7 +155,7 @@ dojo.declare('Cameratron.Navigation', null, {
 			this.galleryData.photos[newIndex].preload();
 		}
 	},
-	scrollThumbs: function(){
+	scrollThumbs: function(skipAnimation){
 		dojo.require('dojox.fx.scroll')
 
 		var container = dojo.byId('thumbs');
@@ -170,14 +175,18 @@ dojo.declare('Cameratron.Navigation', null, {
 		} else {
 			return;
 		}
-		
-		dojox.fx.smoothScroll({
-			win: container,
-			target: {
-				x: newScrollLeft,
-				y: 0
-			}
-		}).play();
+
+		if(skipAnimation){
+			container.scrollLeft = newScrollLeft;
+		} else {
+			dojox.fx.smoothScroll({
+				win: container,
+				target: {
+					x: newScrollLeft,
+					y: 0
+				}
+			}).play();
+		}
 	},
 	resizeWindowHandler: function(){
 		var timeNow = (new Date()).getTime();
