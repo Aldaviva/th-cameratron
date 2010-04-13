@@ -19,10 +19,15 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 	 */
 	public $badge;
 
+	/**
+	 * @var Array|String: either the heading of the page, or the {text, href} hashmap of the heading link
+	 */
+	public $heading;
+
 	function __construct(){
 		parent::__construct();
 
-		$this->scripts[] = "dojo/dojo/dojo.js";
+		$this->scripts[] = "dojo-release-1.4.1/dojo/dojo.js";
 		$this->scripts[] = "init.js";
 
 		$this->stylesheets[] = "reset.css";
@@ -36,6 +41,7 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 		$this->body = new View('mytemplate');
 		$this->body->badge = $this->badge;
 		$this->body->content = $this->content;
+		$this->body->heading = $this->heading;
 
 		parent::_render();
 	}

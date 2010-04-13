@@ -27,6 +27,11 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$this->badge = new View('badge');
 		$this->badge->links = array(
 			array(
+				'text'	=> 'TH Home',
+				'title'	=> 'Go back to Tech House\'s home page',
+				'href'	=> 'https://techhouse.org'
+			)
+			,array(
 				'text'	=> 'All galleries',
 				'title'	=> 'See all of our galleries',
 				'href'	=> '/gallery'
@@ -35,6 +40,16 @@ class Photo_Controller extends SiteTemplate_Controller {
 				'text'	=> 'This gallery',
 				'title'	=> 'See a grid of all the photos in this gallery',
 				'href'	=> 'gallery/view/'.$gallery_title_url
+			)
+			,array(
+				'text'	=> 'Edit metadata',
+				'title'	=> 'Change this photo\'s captions',
+				'href'	=> '#' //gets listened to by JS
+			)
+			,array(
+				'text'	=> 'Original size',
+				'title'	=> 'View this photo at 1:1 zoom',
+				'href'	=> $this->content->selectedPhoto->getURL()
 			)
 		);
 
@@ -62,12 +77,17 @@ class Photo_Controller extends SiteTemplate_Controller {
 	}
 
 	//find any photo that matches this question
-	function search($question = null){
+	function search(/*$question = null*/){
+
+		$question = $_GET['q'];
+
 		if(is_null($question)){
 			url::redirect('gallery');
 		}
 
 		$this->content = new View('collection');
+		$this->heading = "Search results for '".html::specialchars($question)."'";
+
 		$this->stylesheets[] = 'gallery.css';
 
 		$this->badge = new View('badge', array(
@@ -98,7 +118,6 @@ class Photo_Controller extends SiteTemplate_Controller {
 			'kohana'  => KOHANA
 		));
 		echo "</pre>";
-	}
 
 	function original($gallery_id, $basename){
 		if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])){
@@ -149,7 +168,6 @@ class Photo_Controller extends SiteTemplate_Controller {
 		}
 
 		$image = new Image($filename);
-
 		$originalWidth = $image->width;
 		$originalHeight = $image->height;
 		$ratio = min(1, $maxWidth/$originalWidth, $maxHeight/$originalHeight);
@@ -176,7 +194,6 @@ class Photo_Controller extends SiteTemplate_Controller {
 		
 		$image->render();
 
-	}
 
 	private function _shouldBeCached($width, $height){
 		$area = $width * $height;

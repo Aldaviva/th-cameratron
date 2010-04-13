@@ -12,7 +12,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			array(
 				'links' => array(
 					array(
-						'text'	=> 'Home',
+						'text'	=> 'TH Home',
 						'title'	=> 'Go back to Tech House\'s home page',
 						'href'	=> 'https://techhouse.org'
 					)
@@ -20,19 +20,19 @@ class Gallery_Controller extends SiteTemplate_Controller {
 						'text'	=> 'Create gallery',
 						'title'	=> 'Make a new blank gallery to put photos in',
 						'href'	=> 'gallery/create'
-					),
-					array(
+					)
+					/*,array(
 						'text'	=> 'Search',
 						'title'	=> 'Search for a picture',
 						'href'	=> 'photo/search'
-					)
+					)*/
 				)
 			)
 		);
 
 		$this->content->pagination = new Pagination(array(
 			'total_items'=>Gallery_Model::numGalleries(),
-			'items_per_page' => 18)
+			'items_per_page' => 24)
 		);
 
 		$this->content->galleries = Gallery_Model::get_all(
@@ -72,7 +72,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		$gallery = Gallery_Model::getByTitleUrl($title_url);
 
 		$this->content->photos = $gallery->photos;
-		$this->content->heading = $gallery->title;
+		$this->heading = $gallery->title;
 
 		$this->title = array('Photo Gallery', $gallery->title);
     }

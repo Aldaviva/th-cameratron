@@ -2,7 +2,7 @@
 
 <?php
 
-	echo "<h2>$heading</h2>";
+	//echo "<h2>$heading</h2>";
 
 	//all photos in gallery
 	echo "<div id='thumbs'>";
