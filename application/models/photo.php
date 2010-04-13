@@ -10,9 +10,12 @@ class Photo_Model extends ORM {
 		$question = Database::instance()->escape_str($question);
 
 		$results = self::factory('photo')->
+			//join('galleries', 'gallery.id', 'photos.gallery_id')->
+			with('gallery')->
 			where("description ILIKE '$question'")->
 			orwhere("people ILIKE '$question'")->
-			orderBy('datetime', 'desc')->find_all();
+			orderBy(array('gallery.date' => 'desc', 'datetime' => 'asc'))->
+			find_all();
 
 		return $results;
 

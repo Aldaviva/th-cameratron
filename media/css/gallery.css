@@ -1,0 +1,19 @@
+h2 {
+	text-align: center;
+	margin-bottom: 0.5em;
+	font: 21px "Museo Slab", "Trebuchet MS", Helvetica, Arial;
+}
+
+#thumbs img {
+	vertical-align: middle;
+	margin: 0.5em;
+	border: 3px solid white;
+	margin: 0 auto;
+}
+
+#thumbs span {
+	width: 106px;
+	display: inline-block;
+	text-align: center;
+	margin: 0 0.8em 1em 0;
+}

@@ -4,7 +4,7 @@
  * then a full URL will be used, eg: http://localhost/kohana/. If it only includes
  * the path, and a site_protocol is specified, the domain will be auto-detected.
  */
-$config['site_domain'] = '/sandbox/cameratron/';
+$config['site_domain'] = '/cameratron/';
 
 /**
  * Force a default protocol to be used by the site. If no site_protocol is
@@ -34,11 +34,6 @@ $config['css_prefix'] = 'media/css';
  * Directory (relative to site_domain) in which .js files are located
  */
 $config['js_prefix'] = 'media/js';
-
-/**
- * Directory (relative to site_domain) in which images files are located
- */
-$config['img_prefix'] = 'media/img';
 
 /**
  * Length of time of the internal cache in seconds. 0 or FALSE means no caching.

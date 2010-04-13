@@ -7,6 +7,18 @@ body {
 
 a {
 	text-decoration: none;
+	color: black;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	"Big" - content div
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+.big {
+	margin: 15px 0 0 145px;
+	padding: 0em 2em;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -22,6 +34,7 @@ header {
 	position: absolute;
 	z-index: 8;
 	width: 133px;
+	top: 0;
 }
 
 header div {
@@ -29,7 +42,7 @@ header div {
 }
 
 header a#badge-title {
-	background: url(../img/badge_title.png) no-repeat center 18px;
+	background: url(../img/badge_title.png) no-repeat 50% 18px;
 	display: block;
 	height: 93px;
 	margin: 0 auto;

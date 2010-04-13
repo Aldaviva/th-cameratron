@@ -12,9 +12,19 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			array(
 				'links' => array(
 					array(
-					'text' => 'Create gallery',
-					'title' => 'Make a new blank gallery to put photos in',
-					'href' => 'gallery/create'
+						'text'	=> 'Home',
+						'title'	=> 'Go back to Tech House\'s home page',
+						'href'	=> 'https://techhouse.org'
+					)
+					,array(
+						'text'	=> 'Create gallery',
+						'title'	=> 'Make a new blank gallery to put photos in',
+						'href'	=> 'gallery/create'
+					),
+					array(
+						'text'	=> 'Search',
+						'title'	=> 'Search for a picture',
+						'href'	=> 'photo/search'
 					)
 				)
 			)
@@ -38,8 +48,6 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			url::redirect('gallery');
 		}
 
-		$this->content = new View('gallery');
-
 		$this->badge = new View(
 			'badge',
 			array(
@@ -58,22 +66,49 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			)
 		);
 
-		$this->content->gallery = Gallery_Model::getByTitleUrl($title_url);
+		$this->content = new View('collection');
+		$this->stylesheets[] = 'gallery.css';
 
-		if(is_null($photoBasename)){
-			$this->content->selectedPhoto = $this->content->gallery->getFirstPhoto();
-		} else {
-			$this->content->selectedPhoto = $this->content->gallery->getPhoto($photoBasename);
-		}
-		$this->content->previousPhoto = $this->content->selectedPhoto->previousPhoto();
-		$this->content->nextPhoto = $this->content->selectedPhoto->nextPhoto();
+		$gallery = Gallery_Model::getByTitleUrl($title_url);
 
+		$this->content->photos = $gallery->photos;
+		$this->content->heading = $gallery->title;
 
-		$this->title = array('Photo Gallery', $this->content->gallery->title);
+		$this->title = array('Photo Gallery', $gallery->title);
     }
 
 	function create(){
-		echo "It looks like you want to create a new gallery";
+		echo "It looks like you want to create a new gallery. (not yet implemented)";
+	}
+
+	function edit(){
+		echo "It looks like you want to edit an existing gallery (not yet implemented)";
+	}
+
+	function raw($title_url = null){
+		header('Content-Type: application/json');
+		
+		$this->_cancelTemplate();
+
+		if(is_null($title_url)){
+			echo "/* No gallery requested */";
+			return;
+		}
+
+		$title_url = str_replace('.json', '', $title_url);
+
+		$gallery = Gallery_Model::getByTitleUrl($title_url);
+
+		echo "/* Gallery data for ".$gallery->title." */\n";
+
+
+		$data = $gallery->as_array();
+
+		foreach($gallery->photos as $photo){
+			$data['photos'][] = $photo->as_array();
+		}
+
+		echo json_encode($data);
 	}
 
 }

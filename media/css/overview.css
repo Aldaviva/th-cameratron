@@ -1,6 +1,5 @@
-.big {
-	margin-left: 145px;
-	padding: 2em;
+a.gallery_link {
+	display: block;
 }
 
 .polaroid {
@@ -25,7 +24,7 @@
 	margin-top: 5px;
 }
 
-.polaroid div {
+.polaroid .poster_photo div {
 	display: table-cell;
 	vertical-align: middle;
 	text-align: center;
@@ -38,39 +37,32 @@
 	margin: 0 auto;
 }
 
-.polaroid h3, .polaroid .date {
-	color: black;
-	position: absolute;
-	font-family: "Museo Slab 500";
+.polaroid .expand {
+	position: relative;
+	top: 8px;
+	background-color: white;
+	background-color: rgba(255, 255, 255, .9);
 	margin: 0 10px 0;
-	display: block;
 }
 
-.polaroid h3 {
-	top: 123px;
-	font-size: 16px;
-	max-height: 19px;
-	width: 142px;
+.polaroid .expand h3, .polaroid .expand .date {
+	margin: 0;
 	overflow: hidden;
 }
 
-.polaroid h3 span {
-	background: white;
-}
-
-.polaroid:hover h3 {
-	width: 500px;
+.polaroid:hover .expand {
+	width: 312px;
 	overflow: visible;
 	z-index: 2;
 }
 
-.polaroid:hover h3 span {
-	padding-right: 2em;
+.polaroid h3 {
+	font: 16px "Museo Slab", "Trebuchet MS", Helvetica, Arial;
+	max-height: 19px;
 }
 
 .polaroid .date {
-	top: 141px;
-	font-size: 12px;
+	font: 12px "Delicious", "Trebuchet MS", Helvetica, Arial;
 	color: #535353;
 }
 

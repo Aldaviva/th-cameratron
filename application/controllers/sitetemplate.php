@@ -22,9 +22,12 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 	function __construct(){
 		parent::__construct();
 
-		$this->scripts[] = "http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js";
+		$this->scripts[] = "dojo/dojo/dojo.js";
+		$this->scripts[] = "init.js";
+
 		$this->stylesheets[] = "reset.css";
 		$this->stylesheets[] = "global.css";
+		$this->stylesheets[] = "fonts.css";
 	}
 
 	function _render(){

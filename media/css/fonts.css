@@ -1,9 +1,20 @@
 /* A font by Jos Buivenga (exljbris) -> www.exljbris.com */
-/* TODO: embed Delicious */
-/* TODO: embed Museo Slab */
+@font-face {
+	font-family: "Museo Slab";
+	src: url("../fonts/Museo_Slab_500.otf") format("opentype");
+}
+
+/* A font by Jos Buivenga (exljbris) -> www.exljbris.com */
+@font-face {
+	font-family: "Delicious";
+	src: url("../fonts/Delicious Roman.otf") format("opentype");
+}
 
 /* http://web.archive.org/web/20080205090247/http://pixelfonts.style-force.net/ */
-/* TODO: embed Gros Extended */
+@font-face {
+	font-family: "Gros Extended";
+	src: url("../fonts/Gros Extended.TTF") format("truetype");
+}
 
 /* TODO: Figure out what to do with button fonts. Was going to use Glypha 
 	(Adrian Frutiger) but may go with something free, Like Jos' Museo or Museo
