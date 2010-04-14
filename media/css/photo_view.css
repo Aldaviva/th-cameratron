@@ -8,18 +8,17 @@ body {
 *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 .big{
-	/*margin: 15px 0 0;*/
-	position: absolute;
-	right: 50%;
-	z-index: 7;
-	padding: 0 0 95px;
+	/*position: absolute;*/
+	/*right: 50%;*/
+	/*z-index: 7;*/
+	/*padding: 0 0 95px;*/
 }
 
 .big div {
-	margin-left: 145px;
+	/*margin-left: 145px;
 	position: relative;
 	right: -50%;
-	text-align: center;
+	text-align: center;*/
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -29,6 +28,8 @@ body {
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #selectedPhoto {
 	border: 1px solid white;
+	display: block;
+	margin: 0 auto;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -136,6 +137,7 @@ body {
 
 #thumbs .active a {
 	border: 1px solid #9e0b0f;
+	opacity: 1 !important;
 }
 
 #thumbs img {
@@ -144,4 +146,8 @@ body {
 
 #thumbs .active img {
 	border: 1px solid white;
+}
+
+#thumbs a:visited, #thumbs .visited a {
+	opacity: .67;
 }

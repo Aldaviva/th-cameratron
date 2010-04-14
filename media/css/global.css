@@ -13,6 +13,7 @@ a {
 
 h2 {
 	position: absolute;
+	top: 0;
 	margin: 15px 290px 0 145px;
 	padding-left: 28px;
 	min-width: 312px;

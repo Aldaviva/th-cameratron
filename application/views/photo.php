@@ -1,5 +1,4 @@
 <div class="big">
-	<div>
 		<?= html::anchor($selectedPhoto->getURL(), html::image($selectedPhoto->getURL(870,390), array('id'=>'selectedPhoto'))) ?>
 		<?= form::open('photo/edit', array('method' => 'get', 'id' => 'metadata')) ?>
 			<input type='hidden' name="photo_id" value='<?= $selectedPhoto->id ?>' />
@@ -10,7 +9,6 @@
 			<label><span>Photographer</span><?= form::input('photographer', $selectedPhoto->photographer) ?></label>
 			<?= form::submit('submit', 'Save'); ?>
 		<?= form::close(); ?>
-	</div>
 </div>
 
 <div id="thumbs">

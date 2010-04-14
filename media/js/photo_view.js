@@ -14,7 +14,8 @@ dojo.declare('Cameratron.Navigation', null, {
 		this.selectedPhoto = {};
 
 		this.lastResizeTime = -1; //milliseconds since unix epoc
-		this.resizeMinInterval = 1000; //milliseconds
+		this.resizeMinInterval = 3000; //milliseconds
+		this.resizeTimer = null;
 
 
 		dojo.xhrGet({
@@ -49,7 +50,7 @@ dojo.declare('Cameratron.Navigation', null, {
 			event.stopPropagation();
 		});
 
-		dojo.connect(window, 'onresize', dojo.hitch(this, 'resizeWindowHandler'));
+		dojo.connect(window, 'onresize', dojo.hitch(this, 'resizeWindowHandler', false));
 
 		dojo.query('#thumbs a').forEach(function(node, index){
 			dojo.connect(node, 'onclick', this, function(event){
@@ -110,8 +111,11 @@ dojo.declare('Cameratron.Navigation', null, {
 		}, this);
 		dojo.byId('datetime').value = this.selectedPhoto.getDateTime();
 		
-		dojo.removeClass(dojo.query('#thumbs .active')[0], "active");
-		dojo.addClass(dojo.query('#thumbs span')[this.selectedPhotoIndex], "active");
+		var activeSpan = dojo.query('#thumbs .active')[0];
+		dojo.addClass(activeSpan, "visited");
+		dojo.removeClass(activeSpan, "active");
+		activeSpan = dojo.query('#thumbs span')[this.selectedPhotoIndex];
+		dojo.addClass(activeSpan, "active");
 
 		dojo.byId('original_size_badgebutton').href = this.selectedPhoto.getFullURL();
 
@@ -190,16 +194,27 @@ dojo.declare('Cameratron.Navigation', null, {
 			}).play();
 		}
 	},
-	resizeWindowHandler: function(){
+	resizeWindowHandler: function(isCalledFromTimer){
+		if(this.resizeTimer != null){
+			clearInterval(this.resizeTimer);
+			this.resizeTimer = null;
+		}
+
 		var timeNow = (new Date()).getTime();
-		if(timeNow >= this.lastResizeTime + this.resizeMinInterval){
+		if(isCalledFromTimer || timeNow >= this.lastResizeTime + this.resizeMinInterval){
 			//alert('resizing');
-			this.lastResize = timeNow;
+			this.lastResizeTime = timeNow;
 
 			dojo.byId('selectedPhoto').src = this.selectedPhoto.getThumbURL();
-			this.preloadOffset(1);
+			//this.preloadOffset(1);
 		} else {
 			//alert('not resizing');
+		}
+
+		if(!isCalledFromTimer){
+			this.resizeTimer = setTimeout(dojo.hitch(this, "resizeWindowHandler", true), 2000);
+		} else {
+			//alert('Called from timer');
 		}
 	}
 });
