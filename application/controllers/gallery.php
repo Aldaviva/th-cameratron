@@ -114,6 +114,23 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		echo json_encode($data);
 	}
 
+	function setPoster($gallery_id, $photo_id){
+		$gallery = new Gallery_Model($gallery_id);
+		$photo = new Photo_Model($photo_id);
+
+		if($photo->gallery->id == $gallery->id){
+			$gallery->poster_photo_id = $photo->id;
+		}
+
+		$gallery->save();
+
+		if(!request::is_ajax()){
+			url::redirect(request::referrer());
+		}
+
+
+	}
+
 }
 
 ?>

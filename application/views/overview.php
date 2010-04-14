@@ -30,7 +30,9 @@ foreach($galleries as $gallery){
 	
 }
 
+echo "<div class='pagination-container'>";
 echo $pagination;
+echo "</div>";
 
 ?>
 

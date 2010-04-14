@@ -39,18 +39,6 @@ class Gallery_Model extends ORM {
 
 	function __get($key){
 		switch ($key){
-
-			//if no poster image specified, return a random image from this gallery as poster
-			/*case "poster_photo":
-//				$answer = ORM::factory('photo')->where(array('id'=>$this->poster_photo_id, 'gallery_id'=>$this->id))->find();
-				$answer = new Photo_Model($this->poster_photo_id);
-				if(!$answer->loaded){
-					$random = mt_rand(0, $this->numPhotos() - 1);
-					//$answer = self::factory('photo')->where('gallery_id', $this->id)->find_all(1, $random)->current();
-					$answer = $this->photos[$random];
-				}
-				return $answer;*/
-
 			case 'poster_photo':
 				if($this->numPhotos() == 0){
 					return null;
@@ -59,7 +47,7 @@ class Gallery_Model extends ORM {
 				if(is_null($this->poster_photo_id)){
 					return $this->photos[0];
 				} else {
-					return $this->poster_photo;
+					return new Photo_Model($this->poster_photo_id);
 				}
 
 

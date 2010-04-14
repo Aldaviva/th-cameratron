@@ -55,6 +55,12 @@ class Photo_Controller extends SiteTemplate_Controller {
 				'href'	=> $this->content->selectedPhoto->getURL(),
 				'id'	=> 'original_size_badgebutton'
 			)
+			,array(
+				'text'	=> 'Set as poster',
+				'title'	=> 'This gallery will be listed using this picture as its thumbnail',
+				'href'	=> "gallery/setPoster/{$gallery->id}/{$this->content->selectedPhoto->id}",
+				'id'	=> 'set_poster_badgebutton'
+			)
 		);
 
 		$this->heading = array('text' => $gallery->title, 'href' => "/gallery/view/{$gallery->title_url}");
@@ -103,11 +109,6 @@ class Photo_Controller extends SiteTemplate_Controller {
 					'text'	=> 'All galleries',
 					'title'	=> 'See all of our galleries',
 					'href'	=> '/gallery'
-				)
-				,array(
-					'text'	=> 'New search',
-					'title'	=> 'Start over with a new query',
-					'href'	=> '/photo/search'
 				)
 			)
 		));
