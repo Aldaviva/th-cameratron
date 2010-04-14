@@ -91,13 +91,15 @@ class Photo_Controller extends SiteTemplate_Controller {
 		}
 
 		$this->content = new View('collection');
+		$this->content->bigFirstPhoto = false;
 		$this->heading = "Search results for '".html::specialchars($question)."'";
 
 		$this->stylesheets[] = 'collection.css';
 
 		$this->badge = new View('badge', array(
 			'links' => array(
-				array(
+				"hr"
+				,array(
 					'text'	=> 'All galleries',
 					'title'	=> 'See all of our galleries',
 					'href'	=> '/gallery'

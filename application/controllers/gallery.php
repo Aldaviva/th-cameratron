@@ -69,6 +69,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		);
 
 		$this->content = new View('collection');
+		$this->content->bigFirstPhoto = true;
 		$this->stylesheets[] = 'collection.css';
 
 		$gallery = Gallery_Model::getByTitleUrl($title_url);

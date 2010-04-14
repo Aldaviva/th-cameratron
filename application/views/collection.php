@@ -4,7 +4,7 @@
 
 	echo "<div id='thumbs'>";
 	foreach($photos as $i => $photo){
-		if($i == 0){
+		if($bigFirstPhoto    && $i == 0){
 			echo '<span class="largethumb">';
 			$thumb = html::image($photo->getURL(340, 220));
 		} else {

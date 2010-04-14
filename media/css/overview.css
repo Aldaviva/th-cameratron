@@ -1,3 +1,7 @@
+body {
+	margin-bottom: 2em;
+}
+
 a.gallery_link {
 	display: block;
 }
@@ -50,6 +54,34 @@ a.gallery_link {
 	color: #535353;
 }
 
+a:hover .polaroid {
+	opacity: 1 !important;
+}
+
+a:hover .polaroid h3, a:hover .polaroid .date {
+	color: #004a80 !important;
+}
+
+a:visited .polaroid {
+	opacity: 0.75;
+}
+
+a:visited .polaroid h3, a:visited .polaroid .date {
+	color: #662d91;
+}
+
 .pagination {
 	clear: both;
+}
+
+.pagination a {
+	background-color: #e6e6e6;
+	border: 1px solid #dadada;
+}
+
+.pagination strong, .pagination a {
+	min-width: 9px;
+	display: inline-block;
+	text-align: center;
+	padding: 2px 6px;
 }
