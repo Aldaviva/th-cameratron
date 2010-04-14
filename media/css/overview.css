@@ -13,10 +13,6 @@ a.gallery_link {
 	overflow: hidden;
 }
 
-.polaroid:hover {
-	overflow: visible;
-}
-
 .polaroid .poster_photo {
 	display: table;
 	height: 108px;
@@ -37,26 +33,14 @@ a.gallery_link {
 	margin: 0 auto;
 }
 
-.polaroid .expand {
+.polaroid h3, .polaroid .date {
+	margin: 0 10px;
 	position: relative;
 	top: 8px;
-	background-color: white;
-	background-color: rgba(255, 255, 255, .9);
-	margin: 0 10px 0;
-}
-
-.polaroid .expand h3, .polaroid .expand .date {
-	margin: 0;
-	overflow: hidden;
-}
-
-.polaroid:hover .expand {
-	width: 312px;
-	overflow: visible;
-	z-index: 2;
 }
 
 .polaroid h3 {
+	
 	font: 16px "Museo Slab", "Trebuchet MS", Helvetica, Arial;
 	max-height: 19px;
 }
