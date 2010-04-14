@@ -11,7 +11,8 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			'badge',
 			array(
 				'links' => array(
-					array(
+					"hr"
+					,array(
 						'text'	=> 'TH Home',
 						'title'	=> 'Go back to Tech House\'s home page',
 						'href'	=> 'https://techhouse.org'
@@ -51,18 +52,19 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		$this->badge = new View(
 			'badge',
 			array(
-			'links' => array(
-				array(
-				'text'	=> 'All galleries',
-				'title'	=> 'See all of our galleries',
-				'href'	=> '/gallery'
+				'links' => array(
+					"hr"
+					,array(
+					'text'	=> 'All galleries',
+					'title'	=> 'See all of our galleries',
+					'href'	=> '/gallery'
+					)
+					, array(
+					'text'	=> 'Add photos',
+					'title'	=> 'Insert new photos into this gallery',
+					'href'	=> '/upload'
+					)
 				)
-				, array(
-				'text'	=> 'Add photos',
-				'title'	=> 'Insert new photos into this gallery',
-				'href'	=> '/upload'
-				)
-			)
 			)
 		);
 

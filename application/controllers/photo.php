@@ -26,7 +26,8 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 		$this->badge = new View('badge');
 		$this->badge->links = array(
-			array(
+			"hr"
+			,array(
 				'text'	=> 'TH Home',
 				'title'	=> 'Go back to Tech House\'s home page',
 				'href'	=> 'https://techhouse.org'
@@ -41,15 +42,18 @@ class Photo_Controller extends SiteTemplate_Controller {
 				'title'	=> 'See a grid of all the photos in this gallery',
 				'href'	=> 'gallery/view/'.$gallery_title_url
 			)
+			,"hr"
 			,array(
 				'text'	=> 'Edit metadata',
 				'title'	=> 'Change this photo\'s captions',
-				'href'	=> '#' //gets listened to by JS
+				'href'	=> '#', //gets listened to by JS
+				'id'	=> 'edit_metadata_badgebutton'
 			)
 			,array(
 				'text'	=> 'Original size',
 				'title'	=> 'View this photo at 1:1 zoom',
-				'href'	=> $this->content->selectedPhoto->getURL()
+				'href'	=> $this->content->selectedPhoto->getURL(),
+				'id'	=> 'original_size_badgebutton'
 			)
 		);
 

@@ -1,13 +1,26 @@
+#thumbs {
+	/*line-height: 117px;*/
+}
+
 #thumbs img {
 	vertical-align: middle;
-	margin: 0.5em;
 	border: 3px solid white;
 	margin: 0 auto;
 }
 
 #thumbs span {
 	width: 106px;
+	height: 106px;
 	display: inline-block;
 	text-align: center;
-	margin: 0 0.8em 1em 0;
+	margin: 0 14px 14px 0;
+}
+
+#thumbs .largethumb {
+	float: left;
+	width: 351px;
+	margin-left: -2px;
+	margin-right: 11px;
+	height: 226px;
+
 }

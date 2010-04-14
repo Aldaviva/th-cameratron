@@ -2,13 +2,15 @@
 
 <?php
 
-	//echo "<h2>$heading</h2>";
-
-	//all photos in gallery
 	echo "<div id='thumbs'>";
-	foreach($photos as $photo){
-		echo "<span>";
-		$thumb = html::image($photo->getURL(100));
+	foreach($photos as $i => $photo){
+		if($i == 0){
+			echo '<span class="largethumb">';
+			$thumb = html::image($photo->getURL(340, 220));
+		} else {
+			echo "<span>";
+			$thumb = html::image($photo->getURL(100));
+		}
 		echo html::anchor("photo/view/{$photo->gallery->title_url}/{$photo->basename}", $thumb);
 		echo "</span>";
 	}

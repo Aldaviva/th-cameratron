@@ -98,7 +98,7 @@ dojo.declare('Cameratron.Navigation', null, {
 		dojo.byId('selectedPhoto').src = this.selectedPhoto.getThumbURL();
 		dojo.byId('selectedPhoto').parentNode.href = this.selectedPhoto.getFullURL();
 
-		dojo.query('#metadata input[name=photo_id]').value = this.selectedPhoto.id;
+		dojo.query('#metadata input[name=photo_id]')[0].value = this.selectedPhoto.id;
 		dojo.forEach(['description', 'people', 'location', 'photographer'], function(item){
 			var newValue = ( this.selectedPhoto[item] !== null)
 					? this.selectedPhoto[item]
@@ -112,6 +112,8 @@ dojo.declare('Cameratron.Navigation', null, {
 		
 		dojo.removeClass(dojo.query('#thumbs .active')[0], "active");
 		dojo.addClass(dojo.query('#thumbs span')[this.selectedPhotoIndex], "active");
+
+		dojo.byId('original_size_badgebutton').href = this.selectedPhoto.getFullURL();
 
 		/** TODO: make the thumbnail thing scroll */
 

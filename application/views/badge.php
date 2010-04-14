@@ -9,7 +9,16 @@
 			<ul>
 				<?
 					foreach($links as $link){
-						echo "<li>".html::anchor($link['href'], $link['text'], array('title' => $link['title']))."</li>\n";
+						if($link == "hr"){
+							echo "<hr />";
+						} else {
+							$attribs = array('title' => $link['title']);
+							if(isset($link['id'])){
+								$attribs['id'] = $link['id'];
+							}
+
+							echo "<li>".html::anchor($link['href'], $link['text'], $attribs)."</li>\n";
+						}
 					}
 				?>
 			</ul>
