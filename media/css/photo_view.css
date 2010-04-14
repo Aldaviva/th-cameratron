@@ -97,15 +97,14 @@
 *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #thumbs {
-	background: #f7f8fa;
-	border-top: 1px solid #d5dbe3;
+	background: url('../img/thumbs_bg.png') repeat-x 0 6px;
 	bottom: 0;
 	clear: both;
 	height: 52px;
 	left: 0;
 	overflow: scroll;
 	overflow-y: hidden;
-	padding: 11px 46px 25px;
+	padding: 17px 46px 25px;
 	position: fixed;
 	right: 0;
 	white-space: nowrap;
@@ -116,6 +115,12 @@
 	display: inline-block;
 	min-width: 75px;
 	text-align: center;
+	padding-top: 16px;
+	margin-top: -16px;
+}
+
+#thumbs span.active {
+	background: url('../img/thumbs_currentmarker.png') no-repeat top center;
 }
 
 #thumbs a {
@@ -125,7 +130,7 @@
 	vertical-align: middle;
 }
 
-#thumbs a.active {
+#thumbs .active a {
 	border: 1px solid #9e0b0f;
 }
 
@@ -133,6 +138,6 @@
 	border: 1px solid transparent;
 }
 
-#thumbs a.active img {
+#thumbs .active img {
 	border: 1px solid white;
 }

@@ -10,15 +10,28 @@ a {
 	color: black;
 }
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-*
-*	"Big" - content div
-*
-\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+h2 {
+	margin: 15px 222px 15px 145px;
+	font: 21px "Museo Slab", "Trebuchet MS", Helvetica, Arial;
+	/*display: none;*/
+}
 
 .big {
-	margin: 15px 0 0 145px;
-	padding: 0em 2em;
+	/*margin-top: 15px;*/
+}
+
+h2, .big {
+	padding: 0 28px;
+}
+
+h2 a {
+	text-decoration: underline;
+	color: #003663;
+}
+
+h2 a:before {
+	content: '‹ ';
+	
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -78,4 +91,20 @@ header nav a:hover {
 	background: #ed1c24;
 	border-color: #9e0b0f;
 	color: white;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Search box
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#searchbox {
+	position: absolute;
+	top: 17px;
+	right: 17px;
+}
+
+#searchbox #q {
+	width: 14em;
 }

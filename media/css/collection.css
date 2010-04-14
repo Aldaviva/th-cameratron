@@ -1,9 +1,3 @@
-h2 {
-	text-align: center; /* TODO: this should be global, and left-aligned to boot */
-	margin-bottom: 0.5em;
-	font: 21px "Museo Slab", "Trebuchet MS", Helvetica, Arial;
-}
-
 #thumbs img {
 	vertical-align: middle;
 	margin: 0.5em;

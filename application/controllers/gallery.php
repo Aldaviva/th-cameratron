@@ -43,7 +43,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		$this->title = 'Photo Gallery';
 	}
 
-	function view($title_url = NULL, $photoBasename = null){
+	function view($title_url = NULL){
 		if(is_null($title_url)){
 			url::redirect('gallery');
 		}
@@ -67,7 +67,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		);
 
 		$this->content = new View('collection');
-		$this->stylesheets[] = 'gallery.css';
+		$this->stylesheets[] = 'collection.css';
 
 		$gallery = Gallery_Model::getByTitleUrl($title_url);
 

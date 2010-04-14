@@ -111,7 +111,7 @@ dojo.declare('Cameratron.Navigation', null, {
 		dojo.byId('datetime').value = this.selectedPhoto.getDateTime();
 		
 		dojo.removeClass(dojo.query('#thumbs .active')[0], "active");
-		dojo.addClass(dojo.query('#thumbs a')[this.selectedPhotoIndex], "active");
+		dojo.addClass(dojo.query('#thumbs span')[this.selectedPhotoIndex], "active");
 
 		/** TODO: make the thumbnail thing scroll */
 
@@ -162,7 +162,7 @@ dojo.declare('Cameratron.Navigation', null, {
 		var containerWidth = container.offsetWidth;
 		var scrollLeft = container.scrollLeft;
 		
-		var thumb = dojo.query('#thumbs .active')[0];
+		var thumb = dojo.query('#thumbs .active a')[0];
 		var thumbWidth = thumb.offsetWidth;
 		var thumbLeft = thumb.offsetLeft;
 		var thumbRight = thumbLeft + thumbWidth;

@@ -53,6 +53,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 			)
 		);
 
+		$this->heading = array('text' => $gallery->title, 'href' => "/gallery/view/{$gallery->title_url}");
 		$this->title = array('Photo Gallery', $gallery->title);
 
 	}
@@ -88,7 +89,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$this->content = new View('collection');
 		$this->heading = "Search results for '".html::specialchars($question)."'";
 
-		$this->stylesheets[] = 'gallery.css';
+		$this->stylesheets[] = 'collection.css';
 
 		$this->badge = new View('badge', array(
 			'links' => array(
@@ -109,15 +110,6 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 		$this->content->photos = Photo_Model::search($question);
 	}
-
-	function test(){
-		echo "<pre>";
-		print_r(array(
-			'apppath' => APPPATH,
-			'docroot' => DOCROOT,
-			'kohana'  => KOHANA
-		));
-		echo "</pre>";
 
 	function original($gallery_id, $basename){
 		if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])){
@@ -154,7 +146,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$photo = new Photo_Model($id);
 		$filename = $photo->getFilename();
 
-		//choose compression based on whether the client is on the lan or not
+		//choose compression % based on whether the client is on the lan or not
 		$client_ip = $this->input->ip_address();
 		$quality= (ip::inSubnet($client_ip, "138.16.0.0", 16)
 				|| ip::inSubnet($client_ip, "128.148.0.0", 16)
@@ -193,6 +185,8 @@ class Photo_Controller extends SiteTemplate_Controller {
 		}
 		
 		$image->render();
+
+	}
 
 
 	private function _shouldBeCached($width, $height){

@@ -21,8 +21,8 @@
 
 			$img = html::image($photo->getURL(75, 50));
 
-			$a = html::anchor('photo/view/'.$gallery_title_url.'/'.$photo->basename, $img, $attribs);
-			echo "<span>$a</span>";
+			$a = html::anchor('photo/view/'.$gallery_title_url.'/'.$photo->basename, $img);
+			echo "<span".html::attributes($attribs).">$a</span>";
 		}
 	?>
 </div>

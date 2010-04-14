@@ -10,7 +10,7 @@ function Cameratron(){
 				//return 870;
 				return window.innerWidth - 186;
 			case 'height':
-				return window.innerHeight - 210;
+				return window.innerHeight - 215;
 				//return 390;
 		}
 	}
