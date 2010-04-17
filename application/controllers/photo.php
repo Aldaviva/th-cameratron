@@ -27,11 +27,11 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$this->badge = new View('badge');
 		$this->badge->links = array(
 			"hr"
-			,array(
+			/*,array(
 				'text'	=> 'TH Home',
 				'title'	=> 'Go back to Tech House\'s home page',
 				'href'	=> 'https://techhouse.org'
-			)
+			)*/
 			,array(
 				'text'	=> 'All galleries',
 				'title'	=> 'See all of our galleries',

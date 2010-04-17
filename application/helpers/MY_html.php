@@ -3,7 +3,7 @@
 class html extends html_Core {
 
 	public static function stylesheet($style, $media = FALSE, $index = FALSE) {
-		$prefix = Kohana::config('core.css_prefix', true);
+		$prefix = Kohana::config('cameratron.css_prefix', true);
 
 		return self::link($style, 'stylesheet', 'text/css', '.css', $media, $index, $prefix);
 	}
@@ -59,7 +59,7 @@ class html extends html_Core {
 
 	public static function script($script, $index = FALSE) {
 
-		$prefix = Kohana::config('core.js_prefix', true);
+		$prefix = Kohana::config('cameratron.js_prefix', true);
 
 		$compiled = '';
 

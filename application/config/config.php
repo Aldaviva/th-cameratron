@@ -26,16 +26,6 @@ $config['index_page'] = '';
 $config['url_suffix'] = '';
 
 /**
- * Directory (relative to site_domain) in which .css files are located
- */
-$config['css_prefix'] = 'media/css';
-
-/**
- * Directory (relative to site_domain) in which .js files are located
- */
-$config['js_prefix'] = 'media/js';
-
-/**
  * Length of time of the internal cache in seconds. 0 or FALSE means no caching.
  * The internal cache stores file paths and config entries across requests and
  * can give significant speed improvements at the expense of delayed updating.

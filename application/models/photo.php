@@ -43,7 +43,7 @@ class Photo_Model extends ORM {
 	}
 
 	function getFilename(){
-		return implode('/', array('../photos1', $this->gallery_id, $this->basename));
+		return implode('/', array(Kohana::config('cameratron.galleries_dir'), $this->gallery_id, $this->basename));
 	}
 
 	function nextPhoto(){

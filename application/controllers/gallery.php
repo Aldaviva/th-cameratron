@@ -12,13 +12,13 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			array(
 				'links' => array(
 					"hr"
-					,array(
+					/*,array(
 						'text'	=> 'TH Home',
 						'title'	=> 'Go back to Tech House\'s home page',
 						'href'	=> 'https://techhouse.org'
-					)
+					)*/
 					,array(
-						'text'	=> 'Create gallery',
+						'text'	=> 'New gallery',
 						'title'	=> 'Make a new blank gallery to put photos in',
 						'href'	=> 'gallery/create'
 					)
@@ -60,8 +60,8 @@ class Gallery_Controller extends SiteTemplate_Controller {
 					'href'	=> '/gallery'
 					)
 					, array(
-					'text'	=> 'Add photos',
-					'title'	=> 'Insert new photos into this gallery',
+					'text'	=> 'Add more photos',
+					'title'	=> 'Upload new photos into this gallery',
 					'href'	=> '/upload'
 					)
 				)
