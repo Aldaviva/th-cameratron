@@ -119,9 +119,6 @@ dojo.declare('Cameratron.Navigation', null, {
 
 		dojo.byId('original_size_badgebutton').href = this.selectedPhoto.getFullURL();
 
-		/** TODO: make the thumbnail thing scroll */
-
-		/** preload fore and aft */
 		dojo.forEach([-2, -1, 1, 2], function(offset){
 			this.preloadOffset(offset);
 		}, this);

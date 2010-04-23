@@ -38,6 +38,11 @@ class Photo_Controller extends SiteTemplate_Controller {
 				'href'	=> '/gallery'
 			)
 			,array(
+				'text'	=> 'Upload',
+				'title'	=> 'Make a new blank gallery to put photos in',
+				'href'	=> 'gallery/upload/'.$gallery->id
+			)
+			,array(
 				'text'	=> 'This gallery',
 				'title'	=> 'See a grid of all the photos in this gallery',
 				'href'	=> 'gallery/view/'.$gallery_title_url
@@ -64,7 +69,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 		);
 
 		$this->heading = array('text' => $gallery->title, 'href' => "/gallery/view/{$gallery->title_url}");
-		$this->title = array('Photo Gallery', $gallery->title);
+		$this->title = array('Photography', $gallery->title);
 
 	}
 
@@ -116,6 +121,8 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$this->content->heading = "Search results: $question";
 
 		$this->content->photos = Photo_Model::search($question);
+
+		$this->title = array('Photography', 'Search: '.html::specialchars($question));
 	}
 
 	function original($gallery_id, $basename){
@@ -147,7 +154,8 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 		$this->_cancelTemplate();
 
-		$id = str_replace('.jpg','', $id);
+		//$id = str_replace('.jpg','', $id);
+		$id = pathinfo($id, PATHINFO_FILENAME);
 		list($maxWidth, $maxHeight) = explode('x', $size);
 		
 		$photo = new Photo_Model($id);
@@ -199,7 +207,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 	private function _shouldBeCached($width, $height){
 		$area = $width * $height;
 
-		return $area < 30000;
+		return $area < 75000;
 
 	}
 

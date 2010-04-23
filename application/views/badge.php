@@ -13,8 +13,10 @@
 							echo "<hr />";
 						} else {
 							$attribs = array('title' => $link['title']);
-							if(isset($link['id'])){
-								$attribs['id'] = $link['id'];
+							foreach(array('id', 'class') as $attribName){
+								if(isset($link[$attribName])){
+									$attribs[$attribName] = $link[$attribName];
+								}
 							}
 
 							echo "<li>".html::anchor($link['href'], $link['text'], $attribs)."</li>\n";

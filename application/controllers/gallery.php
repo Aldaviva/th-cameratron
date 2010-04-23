@@ -12,21 +12,17 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			array(
 				'links' => array(
 					"hr"
-					/*,array(
-						'text'	=> 'TH Home',
-						'title'	=> 'Go back to Tech House\'s home page',
-						'href'	=> 'https://techhouse.org'
-					)*/
 					,array(
-						'text'	=> 'New gallery',
-						'title'	=> 'Make a new blank gallery to put photos in',
-						'href'	=> 'gallery/create'
+						'text'	=> 'All galleries',
+						'title'	=> 'See all of our galleries',
+						'href'	=> '/gallery',
+						'class'	=> 'active'
 					)
-					/*,array(
-						'text'	=> 'Search',
-						'title'	=> 'Search for a picture',
-						'href'	=> 'photo/search'
-					)*/
+					,array(
+						'text'	=> 'Upload',
+						'title'	=> 'Make a new blank gallery to put photos in',
+						'href'	=> 'gallery/upload'
+					)
 				)
 			)
 		);
@@ -41,7 +37,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			$this->content->pagination->sql_offset
 		);
 
-		$this->title = 'Photo Gallery';
+		$this->title = 'Photography';
 	}
 
 	function view($title_url = NULL){
@@ -49,20 +45,22 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			url::redirect('gallery');
 		}
 
+		$gallery = Gallery_Model::getByTitleUrl($title_url);
+
 		$this->badge = new View(
 			'badge',
 			array(
 				'links' => array(
 					"hr"
 					,array(
-					'text'	=> 'All galleries',
-					'title'	=> 'See all of our galleries',
-					'href'	=> '/gallery'
+						'text'	=> 'All galleries',
+						'title'	=> 'See all of our galleries',
+						'href'	=> '/gallery'
 					)
-					, array(
-					'text'	=> 'Add more photos',
-					'title'	=> 'Upload new photos into this gallery',
-					'href'	=> '/upload'
+					,array(
+						'text'	=> 'Upload',
+						'title'	=> 'Make a new blank gallery to put photos in',
+						'href'	=> 'gallery/upload/'.$gallery->id
 					)
 				)
 			)
@@ -72,20 +70,59 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		$this->content->bigFirstPhoto = true;
 		$this->stylesheets[] = 'collection.css';
 
-		$gallery = Gallery_Model::getByTitleUrl($title_url);
-
 		$this->content->photos = $gallery->photos;
 		$this->heading = $gallery->title;
 
-		$this->title = array('Photo Gallery', $gallery->title);
+		$this->title = array('Photography', $gallery->title);
     }
 
-	function create(){
-		echo "It looks like you want to create a new gallery. (not yet implemented)";
-	}
+	function upload($existingGalleryID = null){
 
-	function edit(){
-		echo "It looks like you want to edit an existing gallery (not yet implemented)";
+		$this->title = array('Photography', 'Upload');
+
+		$this->content = new View('upload-interface');
+
+		$this->badge = new View(
+			'badge',
+			array(
+				'links' => array(
+					"hr"
+					,array(
+						'text'	=> 'All galleries',
+						'title'	=> 'See all of our galleries',
+						'href'	=> '/gallery'
+					)
+					,array(
+						'text'	=> 'Upload',
+						'title'	=> 'Make a new blank gallery to put photos in',
+						'href'	=> 'gallery/upload',
+						'class'	=> 'active'
+					)
+				)
+			)
+		);
+
+		$this->stylesheets[] = 'upload.css';
+
+		$this->scripts[] = 'yui2/yui/build/yahoo-dom-event/yahoo-dom-event.js';
+		$this->scripts[] = 'yui2/yui/build/element/element-min.js';
+		$this->scripts[] = 'yui2/yui/build/uploader/uploader.js'; //not -min.js because code tweaked as per http://developer.yahoo.com/yui/uploader/
+
+		$this->scripts[] = 'upload.js';
+
+
+		$this->heading = "Inserting photos into ";
+
+		if(!is_null($existingGalleryID)){
+			$gallery = new Gallery_Model($existingGalleryID);
+			if($gallery->loaded){
+				$this->heading .= $gallery->title;
+			}
+		} else {
+			$this->heading .= "a new gallery";
+		}
+
+		
 	}
 
 	function raw($title_url = null){

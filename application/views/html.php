@@ -8,6 +8,14 @@
 
 		<?= html::stylesheet($stylesheets, array(), false); ?>
 
+		<? if(isset($_GET['isDebug'])): ?>
+			<script type="text/javascript">
+				var djConfig = {
+					isDebug: true
+				}
+			</script>
+		<? endif; ?>
+
 		<?= html::script($scripts, false); ?>
 
 	</head>
