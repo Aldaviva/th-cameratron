@@ -2,9 +2,62 @@
 
 class Upload_Controller extends SiteTemplate_Controller {
 
-	function receiveFile() {
+	function index($existingGalleryID = null){
+
+		$this->title = array('Photography', 'Upload');
+
+		$this->content = new View('upload-interface');
+
+		$this->badge = new View(
+			'badge',
+			array(
+				'links' => array(
+					"hr"
+					,array(
+						'text'	=> 'All galleries',
+						'title'	=> 'See all of our galleries',
+						'href'	=> '/gallery'
+					)
+					,array(
+						'text'	=> 'Upload',
+						'title'	=> 'Make a new blank gallery to put photos in',
+						'href'	=> 'upload',
+						'class'	=> 'active'
+					)
+				)
+			)
+		);
+
+		$this->stylesheets[] = 'upload.css';
+
+		$this->scripts[] = 'yui2/yui/build/yahoo-dom-event/yahoo-dom-event.js';
+		$this->scripts[] = 'yui2/yui/build/element/element-min.js';
+		$this->scripts[] = 'yui2/yui/build/uploader/uploader.js'; //not -min.js because code tweaked as per http://developer.yahoo.com/yui/uploader/
+
+		$this->scripts[] = 'upload.js';
+
+
+		$this->heading = "Inserting photos into ";
+
+		if(!is_null($existingGalleryID)){
+			$gallery = new Gallery_Model($existingGalleryID);
+			if($gallery->loaded){
+				$this->heading .= $gallery->title;
+			}
+		} else {
+			$this->heading .= "a new gallery";
+		}
+
+
+	}
+
+	function receive() {
 
 		$this->_cancelTemplate();
+
+		echo '$_POST = ';
+		print_r($_POST);
+		echo "\n\n";
 
 		foreach ($_FILES as $fieldName => $file) {
 			$basename = basename($file['name']);

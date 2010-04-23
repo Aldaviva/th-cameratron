@@ -27,20 +27,15 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$this->badge = new View('badge');
 		$this->badge->links = array(
 			"hr"
-			/*,array(
-				'text'	=> 'TH Home',
-				'title'	=> 'Go back to Tech House\'s home page',
-				'href'	=> 'https://techhouse.org'
-			)*/
+			,array(
+				'text'	=> 'Upload',
+				'title'	=> 'Make a new blank gallery to put photos in',
+				'href'	=> 'upload/index/'.$gallery->id
+			)
 			,array(
 				'text'	=> 'All galleries',
 				'title'	=> 'See all of our galleries',
 				'href'	=> '/gallery'
-			)
-			,array(
-				'text'	=> 'Upload',
-				'title'	=> 'Make a new blank gallery to put photos in',
-				'href'	=> 'gallery/upload/'.$gallery->id
 			)
 			,array(
 				'text'	=> 'This gallery',
@@ -110,6 +105,11 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$this->badge = new View('badge', array(
 			'links' => array(
 				"hr"
+				,array(
+					'text'	=> 'Upload',
+					'title'	=> 'Make a new blank gallery to put photos in',
+					'href'	=> 'gallery/upload/'.$gallery->id
+				)
 				,array(
 					'text'	=> 'All galleries',
 					'title'	=> 'See all of our galleries',

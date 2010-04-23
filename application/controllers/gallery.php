@@ -13,16 +13,16 @@ class Gallery_Controller extends SiteTemplate_Controller {
 				'links' => array(
 					"hr"
 					,array(
+						'text'	=> 'Upload',
+						'title'	=> 'Make a new blank gallery to put photos in',
+						'href'	=> 'upload'
+					)
+					/*,array(
 						'text'	=> 'All galleries',
 						'title'	=> 'See all of our galleries',
 						'href'	=> '/gallery',
 						'class'	=> 'active'
-					)
-					,array(
-						'text'	=> 'Upload',
-						'title'	=> 'Make a new blank gallery to put photos in',
-						'href'	=> 'gallery/upload'
-					)
+					)*/
 				)
 			)
 		);
@@ -53,14 +53,14 @@ class Gallery_Controller extends SiteTemplate_Controller {
 				'links' => array(
 					"hr"
 					,array(
+						'text'	=> 'Upload',
+						'title'	=> 'Make a new blank gallery to put photos in',
+						'href'	=> 'upload/index/'.$gallery->id
+					)
+					,array(
 						'text'	=> 'All galleries',
 						'title'	=> 'See all of our galleries',
 						'href'	=> '/gallery'
-					)
-					,array(
-						'text'	=> 'Upload',
-						'title'	=> 'Make a new blank gallery to put photos in',
-						'href'	=> 'gallery/upload/'.$gallery->id
 					)
 				)
 			)
@@ -75,55 +75,6 @@ class Gallery_Controller extends SiteTemplate_Controller {
 
 		$this->title = array('Photography', $gallery->title);
     }
-
-	function upload($existingGalleryID = null){
-
-		$this->title = array('Photography', 'Upload');
-
-		$this->content = new View('upload-interface');
-
-		$this->badge = new View(
-			'badge',
-			array(
-				'links' => array(
-					"hr"
-					,array(
-						'text'	=> 'All galleries',
-						'title'	=> 'See all of our galleries',
-						'href'	=> '/gallery'
-					)
-					,array(
-						'text'	=> 'Upload',
-						'title'	=> 'Make a new blank gallery to put photos in',
-						'href'	=> 'gallery/upload',
-						'class'	=> 'active'
-					)
-				)
-			)
-		);
-
-		$this->stylesheets[] = 'upload.css';
-
-		$this->scripts[] = 'yui2/yui/build/yahoo-dom-event/yahoo-dom-event.js';
-		$this->scripts[] = 'yui2/yui/build/element/element-min.js';
-		$this->scripts[] = 'yui2/yui/build/uploader/uploader.js'; //not -min.js because code tweaked as per http://developer.yahoo.com/yui/uploader/
-
-		$this->scripts[] = 'upload.js';
-
-
-		$this->heading = "Inserting photos into ";
-
-		if(!is_null($existingGalleryID)){
-			$gallery = new Gallery_Model($existingGalleryID);
-			if($gallery->loaded){
-				$this->heading .= $gallery->title;
-			}
-		} else {
-			$this->heading .= "a new gallery";
-		}
-
-		
-	}
 
 	function raw($title_url = null){
 		header('Content-Type: application/json');

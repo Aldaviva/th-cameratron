@@ -4,7 +4,7 @@ dojo.addOnLoad(function(){
 
 dojo.declare('Cameratron.Uploader', null, {
 
-	uploadScript: '/cameratron/private/upload-handler.php',
+	//uploadScript: '/cameratron/upload/receive',
 	swfUrl: '/js/yui2/yui/build/uploader/assets/uploader.swf',
 	browseButtonImage: "/cameratron/media/img/upload_fileselect.png",
 
@@ -13,9 +13,12 @@ dojo.declare('Cameratron.Uploader', null, {
 		this.fileOrdering = []; //array of ids that can index into this.files
 		this.files = {}; //key = id, value = {name, cDate, mDate, size, id}
 
+		this.uploadScript = dojo.byId('uploadForm').action;
+
 		YAHOO.widget.Uploader.SWFURL = this.swfUrl;
 
 		this.widget = new YAHOO.widget.Uploader("uploadContainer", this.browseButtonImage);
+		
 		this.widget.addListener('contentReady', dojo.hitch(this, this.init));
 		this.widget.addListener('fileSelect', dojo.hitch(this, this.fileSelectHandler));
 		this.widget.addListener('uploadStart', dojo.hitch(this, this.uploadStartHandler));
@@ -23,7 +26,7 @@ dojo.declare('Cameratron.Uploader', null, {
 		this.widget.addListener('uploadCompleteData', dojo.hitch(this, this.uploadCompleteHandler));
 		this.widget.addListener('uploadError', dojo.hitch(this, this.uploadErrorHandler));
 
-		dojo.connect(dojo.byId("uploadSubmit"), 'onclick', this, this.submit);
+		dojo.connect(dojo.byId('uploadForm'), 'onsubmit', this, this.submit);
 	},
 
 	init: function(){
@@ -35,9 +38,15 @@ dojo.declare('Cameratron.Uploader', null, {
 		console.log('Uploader initialized');
 	},
 
-	submit: function(){
-		this.widget.uploadAll(this.uploadScript, "GET", {SID: "123456"});
-		console.log('Submitting upload job');
+	submit: function(event){
+		event.preventDefault();
+
+		var postData = {SID: "123456"};
+		dojo.mixin(postData, dojo.formToObject('uploadForm'));
+		console.info('Trying to submit form to '+this.uploadScript);
+
+		this.widget.uploadAll(this.uploadScript, "POST", postData);
+		console.info('Submitting upload job');
 	},
 
 	getFileById: function(id){

@@ -128,15 +128,19 @@ dojo.declare('Cameratron.Navigation', null, {
 	},
 	keyHandler: function(event){
 		switch(event.keyCode){
-			case dojo.keys.PAGE_UP:
 			case dojo.keys.UP_ARROW:
 			case dojo.keys.LEFT_ARROW:
 				this.prevImage();
 				break;
-			case dojo.keys.PAGE_DOWN:
 			case dojo.keys.DOWN_ARROW:
 			case dojo.keys.RIGHT_ARROW:
 				this.nextImage();
+				break;
+			case dojo.keys.PAGE_UP:
+				this.replaceImageOffset(-5);
+				break;
+			case dojo.keys.PAGE_DOWN:
+				this.replaceImageOffset(5);
 				break;
 			case dojo.keys.HOME:
 				this.firstImage();
