@@ -1,9 +1,10 @@
 <?= $badge ?>
 
 <?= form::open('/photo/search', array('id' => 'searchbox', 'method' => 'get')); ?>
-	<?=	form::input('q', (isset($_GET['q']) ? $_GET['q'] : '')); ?>
-	<input type="submit" value="Search" />
-	<? //not using the form::submit() helper here because i want to omit the Name attr, so the GET URL args don't contain the submit button's value ?>
+	<div>
+		<?=	form::input('q', (isset($_GET['q']) ? $_GET['q'] : 'Search')); ?><input type="submit" value="Search" />
+	</div>
+	
 <?= form::close(); ?>
 
 

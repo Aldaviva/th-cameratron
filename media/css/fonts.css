@@ -16,6 +16,40 @@
 	src: url("../fonts/Gros Extended.TTF") format("truetype");
 }
 
-/* TODO: Figure out what to do with button fonts. Was going to use Glypha 
-	(Adrian Frutiger) but may go with something free, Like Jos' Museo or Museo
-	Slab' */
+@font-face {
+	font-family: "Univers Condensed";
+	src: url("../fonts/UniversLTStd-Cn.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "Univers Ultra Condensed";
+	src: url("../fonts/UniversLTStd-UltraCn.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "Univers Light";
+	src: url("../fonts/UniversLTStd-Light.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "Univers";
+	font-weight: normal;
+	src: url("../fonts/UniversLTStd.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "Univers";
+	font-weight: bold;
+	src: url("../fonts/UniversLTStd-Bold.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "Univers";
+	font-weight: 900;
+	src: url("../fonts/UniversLTStd-Black.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "Univers Light Condensed";
+	src: url("../fonts/UniversLTStd-LightCn.otf") format("opentype");
+}

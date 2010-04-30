@@ -104,10 +104,12 @@ dojo.declare('Cameratron.Navigation', null, {
 			var newValue = ( this.selectedPhoto[item] !== null)
 					? this.selectedPhoto[item]
 					: '';
-			dojo.byId(item).value = '';
+			var element = dojo.byId(item);
+			element.value = '';
 			setTimeout(dojo.hitch(this, function(el, newValue){ //this is to make sure that the text area is scrolled all the way to the left
 				el.value = newValue;
-			}, dojo.byId(item), newValue), 10);
+				el.title = newValue;
+			}, element, newValue), 10);
 		}, this);
 		dojo.byId('datetime').value = this.selectedPhoto.getDateTime();
 		
@@ -117,7 +119,7 @@ dojo.declare('Cameratron.Navigation', null, {
 		activeSpan = dojo.query('#thumbs span')[this.selectedPhotoIndex];
 		dojo.addClass(activeSpan, "active");
 
-		dojo.byId('original_size_badgebutton').href = this.selectedPhoto.getFullURL();
+		dojo.byId('original-size').href = this.selectedPhoto.getFullURL();
 
 		dojo.forEach([-2, -1, 1, 2], function(offset){
 			this.preloadOffset(offset);

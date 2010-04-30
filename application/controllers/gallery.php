@@ -13,16 +13,16 @@ class Gallery_Controller extends SiteTemplate_Controller {
 				'links' => array(
 					"hr"
 					,array(
+						'text'	=> 'All Galleries',
+						'title'	=> 'See all of our galleries',
+						'href'	=> '/gallery',
+						'class'	=> 'active'
+					)
+					,array(
 						'text'	=> 'Upload',
 						'title'	=> 'Make a new blank gallery to put photos in',
 						'href'	=> 'upload'
 					)
-					/*,array(
-						'text'	=> 'All galleries',
-						'title'	=> 'See all of our galleries',
-						'href'	=> '/gallery',
-						'class'	=> 'active'
-					)*/
 				)
 			)
 		);
@@ -53,14 +53,14 @@ class Gallery_Controller extends SiteTemplate_Controller {
 				'links' => array(
 					"hr"
 					,array(
+						'text'	=> 'All Galleries',
+						'title'	=> 'See all of our galleries',
+						'href'	=> '/gallery'
+					)
+					,array(
 						'text'	=> 'Upload',
 						'title'	=> 'Make a new blank gallery to put photos in',
 						'href'	=> 'upload/index/'.$gallery->id
-					)
-					,array(
-						'text'	=> 'All galleries',
-						'title'	=> 'See all of our galleries',
-						'href'	=> '/gallery'
 					)
 				)
 			)

@@ -8,7 +8,7 @@ body {
 
 a {
 	text-decoration: none;
-	color: black;
+	color: #003663;
 }
 
 h2 {
@@ -18,8 +18,7 @@ h2 {
 	padding-left: 28px;
 	min-width: 312px;
 	height: 24px;
-
-	font: 21px "Museo Slab", "Trebuchet MS", Helvetica, Arial;
+	font: 21px "Univers Light" /*"Museo Slab", "Trebuchet MS", Helvetica, Arial*/;
 }
 
 .big {
@@ -28,10 +27,9 @@ h2 {
 	padding: 0 28px;
 }
 
-h2 a {
-	text-decoration: underline;
+/*h2 a {
 	color: #003663;
-}
+}*/
 
 h2 a:before {
 	content: '‹ ';
@@ -65,14 +63,23 @@ header div {
 	background: #c8cacf url(../img/badge_bg_repeat.png) repeat-y;
 }
 
-header a#badge-title {
-	background: url(../img/badge_title.png) no-repeat 50% 18px;
+header #badge-title {
+	background: url(../img/badge_title.png) no-repeat;
+	background-position: 50% 18px;
 	display: block;
 	height: 93px;
 	margin: 0 auto;
 	width: 115px;
 	padding: 18px 0 0;
 	/*order-bottom: 1px solid #e4e5e7;*/
+}
+
+header #badge-title:hover {
+	opacity: 0.9;
+}
+
+header #badge-title:active {
+	opacity: 1;
 }
 
 header h1 {
@@ -84,32 +91,70 @@ header a {
 }
 
 header nav ul {
-	padding: 0 5px 21px;
-	font: 8px/16px "Gros Extended";
+	padding: 0 5px 14px;
+	/*font: 8px/16px "Gros Extended";*/
+	font: 13px/21px "Univers Light";
 	list-style: none;
+}
+
+header nav a {
+	background-repeat: no-repeat;
+	background-position: 8px 6px;
+	padding-left: 23px;
+	color: white;
+	border-style: solid;
 }
 
 header nav a, header nav a:visited {
 	text-decoration: none;
-	padding: 0 12px;
 	border-width: 1px 0;
-	border-style: solid;
 	border-color: transparent;
-	color: white;
 }
 
 header nav a:hover {
-	background: #ed1c24;
+	background-color: #ed1c24;
 	border-color: #9e0b0f;
-	color: white;
+}
+
+header nav a.active {
+	font-family: "Univers";
 }
 
 header hr {
 	height: 1px;
 	border: none;
-	color: #e4e5e7;
-	background-color: #e4e5e7;
-	margin: 14px 4px;
+	color: white;
+	background-color: white;
+	opacity: .5;
+	margin: 14px 6px;
+}
+
+header #upload {
+	background-image: url('../img/badge_icon-upload.png');
+}
+
+header #all-galleries {
+	background-image: url('../img/badge_icon-all_galleries.png');
+}
+
+header #this-gallery {
+	background-image: url('../img/badge_icon-this_gallery.png');
+}
+
+header #edit-metadata {
+	background-image: url('../img/badge_icon-edit_metadata.png');
+}
+
+header #original-size {
+	background-image: url('../img/badge_icon-original_size.png');
+}
+
+header #set-key-photo {
+	background-image: url('../img/badge_icon-key_photo.png');
+}
+
+header #permalink {
+	background-image: url('../img/badge_icon-permalink.png');
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -120,18 +165,46 @@ header hr {
 
 #searchbox {
 	position: absolute;
-	top: 17px;
-	right: 0;
-	padding-right: 17px;
-	left: 0;
-	text-align: right;
-	min-width: 770px;
+	top: 11px;
+	right: 17px;
+	/*padding-right: 17px;*/
+	/*left: 0;*/
+	/*text-align: right;*/
+	/*min-width: 770px;*/
+	height: 30px;
+	
+	background: url("../img/search_bg_right.png") no-repeat right;
+	padding-right: 5px;
+}
+
+#searchbox div {
+	background: url("../img/search_bg_left.png") no-repeat;
+	padding: 4px 0 4px 4px;
+	height: 22px;
 }
 
 #searchbox #q {
 	width: 14em;
+	height: inherit;
+	border: none;
+	padding: 0 6px;
+	background: url('../img/search_divider.png') no-repeat right center;
+}
+
+#searchbox #q.empty {
+	font-style: italic;
+	color: #8c8c8c;
 }
 
 #searchbox input[type=submit] {
-	padding: 0 0.5em;
+	width: 26px;
+	height: 22px;
+	background: url('../img/search_button.png') no-repeat 5px 3px;
+	text-indent: -9999px;
+	border: none;
+	cursor: pointer;
+}
+
+#searchbox input[type=submit]:active {
+	background-position: 5px 4px;
 }

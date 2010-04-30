@@ -7,6 +7,7 @@ dojo.declare('Cameratron.Uploader', null, {
 	//uploadScript: '/cameratron/upload/receive',
 	swfUrl: '/js/yui2/yui/build/uploader/assets/uploader.swf',
 	browseButtonImage: "/cameratron/media/img/upload_fileselect.png",
+	ticketUrl: '/cameratron/private/getTicket.php',
 
 	constructor: function(){
 
@@ -41,12 +42,28 @@ dojo.declare('Cameratron.Uploader', null, {
 	submit: function(event){
 		event.preventDefault();
 
-		var postData = {SID: "123456"};
+		var postData = {};
+
+		//request ticket
+		dojo.xhrGet({
+			url: this.ticketUrl,
+			load: function(data){
+				postData.SID = data;
+			},
+			error: function(error){
+				console.error('Error requesting upload ticket: '+error);
+			},
+			sync: true,
+			preventCache: true
+		});
+
+		console.log('got sid: '+postData.SID);
+
 		dojo.mixin(postData, dojo.formToObject('uploadForm'));
 		console.info('Trying to submit form to '+this.uploadScript);
 
 		this.widget.uploadAll(this.uploadScript, "POST", postData);
-		console.info('Submitting upload job');
+		console.info('Submitted upload job');
 	},
 
 	getFileById: function(id){
@@ -90,13 +107,8 @@ dojo.declare('Cameratron.Uploader', null, {
 
 	uploadCompleteHandler: function(event){
 		var file = this.getFileById(event.id);
-
 		
-		/*if(typeof event.data == 'undefined'){
-			console.info('Finished upload of '+file.name);
-		} else {*/
-			console.info('Finished upload of '+file.name+', and server returned '+event.data);
-		//}
+		console.info('Finished upload of '+file.name+', and server returned '+event.data);
 	},
 
 	uploadErrorHandler: function(event){

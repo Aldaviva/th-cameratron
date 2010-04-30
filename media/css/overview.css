@@ -4,6 +4,7 @@ body {
 
 a.gallery_link {
 	display: block;
+	color: black;
 }
 
 .polaroid {
@@ -15,6 +16,7 @@ a.gallery_link {
 	background: url(../img/polaroid_bg.png) no-repeat;
 	position: relative;
 	overflow: hidden;
+	text-align: center;
 }
 
 .polaroid .poster_photo {
@@ -44,8 +46,7 @@ a.gallery_link {
 }
 
 .polaroid h3 {
-	
-	font: 16px "Museo Slab", "Trebuchet MS", Helvetica, Arial;
+	font: 16px "Univers Condensed";
 	max-height: 19px;
 }
 
@@ -55,17 +56,14 @@ a.gallery_link {
 	color: #535353;
 }
 
-/*a:hover .polaroid {
-	opacity: 1 !important;
+/*.polaroid:hover {
+	margin-top: -1px;
+	padding-bottom: 7px;
 }*/
 
 a:hover .polaroid h3, a:hover .polaroid .date {
 	color: #004a80 !important;
 }
-
-/*a:visited .polaroid {
-	opacity: 0.75;
-}*/
 
 a:visited .polaroid h3, a:visited .polaroid .date {
 	color: #662d91;
@@ -78,12 +76,12 @@ a:visited .polaroid h3, a:visited .polaroid .date {
 }
 
 .pagination {
-	/*border: 1px solid hsl(0, 0%, 50%);*/
+	font: 14px "Univers";
 	display: inline-block;
 }
 
 .pagination strong {
-	font-weight: bold;
+	font-weight: 900;
 }
 
 .pagination a {

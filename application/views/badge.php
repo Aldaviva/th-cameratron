@@ -13,12 +13,17 @@
 							echo "<hr />";
 						} else {
 							$attribs = array('title' => $link['title']);
-							foreach(array('id', 'class') as $attribName){
-								if(isset($link[$attribName])){
-									$attribs[$attribName] = $link[$attribName];
-								}
+
+							if(isset($link['id'])){
+								$attribs['id'] = $link['id'];
+							} else {
+								$attribs['id'] = URL::title($link['text']);
 							}
 
+							if(isset($link['class'])){
+								$attribs['class'] = $link['class'];
+							}
+							
 							echo "<li>".html::anchor($link['href'], $link['text'], $attribs)."</li>\n";
 						}
 					}

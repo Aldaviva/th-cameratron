@@ -28,38 +28,43 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$this->badge->links = array(
 			"hr"
 			,array(
+				'text'	=> 'All Galleries',
+				'title'	=> 'See all of our galleries',
+				'href'	=> '/gallery'
+			)
+			,array(
 				'text'	=> 'Upload',
 				'title'	=> 'Make a new blank gallery to put photos in',
 				'href'	=> 'upload/index/'.$gallery->id
 			)
 			,array(
-				'text'	=> 'All galleries',
-				'title'	=> 'See all of our galleries',
-				'href'	=> '/gallery'
-			)
-			,array(
-				'text'	=> 'This gallery',
+				'text'	=> 'This Gallery',
 				'title'	=> 'See a grid of all the photos in this gallery',
 				'href'	=> 'gallery/view/'.$gallery_title_url
 			)
 			,"hr"
 			,array(
-				'text'	=> 'Edit metadata',
-				'title'	=> 'Change this photo\'s captions',
-				'href'	=> '#', //gets listened to by JS
-				'id'	=> 'edit_metadata_badgebutton'
-			)
-			,array(
 				'text'	=> 'Original size',
 				'title'	=> 'View this photo at 1:1 zoom',
 				'href'	=> $this->content->selectedPhoto->getURL(),
-				'id'	=> 'original_size_badgebutton'
+				//'id'	=> 'original_size_badgebutton'
 			)
 			,array(
-				'text'	=> 'Set as poster',
+				'text'	=> 'Permalink',
+				'title'	=> 'Link to this specific photo',
+				'href'	=> 'photo/view/'.$gallery_title_url.'/'.$this->content->selectedPhoto->basename
+			)
+			,array(
+				'text'	=> 'Edit metadata',
+				'title'	=> 'Change this photo\'s captions',
+				'href'	=> '#', //gets listened to by JS
+				//'id'	=> 'edit_metadata_badgebutton'
+			)
+			,array(
+				'text'	=> 'Set key photo',
 				'title'	=> 'This gallery will be listed using this picture as its thumbnail',
 				'href'	=> "gallery/setPoster/{$gallery->id}/{$this->content->selectedPhoto->id}",
-				'id'	=> 'set_poster_badgebutton'
+				//'id'	=> 'set_poster_badgebutton'
 			)
 		);
 
@@ -106,14 +111,14 @@ class Photo_Controller extends SiteTemplate_Controller {
 			'links' => array(
 				"hr"
 				,array(
-					'text'	=> 'Upload',
-					'title'	=> 'Make a new blank gallery to put photos in',
-					'href'	=> 'gallery/upload/'.$gallery->id
-				)
-				,array(
-					'text'	=> 'All galleries',
+					'text'	=> 'All Galleries',
 					'title'	=> 'See all of our galleries',
 					'href'	=> '/gallery'
+				)
+				,array(
+					'text'	=> 'Upload',
+					'title'	=> 'Make a new blank gallery to put photos in',
+					'href'	=> 'gallery/upload/'
 				)
 			)
 		));
