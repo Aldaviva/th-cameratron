@@ -8,7 +8,8 @@ body {
 
 a {
 	text-decoration: none;
-	color: #003663;
+	/*color: #003663;*/
+	color: #9e0b0f;
 }
 
 h2 {
@@ -23,17 +24,18 @@ h2 {
 
 .big {
 	clear: left;
-	margin: 54px 0 0 145px;
+	margin: 64px 0 0 145px;
 	padding: 0 28px;
 }
 
-/*h2 a {
-	color: #003663;
-}*/
+h2 a {
+	color: inherit;
+}
 
 h2 a:before {
 	content: '‹ ';
-	
+	font-family: "Univers";
+	font-weight: bold;
 }
 
 .ellipses {
@@ -71,7 +73,6 @@ header #badge-title {
 	margin: 0 auto;
 	width: 115px;
 	padding: 18px 0 0;
-	/*order-bottom: 1px solid #e4e5e7;*/
 }
 
 header #badge-title:hover {
@@ -92,7 +93,6 @@ header a {
 
 header nav ul {
 	padding: 0 5px 14px;
-	/*font: 8px/16px "Gros Extended";*/
 	font: 13px/21px "Univers Light";
 	list-style: none;
 }
@@ -102,22 +102,36 @@ header nav a {
 	background-position: 8px 6px;
 	padding-left: 23px;
 	color: white;
-	border-style: solid;
+	
 }
 
-header nav a, header nav a:visited {
+/*header nav a, header nav a:visited {
 	text-decoration: none;
-	border-width: 1px 0;
-	border-color: transparent;
+}*/
+
+header nav li {
+	border: 1px solid transparent;
 }
 
-header nav a:hover {
-	background-color: #ed1c24;
-	border-color: #9e0b0f;
+header nav li:hover {
+	/*background: -webkit-gradient(linear, left top, left bottom, from(#a90c11), to(#940a0d));*/
+	background: #9e0b0f url('../img/badge_button_active_bg.png') repeat-x;
+	/*border-top-color: #910a0e;
+	border-bottom-color: #5b0708;*/
+	border-color: #910a0e transparent #5b0708;
 }
 
-header nav a.active {
-	font-family: "Univers";
+header nav .active {
+	/*border-color: #8e929a transparent;*/
+	background-color: #abb0ba;
+}
+
+header nav .active a {
+
+}
+
+header nav a:active {
+	text-shadow: 0px 0px 3px white;
 }
 
 header hr {
@@ -165,7 +179,7 @@ header #permalink {
 
 #searchbox {
 	position: absolute;
-	top: 11px;
+	top: 15px;
 	right: 17px;
 	/*padding-right: 17px;*/
 	/*left: 0;*/

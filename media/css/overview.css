@@ -7,6 +7,13 @@ a.gallery_link {
 	color: black;
 }
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Polaroids
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
 .polaroid {
 	width: 157px;
 	height: 168px;
@@ -62,12 +69,20 @@ a.gallery_link {
 }*/
 
 a:hover .polaroid h3, a:hover .polaroid .date {
-	color: #004a80 !important;
+	/*color: #004a80 !important;*/
+	color: #9e0b0f !important;
 }
 
 a:visited .polaroid h3, a:visited .polaroid .date {
 	color: #662d91;
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Pagination
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 .pagination-container {
 	padding-top: 30px;
@@ -106,4 +121,11 @@ a:visited .polaroid h3, a:visited .polaroid .date {
 
 .pagination a:hover {
 	background-color: hsl(0, 0%, 90%);
+}
+
+.pagination em {
+	font-weight: 900;
+	font-size: 17px;
+	line-height: 1px;
+	font-style: normal;
 }

@@ -26,22 +26,34 @@ dojo.declare('Cameratron.SearchBox', null, {
 
 			dojo.connect(this.inputElement, 'focus', this, this.focusHandler);
 			dojo.connect(this.inputElement, 'blur', this, this.unFocusHandler);
+			dojo.connect(this.inputElement.form, 'submit', this, this.submitHandler);
 
 			this.unFocusHandler();
 		});
 	},
 
+	inputIsEmpty: function(){
+		return this.inputElement.value == '' || this.inputElement.value == "Search";
+	},
+
 	focusHandler: function(event){
-		if(this.inputElement.value == 'Search'){
+		if(this.inputIsEmpty()){
 			this.inputElement.value = '';
 			dojo.removeClass(this.inputElement, 'empty');
 		}
 	},
 
 	unFocusHandler: function(event){
-		if(this.inputElement.value == '' || this.inputElement.value == "Search"){
+		if(this.inputIsEmpty()){
 			this.inputElement.value = 'Search';
 			dojo.addClass(this.inputElement, 'empty');
+		}
+	},
+
+	submitHandler: function(event){
+		if(this.inputIsEmpty()){
+			event.preventDefault();
+			this.inputElement.focus();
 		}
 	}
 

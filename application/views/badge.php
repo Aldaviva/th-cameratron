@@ -12,19 +12,20 @@
 						if($link == "hr"){
 							echo "<hr />";
 						} else {
-							$attribs = array('title' => $link['title']);
+							$linkAttribs = array('title' => $link['title']);
+							$listItemAttribs = array();
 
 							if(isset($link['id'])){
-								$attribs['id'] = $link['id'];
+								$linkAttribs['id'] = $link['id'];
 							} else {
-								$attribs['id'] = URL::title($link['text']);
+								$linkAttribs['id'] = URL::title($link['text']);
 							}
 
 							if(isset($link['class'])){
-								$attribs['class'] = $link['class'];
+								$listItemAttribs['class'] = $link['class'];
 							}
 							
-							echo "<li>".html::anchor($link['href'], $link['text'], $attribs)."</li>\n";
+							echo "<li".html::attributes($listItemAttribs).">".html::anchor($link['href'], $link['text'], $linkAttribs)."</li>\n";
 						}
 					}
 				?>

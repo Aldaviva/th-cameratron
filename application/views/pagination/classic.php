@@ -13,7 +13,7 @@
 	<?php endif*/ ?>
 
 	<?php if ($previous_page): ?>
-		<a href="<?php echo str_replace('{page}', $previous_page, $url) ?>">&lsaquo;</a>
+		<a href="<?php echo str_replace('{page}', $previous_page, $url) ?>"><em>&lsaquo;</em></a>
 	<?php endif ?>
 
 
@@ -29,7 +29,7 @@
 
 
 	<?php if ($next_page): ?>
-		<a href="<?php echo str_replace('{page}', $next_page, $url) ?>">next &rsaquo;</a>
+		<a href="<?php echo str_replace('{page}', $next_page, $url) ?>"><em>&rsaquo;</em></a>
 	<?php endif ?>
 
 	<?php /*if ($last_page): ?>
