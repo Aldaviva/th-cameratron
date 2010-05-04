@@ -38,6 +38,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		);
 
 		$this->title = 'Photography';
+		$this->heading = 'All Galleries';
 	}
 
 	function view($title_url = NULL){

@@ -2,7 +2,7 @@
 
 <?= form::open('/photo/search', array('id' => 'searchbox', 'method' => 'get')); ?>
 	<div>
-		<?=	form::input('q', (isset($_GET['q']) ? $_GET['q'] : 'Search')); ?><input type="submit" value="Search" />
+		<?=	form::input('q', (isset($_GET['q']) ? $_GET['q'] : 'Search')); ?><button type="submit">Search</button>
 	</div>
 	
 <?= form::close(); ?>

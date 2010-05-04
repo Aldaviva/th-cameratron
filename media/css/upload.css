@@ -13,14 +13,72 @@
 }
 
 #upload #filelist {
-	margin-top: 27px;
-	margin-left: 2px;
-	font: 14px/22px "Delicious", "D";
+	margin: 27px 2px 0;
+	/*margin-top: 27px;
+	margin-left: 2px;*/
+	font: 15px/22px "Delicious", "D";
 	max-height: 208px;
 	overflow-y: auto;
 }
 
+#upload #filelist .remove {
+	float: right;
+	margin-right: 1px;
+	line-height: 21px;
+}
 
+#upload #submit {
+	background: url('../img/upload_submit.png') no-repeat 0 0;
+	width: 157px;
+	height: 40px;
+	text-indent: -9999px;
+	border: none;
+	cursor: pointer;
+}
+
+#upload #submit:hover {
+	background-image: url('../img/upload_submit_anim.png');
+}
+
+#upload #submit:active {
+	background-image: url('../img/upload_submit_clicked.png');
+	background-position: 0 1px;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Progress bar
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#upload .progress {
+	width: 80px;
+	height: 1px;
+	background-color: #bebebe;
+	position: relative;
+	float: right;
+	margin-top: 11px;
+}
+
+#upload .progress div {
+	background-color: #9e0b0f;
+	height: 5px;
+	position: relative;
+	top: -2px;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Status area
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#upload .status {
+	margin-top: 3px;
+	padding-top: 16px;
+	border-top: 1px solid #bebebe;
+	text-align: right;
+}
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -55,8 +113,4 @@
 #upload .leftcolumn label {
 	margin-left: -3px;
 	margin-right: -8px;
-}
-
-#upload .status {
-	clear: both;
 }

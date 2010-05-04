@@ -60,3 +60,6 @@ input,textarea,select{
 legend{
 	color: #000;
 }
+button::-moz-focus-inner { /*remove FF dotted lines*/
+	border: 0;
+}

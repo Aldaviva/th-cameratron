@@ -1,3 +1,7 @@
+dojo.require('dojo.date.locale');
+dojo.require('dojox.fx.scroll')
+dojo.require('dojox.image');
+
 dojo.addOnLoad(function(){
 	dojo.attr('selectedPhoto', 'src', '');
 	dojo.style('submit', 'display', 'none');
@@ -91,7 +95,6 @@ dojo.declare('Cameratron.Navigation', null, {
 			return;
 		}
 
-		dojo.require('dojo.date.locale');
 		this.selectedPhotoIndex = newPhotoIndex;
 
 		this.selectedPhoto = this.galleryData.photos[this.selectedPhotoIndex];
@@ -165,7 +168,6 @@ dojo.declare('Cameratron.Navigation', null, {
 		}
 	},
 	scrollThumbs: function(skipAnimation){
-		dojo.require('dojox.fx.scroll')
 
 		var container = dojo.byId('thumbs');
 		var containerWidth = container.offsetWidth;
@@ -233,8 +235,6 @@ dojo.declare('Cameratron.Photo', null, {
 		return this.grandparent.base_url + 'photo/original/' + this.gallery_id + '/' + this.basename;
 	},
 	preload: function(){
-		dojo.require('dojox.image');
-
 		dojox.image.preload([this.getThumbURL()]);
 	},
 	getDateTime: function(){

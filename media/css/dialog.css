@@ -2,13 +2,13 @@
 	width: 504px;
 	/*height: 390px;*/
 	position: relative;
-	margin: 0 auto;
+	margin: 67px auto 17px;
 }
 
 .dialog form {
 	margin: 0 3px;
 	background-color: white;
-	height: inherit;
+	/*height: inherit;*/
 	padding: 16px 23px;
 }
 
@@ -28,10 +28,6 @@
 *	Fields
 *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-.dialog .fields > div > div {
-
-}
 
 .dialog label {
 	display: block;
@@ -65,38 +61,37 @@
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-.dialog .left {
+.dialog .left, .dialog .right, .dialog .bottomleft, .dialog .bottomright {
 	position: absolute;
+	width: 3px;
+	background-image: url('../img/dialog-shadow.png');
+	background-repeat: no-repeat;
+} 
+
+.dialog .left {
 	top: 0;
 	left: 0;
 	bottom: 8px;
-	width: 3px;
-	background: url('../img/dialog-shadow_left.png') no-repeat;
+	background-position: top left;
 }
 
 .dialog .right {
-	position: absolute;
 	top: 0;
 	right: 0;
 	bottom: 8px;
-	width: 3px;
-	background: url('../img/dialog-shadow_right.png') no-repeat;
+	background-position: top right;
 }
 
 .dialog .bottomleft {
-	position: absolute;
 	left: 0;
 	bottom: 0;
-	width: 3px;
 	height: 8px;
-	background: url('../img/dialog-shadow_bottomleft.png') no-repeat;
+	background-position: bottom left;
 }
 
 .dialog .bottomright {
-	position: absolute;
 	right: 0;
 	bottom: 0;
-	width: 3px;
 	height: 8px;
-	background: url('../img/dialog-shadow_bottomright.png') no-repeat;
+	background-position: bottom right;
 }
