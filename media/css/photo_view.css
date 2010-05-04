@@ -4,25 +4,6 @@ body {
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
 *
-*	Big
-*
-\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-.big{
-	/*position: absolute;*/
-	/*right: 50%;*/
-	/*z-index: 7;*/
-	/*padding: 0 0 95px;*/
-}
-
-.big div {
-	/*margin-left: 145px;
-	position: relative;
-	right: -50%;
-	text-align: center;*/
-}
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-*
 *	Selected Photo
 *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -49,14 +30,14 @@ body {
 }
 
 #metadata input[type='text'] {
-	font: 12px "Delicious";
+	font: 12px "Delicious", "D";
 	position: absolute;
 	border: none;
 	background: transparent;
 }
 
 #metadata input#description {
-	font: 20px "Delicious";
+	font-size: 20px;
 	top: 12px;
 }
 

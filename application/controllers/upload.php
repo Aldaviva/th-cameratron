@@ -31,6 +31,7 @@ class Upload_Controller extends SiteTemplate_Controller {
 		);
 
 		$this->stylesheets[] = 'upload.css';
+		$this->stylesheets[] = 'dialog.css';
 
 		$this->scripts[] = 'yui2/yui/build/yahoo-dom-event/yahoo-dom-event.js';
 		$this->scripts[] = 'yui2/yui/build/element/element-min.js';
@@ -38,16 +39,13 @@ class Upload_Controller extends SiteTemplate_Controller {
 
 		$this->scripts[] = 'upload.js';
 
-
-		$this->heading = "Inserting photos into ";
+		$this->heading = "Upload";
 
 		if(!is_null($existingGalleryID)){
 			$gallery = new Gallery_Model($existingGalleryID);
 			if($gallery->loaded){
-				$this->heading .= $gallery->title;
 			}
 		} else {
-			$this->heading .= "a new gallery";
 		}
 
 	}

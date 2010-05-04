@@ -1,0 +1,102 @@
+.dialog {
+	width: 504px;
+	/*height: 390px;*/
+	position: relative;
+	margin: 0 auto;
+}
+
+.dialog form {
+	margin: 0 3px;
+	background-color: white;
+	height: inherit;
+	padding: 16px 23px;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Heading
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+.dialog h3 {
+	font: 26px "Univers LT Std 45 Light", "U Light";
+	margin-bottom: 16px;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Fields
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+.dialog .fields > div > div {
+
+}
+
+.dialog label {
+	display: block;
+	background-color: #f0f0f0;
+	border-top: 1px solid #bebebe;
+	font: 12px "Univers LT Std 59 UltraCn", "U Ultra Condensed";
+	color: #3e3e3e;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	padding: 2px 0 3px 3px;
+}
+
+.dialog label[for]{
+	cursor: text;
+}
+
+.dialog input[type=text] {
+	border: none;
+	font: 22px "Delicious", "D";
+	padding: 8px 0 33px;
+	width: 100%;
+	cursor: text;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Shadows
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+.dialog .left {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 8px;
+	width: 3px;
+	background: url('../img/dialog-shadow_left.png') no-repeat;
+}
+
+.dialog .right {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 8px;
+	width: 3px;
+	background: url('../img/dialog-shadow_right.png') no-repeat;
+}
+
+.dialog .bottomleft {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 3px;
+	height: 8px;
+	background: url('../img/dialog-shadow_bottomleft.png') no-repeat;
+}
+
+.dialog .bottomright {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 3px;
+	height: 8px;
+	background: url('../img/dialog-shadow_bottomright.png') no-repeat;
+}

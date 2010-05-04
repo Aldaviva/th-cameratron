@@ -53,13 +53,13 @@ a.gallery_link {
 }
 
 .polaroid h3 {
-	font: 16px "Univers Condensed";
+	font: 16px "Univers LT Std 57 Condensed", "U Condensed";
 	max-height: 19px;
 }
 
 .polaroid .date {
 	top: 10px;
-	font: 13px "Delicious", "Trebuchet MS", Helvetica, Arial;
+	font: 13px "Delicious", "D";
 	color: #535353;
 }
 
@@ -91,7 +91,7 @@ a:visited .polaroid h3, a:visited .polaroid .date {
 }
 
 .pagination {
-	font: 14px "Univers";
+	font: 14px "Univers LT Std 55", "U";
 	display: inline-block;
 }
 

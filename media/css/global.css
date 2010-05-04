@@ -19,7 +19,7 @@ h2 {
 	padding-left: 28px;
 	min-width: 312px;
 	height: 24px;
-	font: 21px "Univers Light" /*"Museo Slab", "Trebuchet MS", Helvetica, Arial*/;
+	font: 21px "Univers LT Std 45 Light", "U Light";
 }
 
 .big {
@@ -34,7 +34,7 @@ h2 a {
 
 h2 a:before {
 	content: '‹ ';
-	font-family: "Univers";
+	font-family: "Univers LT Std 55", "U";
 	font-weight: bold;
 }
 
@@ -43,6 +43,11 @@ h2 a:before {
 	overflow: hidden;
 	-o-text-overflow: ellipsis;
 	text-overflow: ellipsis;
+}
+
+abbr {
+	text-transform: lowercase;
+	font-variant: small-caps;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -93,7 +98,7 @@ header a {
 
 header nav ul {
 	padding: 0 5px 14px;
-	font: 13px/21px "Univers Light";
+	font: 13px/21px "Univers LT Std 45 Light", "U Light";
 	list-style: none;
 }
 

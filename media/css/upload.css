@@ -1,0 +1,62 @@
+#upload #totals {
+	font-style: italic;
+	color: #818181;
+	font-size: 12px;
+	float: left;
+	margin-top: 7px;
+}
+
+#upload #addButton {
+	font-size: 12px;
+	float: right;
+	margin-top: 7px;
+}
+
+#upload #filelist {
+	margin-top: 27px;
+	margin-left: 2px;
+	font: 14px/22px "Delicious", "D";
+	max-height: 208px;
+	overflow-y: auto;
+}
+
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Layout
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#upload .leftcolumn, #upload .rightcolumn {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 50%;
+	padding: 0 3px;
+}
+
+#upload .leftcolumn {
+	float: left;
+	padding-right: 11px;
+	border-right: 1px solid #acacad;
+}
+
+#upload .rightcolumn {
+	float: right;
+	padding-left: 11px;
+}
+
+#upload .rightcolumn label {
+	margin-left: -8px;
+	margin-right: -3px;
+}
+
+#upload .leftcolumn label {
+	margin-left: -3px;
+	margin-right: -8px;
+}
+
+#upload .status {
+	clear: both;
+}

@@ -6,50 +6,44 @@
 
 /* A font by Jos Buivenga (exljbris) -> www.exljbris.com */
 @font-face {
-	font-family: "Delicious";
+	font-family: "D";
 	src: url("../fonts/Delicious Roman.otf") format("opentype");
 }
 
-/* http://web.archive.org/web/20080205090247/http://pixelfonts.style-force.net/ */
 @font-face {
-	font-family: "Gros Extended";
-	src: url("../fonts/Gros Extended.TTF") format("truetype");
-}
-
-@font-face {
-	font-family: "Univers Condensed";
+	font-family: "U Condensed";
 	src: url("../fonts/UniversLTStd-Cn.otf") format("opentype");
 }
 
 @font-face {
-	font-family: "Univers Ultra Condensed";
+	font-family: "U Ultra Condensed";
 	src: url("../fonts/UniversLTStd-UltraCn.otf") format("opentype");
 }
 
 @font-face {
-	font-family: "Univers Light";
+	font-family: "U Light";
 	src: url("../fonts/UniversLTStd-Light.otf") format("opentype");
 }
 
 @font-face {
-	font-family: "Univers";
+	font-family: "U";
 	font-weight: normal;
 	src: url("../fonts/UniversLTStd.otf") format("opentype");
 }
 
 @font-face {
-	font-family: "Univers";
+	font-family: "U";
 	font-weight: bold;
 	src: url("../fonts/UniversLTStd-Bold.otf") format("opentype");
 }
 
 @font-face {
-	font-family: "Univers";
+	font-family: "U";
 	font-weight: 900;
 	src: url("../fonts/UniversLTStd-Black.otf") format("opentype");
 }
 
 @font-face {
-	font-family: "Univers Light Condensed";
+	font-family: "U Light Condensed";
 	src: url("../fonts/UniversLTStd-LightCn.otf") format("opentype");
 }
