@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg id="svgroot" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1" onload="initialize(evt)">
+	<g>
+		<defs>
+			<clipPath id="myClipPath">
+				<polygon id="nw" points="50,50 -25,50 50,-25" />
+				<polygon id="sw" points="50,50 50,125 -25,50" />
+				<polygon id="se" points="50,50 125,50 50,125" />
+				<polygon id="ne" points="50,50 50,-25 125,50" />
+			</clipPath>
+		</defs>
+
+		<g>
+			<circle id="mycircle" cx="50%" cy="50%" r="46%" />
+			<circle id="outline"  cx="50%" cy="50%" r="46%" />
+		</g>
+
+	</g>
+
+	<style type="text/css">
+		#mycircle {
+			fill: #9e0b0f;
+			clip-path: url(#myClipPath);
+		}
+
+		#outline {
+			stroke: #000000;
+			stroke-width: 4%;
+			fill: none;
+		}
+	</style>
+
+
+	<script type="application/ecmascript">
+
+	<![CDATA[
+
+		//var SVGDocument = document;
+
+		function initialize(LoadEvent){
+			//alert('initializing svg');
+			SVGDocument = LoadEvent.target.ownerDocument
+		}
+
+		SVGPoint.create = function(x, y){
+			var newPoint = SVGDocument.documentElement.createSVGPoint();
+			newPoint.x = x;
+			newPoint.y = y;
+			return newPoint;
+		}
+
+		//SVGPoint.prototype.clone = function(){
+		clone = function(oldPoint){
+			var newPoint = SVGDocument.documentElement.createSVGPoint();
+			newPoint.x = oldPoint.x;
+			newPoint.y = oldPoint.y;
+			return newPoint;
+		}
+
+		function replaceLast(pointList, newPoint){
+			pointList.removeItem(pointList.numberOfItems - 1);
+			pointList.appendItem(newPoint);
+		}
+
+		//setPercent(0.45);
+
+		function setPercent(percent){
+
+			//alert('setting to '+percent);
+		
+			var radius = 75;
+		
+			var nw = SVGDocument.getElementById('nw');
+			var sw = SVGDocument.getElementById('sw');
+			var se = SVGDocument.getElementById('se');
+			var ne = SVGDocument.getElementById('ne');
+
+
+			var newPoint = SVGDocument.documentElement.createSVGPoint();
+			var angle, xOffset, yOffset;
+
+			if(percent >= 1){
+				replaceLast(ne.points, SVGPoint.create(125, 50));
+				replaceLast(se.points, SVGPoint.create(50, 125));
+				replaceLast(sw.points, SVGPoint.create(-25, 50));
+				replaceLast(nw.points, SVGPoint.create(50, -25));
+
+			} else if(percent >= .75){
+				angle = (percent-.75)/.25*(Math.PI/2);
+
+				xOffset = radius * Math.cos(angle);
+				yOffset = radius * Math.sin(angle);
+
+				newPoint.x = 50 - xOffset;
+				newPoint.y = 50 - yOffset;
+
+				replaceLast(nw.points, newPoint);
+
+				replaceLast(ne.points, SVGPoint.create(125, 50));
+				replaceLast(se.points, SVGPoint.create(50, 125));
+				replaceLast(sw.points, SVGPoint.create(-25, 50));
+			} else if(percent > .5){
+				angle = (percent-.5)/.25*(Math.PI/2);
+
+				xOffset = radius * Math.sin(angle);
+				yOffset = radius * Math.cos(angle);
+
+				newPoint.x = 50 - xOffset;
+				newPoint.y = 50 + yOffset;
+
+				replaceLast(sw.points, newPoint);
+
+				replaceLast(nw.points, clone(nw.points.getItem(1)));
+
+				replaceLast(ne.points, SVGPoint.create(125, 50));
+				replaceLast(se.points, SVGPoint.create(50, 125));
+			} else if(percent > .25){
+				angle = (percent-.25)/.25*(Math.PI/2);
+
+				xOffset = radius * Math.cos(angle);
+				yOffset = radius * Math.sin(angle);
+
+				newPoint.x = 50 + xOffset;
+				newPoint.y = 50 + yOffset;
+
+				replaceLast(se.points, newPoint);
+
+				replaceLast(nw.points, clone(nw.points.getItem(1)));
+				replaceLast(sw.points, clone(sw.points.getItem(1)));
+
+				replaceLast(ne.points, SVGPoint.create(125, 50));
+			} else if(percent >= 0){
+				angle = (percent)/.25*(Math.PI/2);
+
+				xOffset = radius * Math.sin(angle);
+				yOffset = radius * Math.cos(angle);
+
+				newPoint.x = 50 + xOffset;
+				newPoint.y = 50 - yOffset;
+
+				replaceLast(ne.points, newPoint);
+
+				replaceLast(nw.points, clone(nw.points.getItem(1)));
+				replaceLast(sw.points, clone(sw.points.getItem(1)));
+				replaceLast(se.points, clone(se.points.getItem(1)));
+			}
+		}
+
+	]]>
+	</script>
+</svg>

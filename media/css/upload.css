@@ -27,23 +27,7 @@
 	line-height: 21px;
 }
 
-#upload #submit {
-	background: url('../img/upload_submit.png') no-repeat 0 0;
-	width: 157px;
-	height: 40px;
-	text-indent: -9999px;
-	border: none;
-	cursor: pointer;
-}
 
-#upload #submit:hover {
-	background-image: url('../img/upload_submit_anim.png');
-}
-
-#upload #submit:active {
-	background-image: url('../img/upload_submit_clicked.png');
-	background-position: 0 1px;
-}
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
 *
@@ -75,9 +59,40 @@
 
 #upload .status {
 	margin-top: 3px;
-	padding-top: 16px;
+	padding-top: 13px;
 	border-top: 1px solid #bebebe;
 	text-align: right;
+	height: 40px;
+}
+
+#upload #submit {
+	background: url('../img/upload_submit.png') no-repeat 0 0;
+	width: 157px;
+	height: 40px;
+	text-indent: -9999px;
+	border: none;
+	cursor: pointer;
+	margin-top: 3px;
+	margin-right: -2px;
+}
+
+#upload #submit:hover {
+	background-image: url('../img/upload_submit_anim.png');
+}
+
+#upload #submit:active {
+	background-image: url('../img/upload_submit_clicked.png');
+	background-position: 0 1px;
+}
+
+#upload #piechart {
+	display: block;
+	margin: 0 auto;
+	position: absolute;
+	left: 0;
+	right: 0;
+	width: 40px;
+	height: 40px;
 }
 
 

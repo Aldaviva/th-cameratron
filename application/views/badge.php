@@ -18,7 +18,7 @@
 							if(isset($link['id'])){
 								$linkAttribs['id'] = $link['id'];
 							} else {
-								$linkAttribs['id'] = URL::title($link['text']);
+								$linkAttribs['id'] = URL::title('badge-'.$link['text']);
 							}
 
 							if(isset($link['class'])){

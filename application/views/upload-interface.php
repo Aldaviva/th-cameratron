@@ -32,13 +32,7 @@
 							<div id="swfOverlay"></div>
 							<a href="#">Add photos</a>
 						</div>
-						<ol id="filelist">
-							<!--<li><span class="filename">IMG_1001.<abbr>JPG</abbr></span> <a href="#" class="remove">&times;</a> <div class="progress"><div></div></div></li>
-							<li><span class="filename">IMG_1002.<abbr>JPG</abbr></span> <a href="#" class="remove">&times;</a> <div class="progress"><div></div></div></li>
-							<li><span class="filename">IMG_1003.<abbr>JPG</abbr></span> <a href="#" class="remove">&times;</a> <div class="progress"><div></div></div></li>
-							<li><span class="filename">IMG_1004.<abbr>JPG</abbr></span> <a href="#" class="remove">&times;</a> <div class="progress"><div></div></div></li>
-							<li><span class="filename">IMG_1005.<abbr>JPG</abbr></span> <a href="#" class="remove">&times;</a> <div class="progress"><div></div></div></li>-->
-						</ol>
+						<ol id="filelist"></ol>
 					</div>
 				</div>
 			</div>
@@ -46,6 +40,7 @@
 			<div class="clear"></div>
 
 			<div class="status">
+				<object id="piechart" type="image/svg+xml" data="<?= url::file('media/img/piechart.svg')?>" style="visibility:hidden">Uploading</object>
 				<button id="submit" type="submit">Upload</button>
 			</div>
 

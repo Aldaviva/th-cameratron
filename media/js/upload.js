@@ -48,8 +48,8 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		this.widget.setAllowMultipleFiles(true);
 		this.widget.setFileFilters([{
-			extensions: "*.jpg;*.jpeg",
-			description: 'JPEG (*.JPG;*.JPEG)'
+			extensions: "*.jpg",
+			description: 'JPEG (*.jpg)'
 		}]);
 		console.log('Uploader initialized');
 	},
@@ -59,34 +59,42 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		var postData = {};
 
-		//request ticket
-		dojo.xhrGet({
-			url: this.ticketUrl,
-			load: function(data){
-				postData.SID = data;
-			},
-			error: function(error){
-				console.error('Error requesting upload ticket: '+error);
-			},
-			sync: true,
-			preventCache: true
-		});
-
-		console.log('got sid: '+postData.SID);
-
-		dojo.mixin(postData, dojo.formToObject(this.form));
-		console.info('Trying to submit form to '+this.uploadScript);
-
 		this.setModeToActive();
 
-		this.widget.uploadAll(this.uploadScript, "POST", postData);
-		console.info('Submitted upload job');
+		/*console.log("Requesting upload ticket.");
+
+		//request ticket
+		dojo.xhrGet({
+			url: this.ticketUrl
+			,load: dojo.hitch(this, function(data, ioargs){
+				if(ioargs.xhr.status == 200){
+					postData.SID = data;
+
+					console.log('Received upload ticket: '+postData.SID+'.');
+
+					dojo.mixin(postData, dojo.formToObject(this.form));
+
+					//this.widget.uploadAll(this.uploadScript, "POST", postData);
+					console.info('Submitted upload job');
+				} else {
+					console.error('Error requesting upload ticket: server returned HTTP '+ioargs.xhr.status);
+				}
+			})
+			,error: function(error){
+				console.error('Error requesting upload ticket: '+error);
+			}
+			,sync: false
+		});*/
+
+		
 	},
 
 	fileSelectHandler: function(event){
 
 		this.fileOrdering = []; //array of ids that can index into this.files
 		this.files = {}; //key = id, value = {name, cDate, mDate, size, id, transferredBytes, listItem}
+
+		var item;
 
 		for(var key in event.fileList){
 			item = event.fileList[key];
@@ -205,6 +213,12 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		dojo.style('submit', 'display', 'none');
 
+		dojo.query('input[type=text]', 'upload').attr('disabled', 'disabled');
+
+		dojo.style('piechart', 'visibility', 'visible');
+
+		setTimeout(dojo.hitch(this, this.setPieChart, 0), 0); //have to wait for SVG to initialize
+
 		//hide add photos button
 		//make progress bars for each file
 		//hide each file's remove button
@@ -224,6 +238,30 @@ dojo.declare('Cameratron.Uploader', null, {
 	
 	setPieChart: function(percent){
 		console.log("setting pie chart to "+percent*100+"%");
+
+		var svgdoc = null;
+		var svgwin = null;
+
+		var object = document.getElementById('piechart');
+		if (object && object.contentDocument)
+			svgdoc = object.contentDocument;
+		else try {
+			svgdoc = object.getSVGDocument();
+		} catch(exception) {
+			alert('Neither the HTMLObjectElement nor the GetSVGDocument interface are implemented');
+		}
+
+		if (svgdoc && svgdoc.defaultView)
+			svgwin = svgdoc.defaultView;
+		else if (object.window)
+			svgwin = object.window;
+		else try {
+			svgwin = object.getWindow();
+		} catch(exception) {
+			alert('The DocumentView interface is not supported\nNon-W3C methods of obtaining "window" also failed');
+		}
+
+		svgwin.setPercent(percent);
 	},
 	
 	setStatusText: function(heading, subheading){
