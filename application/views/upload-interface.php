@@ -1,10 +1,10 @@
 <div class="big">
 
-	<div class="dialog">
+	<div class="dialog nihilo">
 
-		<?= form::open('upload/receive', array('id' => 'upload', 'method' => 'post')); ?>
+		<?= form::open('upload/receivePhoto', array('id' => 'upload', 'method' => 'post')); ?>
 
-			<h3>Create Gallery</h3>
+			<h3>Parameters</h3>
 			
 			<div class="fields">
 				<div class="leftcolumn">
@@ -39,8 +39,15 @@
 
 			<div class="clear"></div>
 
-			<div class="status">
-				<object id="piechart" type="image/svg+xml" data="<?= url::file('media/img/piechart.svg')?>" style="visibility:hidden">Uploading</object>
+			<div class="status" id="status-active" style="display: none">
+				<object id="piechart" type="image/svg+xml" data="<?= url::file('media/img/piechart.svg')?>">Uploading</object>
+				<a href="#" id="status-cancel">cancel</a>
+				<span id="status-heading">Initialization</span>
+				<span id="status-subheading">of data structures</span>
+			</div>
+
+			<div class="status" id="status-standby" style="/*display: none*/">
+				<input type="button" value="Get value" onclick="alert('Gallery ID is '+dijit.byId('title').attr('item').id[0])" />
 				<button id="submit" type="submit">Upload</button>
 			</div>
 

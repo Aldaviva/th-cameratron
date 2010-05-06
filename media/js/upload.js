@@ -1,22 +1,27 @@
-dojo.require('dojo.string');
+dojo.require('dojo.data.ItemFileReadStore');
 dojo.require('dojo.number');
+dojo.require('dojo.string');
+dojo.require('dijit.form.ComboBox');
+
 
 dojo.declare('Cameratron.Uploader', null, {
 
 	swfUrl: '/js/yui2/yui/build/uploader/assets/uploader.swf',
-	browseButtonImage: "/cameratron/media/img/upload_fileselect.png",
 	ticketUrl: '/cameratron/private/getTicket.php',
+	galleryCreationScript: '/cameratron/upload/createGallery',
 
 	constructor: function(form_id, filelist_id){
 
 		YAHOO.widget.Uploader.SWFURL = this.swfUrl;
+		this.pieChartLoaded = new dojo.Deferred();
 
 		dojo.addOnLoad(this, function(){
+
 			this.form = dojo.byId(form_id);
 			this.uploadScript = this.form.action;
 			this.fileListNode = dojo.byId(filelist_id);
+			this.gallery_id = -1;
 
-			//var textLink = dojo.query('a', 'addButton')[0];
 			dojo.style('swfOverlay', {
 				width: dojo.style('addButton', 'width')+"px",
 				height: dojo.style('addButton', 'height')+"px",
@@ -24,7 +29,6 @@ dojo.declare('Cameratron.Uploader', null, {
 				position: 'absolute'
 			});
 
-			/** TODO: make this a text link **/
 			this.widget = new YAHOO.widget.Uploader("swfOverlay");
 
 			this.widget.addListener('contentReady', dojo.hitch(this, this.init));
@@ -36,11 +40,27 @@ dojo.declare('Cameratron.Uploader', null, {
 			this.widget.addListener('uploadCancel', dojo.hitch(this, this.uploadCancelHandler));
 
 			dojo.connect(this.form, 'onsubmit', this, this.submit);
+			dojo.connect(dojo.byId("piechart"), 'onload', this, function(){this.pieChartLoaded.callback({loaded: true})});
+
+			var store = new dojo.data.ItemFileReadStore({
+				url: '/cameratron/gallery/listAll'
+			});
+
+			this.titleSelect = new dijit.form.ComboBox({
+					name: "title",
+					store: store,
+					searchAttr: "title",
+					labelAttr: "datetitle",
+					labelType: 'text',
+					format: function(value, constraints){
+						return value.toUpperCase();
+					}},
+				"title"
+			);
 		});
 	},
 
 	init: function(){
-		
 
 		this.numFiles = 0;
 		this.totalBytes = 0;
@@ -55,38 +75,74 @@ dojo.declare('Cameratron.Uploader', null, {
 	},
 
 	submit: function(event){
-		event.preventDefault();
 
-		var postData = {};
+		alert('submit handler running');
+
+		event.preventDefault();
 
 		this.setModeToActive();
 
-		/*console.log("Requesting upload ticket.");
+		console.log("Requesting upload ticket.");
 
 		//request ticket
 		dojo.xhrGet({
 			url: this.ticketUrl
-			,load: dojo.hitch(this, function(data, ioargs){
-				if(ioargs.xhr.status == 200){
-					postData.SID = data;
 
-					console.log('Received upload ticket: '+postData.SID+'.');
+			,load: dojo.hitch(this, function(data){
 
-					dojo.mixin(postData, dojo.formToObject(this.form));
-
-					//this.widget.uploadAll(this.uploadScript, "POST", postData);
-					console.info('Submitted upload job');
+				this.SID = data;
+				console.log('Received upload ticket: '+this.SID+'.');
+				
+				var gallery_id = dijit.byId('title').attr('item');
+				if(null === gallery_id) {
+					this.submitGalleryCreation();
 				} else {
-					console.error('Error requesting upload ticket: server returned HTTP '+ioargs.xhr.status);
+					this.submitPhotos();
 				}
+			
 			})
 			,error: function(error){
 				console.error('Error requesting upload ticket: '+error);
 			}
-			,sync: false
-		});*/
+		});
+	},
 
-		
+	submitGalleryCreation: function(){
+
+		dojo.xhrPost({
+
+			url: this.galleryCreationScript
+
+			,postData: dojo.objectToQuery({SID: this.SID})
+
+			,load: dojo.hitch(this, function(data){
+				var responseObj = dojo.fromJSON(data);
+				if(responseObj.stat == 'ok'){
+
+					this.gallery_id = responseObj.gallery_id;
+					console.info('Created gallery with ID = '+this.gallery_id);
+					this.submitPhotos();
+
+				} else {
+					console.warning('Error creating gallery: '+responseObj.message);
+				}
+			})
+			,error: function(error){
+				console.error('Error creating gallery: '+error);
+			}
+		});
+	},
+
+	submitPhotos: function(){
+
+		var postData = {
+			SID: this.SID,
+			gallery_id: this.gallery_id
+		};
+		dojo.mixin(postData, dojo.formToObject(this.form));
+
+		this.widget.uploadAll(this.uploadScript, "POST", postData);
+		console.info('Submitted upload job.');
 	},
 
 	fileSelectHandler: function(event){
@@ -130,8 +186,14 @@ dojo.declare('Cameratron.Uploader', null, {
 
 	uploadCompleteHandler: function(event){
 		var file = this.getFileById(event.id);
-		
-		console.info('Finished upload of '+file.name+', and server returned '+event.data);
+
+		var responseObj = dojo.fromJSON(event.data);
+
+		if(responseObj.stat == 'ok'){
+			console.info('Finished upload of '+file.name+'.');
+		} else {
+			console.warning('Error uploading '+file.name+': '+responseObj.message);
+		}
 
 		//if all uploads are done, change status to some success message
 		//make link so user can view gallery
@@ -211,24 +273,28 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		dojo.query('.remove').style('display', 'none');
 
-		dojo.style('submit', 'display', 'none');
-
 		dojo.query('input[type=text]', 'upload').attr('disabled', 'disabled');
+		dijit.query('title').attr('readOnly', true);
 
-		dojo.style('piechart', 'visibility', 'visible');
+		dojo.style('status-active', 'display', 'block');
+		dojo.style('status-standby', 'display', 'none');
 
-		setTimeout(dojo.hitch(this, this.setPieChart, 0), 0); //have to wait for SVG to initialize
+		this.setPieChart(0);
 
 		//hide add photos button
-		//make progress bars for each file
-		//hide each file's remove button
-		//hide upload button
-		//show cancel button
-		//show progress
+
 	},
 
 	setModeToStandby: function(){
+		dojo.query('.progress').style('display', 'none');
 
+		dojo.query('.remove').style('display', 'inline');
+
+		dojo.query('input[type=text]', 'upload').removeAttr('disabled');
+		dijit.query('title').attr('readOnly', false);
+
+		dojo.style('status-active', 'display', 'none');
+		dojo.style('status-standby', 'display', 'block');
 	},
 	
 	setProgressBar: function(file_id, percent){
@@ -237,40 +303,47 @@ dojo.declare('Cameratron.Uploader', null, {
 	},
 	
 	setPieChart: function(percent){
-		console.log("setting pie chart to "+percent*100+"%");
 
-		var svgdoc = null;
-		var svgwin = null;
+		this.pieChartLoaded.addCallback(function(){
 
-		var object = document.getElementById('piechart');
-		if (object && object.contentDocument)
-			svgdoc = object.contentDocument;
-		else try {
-			svgdoc = object.getSVGDocument();
-		} catch(exception) {
-			alert('Neither the HTMLObjectElement nor the GetSVGDocument interface are implemented');
-		}
+			console.log("Pie Chart set to "+(percent*100)+"%");
 
-		if (svgdoc && svgdoc.defaultView)
-			svgwin = svgdoc.defaultView;
-		else if (object.window)
-			svgwin = object.window;
-		else try {
-			svgwin = object.getWindow();
-		} catch(exception) {
-			alert('The DocumentView interface is not supported\nNon-W3C methods of obtaining "window" also failed');
-		}
+			var svgdoc = null;
+			var svgwin = null;
 
-		svgwin.setPercent(percent);
+			var object = document.getElementById('piechart');
+			if (object && object.contentDocument)
+				svgdoc = object.contentDocument;
+			else try {
+				svgdoc = object.getSVGDocument();
+			} catch(exception) {
+				console.error('Neither the HTMLObjectElement nor the GetSVGDocument interface are implemented');
+			}
+
+			if (svgdoc && svgdoc.defaultView)
+				svgwin = svgdoc.defaultView;
+			else if (object.window)
+				svgwin = object.window;
+			else try {
+				svgwin = object.getWindow();
+			} catch(exception) {
+				console.error('The DocumentView interface is not supported\nNon-W3C methods of obtaining "window" also failed');
+			}
+
+			svgwin.setPercent(percent);
+		});
 	},
 	
 	setStatusText: function(heading, subheading){
-		console.log("setting heading to '"+heading+"' and subheading to '"+subheading);
+		dojo.byId('status-heading').innerHTML = heading;
+		dojo.byId('status-subheading').innerHTML = subheading;
 	},
 
 	getFileById: function(id){
 		return this.files[id];
 	},
+	
+	
 
 	normalizeID: function(id){
 		return 'file'+dojo.string.pad(id.replace('file', ''), 8, '0');

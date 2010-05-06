@@ -82,7 +82,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 		}
 
 		if($datetime = strtotime($_GET['datetime'])){ /* not a mistake, strtotime will return 0 if failure */
-			$photo->datetime = date('Y-m-d H:i:s', $datetime);
+			$photo->datetime = date(TIMESTAMP_SQL, $datetime);
 		}
 
 		$photo->save();

@@ -24,8 +24,11 @@ class html extends html_Core {
 		}
 		else
 		{
-			if (strpos($href, '://') === FALSE)
-			{
+			if(strpos($href, '/') === 0){
+				//Omit prefix for URLS with leading '/'
+				$href = url::base($index).$href;
+				
+			} else if (strpos($href, '://') === FALSE) {
 				// Make the URL absolute
 				$href = url::base($index).$prefix.$href;
 			}
@@ -72,7 +75,11 @@ class html extends html_Core {
 		}
 		else
 		{
-			if (strpos($script, '://') === FALSE)
+			if(strpos($script, '/') === 0){
+				//Omit prefix for URLS with leading '/'
+				$script = url::base((bool) $index).$script;
+
+			} else if (strpos($script, '://') === FALSE)
 			{
 				// Add the prefix only when it's not already present
 				$script = url::base((bool) $index).$prefix.$script;

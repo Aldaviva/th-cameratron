@@ -77,13 +77,13 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		$this->title = array('Photography', $gallery->title);
     }
 
-	function raw($title_url = null){
+	function photoList($title_url = null){
 		header('Content-Type: application/json');
 		
 		$this->_cancelTemplate();
 
 		if(is_null($title_url)){
-			echo "/* No gallery requested */";
+			echo "{'stat': 'fail', 'message': 'No gallery requested'}";
 			return;
 		}
 
@@ -101,6 +101,30 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		}
 
 		echo json_encode($data);
+	}
+
+	function listAll(){
+		header('Content-Type: application/json');
+
+		$this->_cancelTemplate();
+
+		$galleries = ORM::factory('gallery')->orderby('date', 'desc')->find_all();
+
+		$result = new stdClass();
+		$result->stat = 'ok';
+		$result->label = 'title';
+		$result->identifier = 'id';
+		$result->items = array();
+		foreach($galleries as $gallery){
+			$result->items[] = array(
+				'title'	=> $gallery->title,
+				'id'	=> $gallery->id,
+				'date'	=> $gallery->date,
+				'datetitle'	=> '['.date('m-Y', $gallery->date).'] '.$gallery->title
+			);
+		}
+
+		echo json_encode($result);
 	}
 
 	function setPoster($gallery_id, $photo_id){

@@ -61,8 +61,11 @@
 	margin-top: 3px;
 	padding-top: 13px;
 	border-top: 1px solid #bebebe;
-	text-align: right;
 	height: 40px;
+}
+
+#upload #status-standby {
+	text-align: right;
 }
 
 #upload #submit {
@@ -93,6 +96,31 @@
 	right: 0;
 	width: 40px;
 	height: 40px;
+}
+
+#upload .status span {
+	text-align: left;
+	position: absolute;
+	left: 50%;
+	margin-left: 40px;
+	font-family: "Univers LT Std 47 Cn Lt", 'U Light Condensed';
+}
+
+#upload #status-heading {
+	font-size: 18px;
+	margin-top: 1px;
+	text-transform: uppercase;
+}
+
+#upload #status-subheading {
+	font-size: 12px;
+	color: hsl(0, 0%, 40%);
+	margin-top: 23px;
+}
+
+#upload #status-cancel {
+	position: relative;
+	top: 11px;
 }
 
 

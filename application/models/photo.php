@@ -6,7 +6,7 @@ class Photo_Model extends ORM {
 
 	static function search($question){
 
-		$question = "%".$question."%";
+		$question = "%".stripslashes($question)."%";
 		$question = Database::instance()->escape_str($question);
 
 		$results = self::factory('photo')->

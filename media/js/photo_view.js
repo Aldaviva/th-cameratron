@@ -23,7 +23,7 @@ dojo.declare('Cameratron.Navigation', null, {
 
 
 		dojo.xhrGet({
-			url: grandparent.base_url+'gallery/raw/'+title_url+'.json'
+			url: grandparent.base_url+'gallery/photoList/'+title_url+'.json'
 			,handleAs: 'json'
 			,load: dojo.hitch(this, 'dataLoaded', selectedId)
 			,error: function(errStr){

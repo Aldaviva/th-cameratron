@@ -8,6 +8,11 @@
  */
 
 /**
+ * Application-specific constants
+ */
+define('TIMESTAMP_SQL', 'Y-m-d H:m:s');
+
+/**
  * Define the website environment status. When this flag is set to TRUE, some
  * module demonstration controllers will result in 404 errors. For more information
  * about this option, read the documentation about deploying Kohana.
@@ -31,7 +36,7 @@ $kohana_application = 'application';
  *
  * This path can be absolute or relative to this file.
  */
-$kohana_modules = 'C:/Programs/Servers/Kohana/modules';
+$kohana_modules = '/home/httpd/conf/Kohana_v2.3.4/modules';
 
 /**
  * Kohana system directory. This directory should contain the core/ directory,
@@ -39,7 +44,7 @@ $kohana_modules = 'C:/Programs/Servers/Kohana/modules';
  *
  * This path can be absolute or relative to this file.
  */
-$kohana_system = 'C:/Programs/Servers/Kohana/system';
+$kohana_system = '/home/httpd/conf/Kohana_v2.3.4/system';
 
 /**
  * Test to make sure that Kohana is running on PHP 5.2 or newer. Once you are

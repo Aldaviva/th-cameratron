@@ -50,8 +50,6 @@ class Gallery_Model extends ORM {
 					return new Photo_Model($this->poster_photo_id);
 				}
 
-
-			//change date field to unix timestamp
 			case 'date':
 				$result = parent::__get($key);
 				return strtotime($result);

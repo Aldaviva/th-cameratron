@@ -37,7 +37,10 @@
 
 	<![CDATA[
 
-		//var SVGDocument = document;
+		/* Read this:
+			http://jwatt.org/svg/demos/scripting-across-object.html
+		*/
+
 
 		function initialize(LoadEvent){
 			//alert('initializing svg');
