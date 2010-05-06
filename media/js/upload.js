@@ -47,11 +47,12 @@ dojo.declare('Cameratron.Uploader', null, {
 			});
 
 			this.titleSelect = new dijit.form.ComboBox({
+					id: 'title',
 					name: "title",
 					store: store,
 					searchAttr: "title",
 					labelAttr: "datetitle",
-					labelType: 'text',
+					labelType: 'html',
 					format: function(value, constraints){
 						return value.toUpperCase();
 					}},

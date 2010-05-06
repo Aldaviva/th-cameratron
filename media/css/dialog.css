@@ -48,7 +48,8 @@
 .dialog input[type=text] {
 	border: none;
 	font: 22px "Delicious", "D";
-	padding: 8px 0 33px;
+	padding: 8px 0 27px;
+	margin-bottom: 6px;
 	width: 100%;
 	cursor: text;
 }

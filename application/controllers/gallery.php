@@ -120,7 +120,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 				'title'	=> $gallery->title,
 				'id'	=> $gallery->id,
 				'date'	=> $gallery->date,
-				'datetitle'	=> '['.date('m-Y', $gallery->date).'] '.$gallery->title
+				'datetitle'	=> '<em>'.date("'y", $gallery->date).'</em> '.$gallery->title
 			);
 		}
 

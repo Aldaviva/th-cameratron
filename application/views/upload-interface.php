@@ -4,7 +4,7 @@
 
 		<?= form::open('upload/receivePhoto', array('id' => 'upload', 'method' => 'post')); ?>
 
-			<h3>Parameters</h3>
+			<h3>Photo Transfer</h3>
 			
 			<div class="fields">
 				<div class="leftcolumn">
@@ -47,7 +47,6 @@
 			</div>
 
 			<div class="status" id="status-standby" style="/*display: none*/">
-				<input type="button" value="Get value" onclick="alert('Gallery ID is '+dijit.byId('title').attr('item').id[0])" />
 				<button id="submit" type="submit">Upload</button>
 			</div>
 

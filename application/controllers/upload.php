@@ -8,6 +8,8 @@ class Upload_Controller extends SiteTemplate_Controller {
 
 		$this->title = array('Photography', 'Upload');
 
+		$this->heading = "Upload";
+
 		$this->content = new View('upload-interface');
 
 		$this->badge = new View(
@@ -39,8 +41,6 @@ class Upload_Controller extends SiteTemplate_Controller {
 		$this->scripts[] = 'yui2/yui/build/uploader/uploader.js'; //not -min.js because code tweaked as per http://developer.yahoo.com/yui/uploader/
 
 		$this->scripts[] = 'upload.js';
-
-		$this->heading = "Upload";
 
 		$this->content->existingGallery = '';
 		if(!is_null($existingGalleryID)){
@@ -163,12 +163,6 @@ class Upload_Controller extends SiteTemplate_Controller {
 		return !empty($_SESSION)
 			&& (time() - $_SESSION['Start time'] < $this->ticketLifetime)
 			&& ($_SESSION['Client IP'] == $_SERVER['REMOTE_ADDR']);
-	}
-
-	public function galleryChooserTest(){
-
-		$this->content = new View('gallerychoosertest');
-
 	}
 
 }

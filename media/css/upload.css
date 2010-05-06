@@ -27,6 +27,82 @@
 	line-height: 21px;
 }
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	ComboBox
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#upload .dijitComboBox {
+	background: none;
+	border: none;
+	position: relative;
+	margin: 0 0 6px;
+	width: 100%;
+}
+
+#upload .dijitInputField {
+	overflow: visible;
+}
+
+#upload .dijitInlineTable {
+	/*display: inline;
+	box-sizing: inherit;*/
+	/*padding-right: 5px;*/
+}
+
+#upload .dijitValidationIcon {
+	display: none;
+}
+
+#upload .dijitComboBox .dijitButtonNode {
+	border: none;
+	background: none;
+	position: absolute;
+	right: 0;
+	bottom: -2px;
+	padding: 3px;
+}
+
+#upload .dijitComboBox .dijitArrowButtonInner {
+	background-image: url('../img/upload_existinggalleries.png');
+	width: 115px;
+	height: 14px;
+}
+
+#widget_title_dropdown {
+	max-width: 197px;
+	max-height: 229px;
+}
+
+#title_popup {
+	border: none;
+	border-top: 1px solid #56595e;
+	font: 14px "Univers LT Std 45 Light", "U Light";
+	line-height: 19px;
+	box-shadow: 0px 2px 4px HSL(0, 0%, 58%);
+}
+
+#title_popup .dijitMenuItem {
+	padding: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+}
+
+#title_popup .dijitMenuItemSelected {
+	background-color: highlight;
+	color: highlighttext;
+}
+
+#title_popup em {
+	font-family: "Univers LT Std 47 Lt Cn", "U Light Condensed";
+	background-color: #56595e;
+	color: white;
+	line-height: inherit;
+	padding: 1px 5px 1px 3px;
+}
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -139,7 +215,7 @@
 
 #upload .leftcolumn {
 	float: left;
-	padding-right: 11px;
+	padding-right: 5px;
 	border-right: 1px solid #acacad;
 }
 
@@ -155,5 +231,5 @@
 
 #upload .leftcolumn label {
 	margin-left: -3px;
-	margin-right: -8px;
+	margin-right: -2px;
 }
