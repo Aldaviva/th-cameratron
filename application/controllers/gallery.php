@@ -103,6 +103,42 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		echo json_encode($data);
 	}
 
+	function create(){
+
+		$this->_cancelTemplate();
+//		header('Content-Type: application/json');
+
+		if(!isset($_REQUEST['SID']) || !Upload_Controller::isValidTicket($_REQUEST['SID'])){
+			echo ("{'stat': 'fail', 'message': 'No valid upload ticket provided'}");
+			return;
+		}
+		
+		if(empty($_REQUEST['title'])){
+			echo("{'stat': 'fail', 'message': 'No valid gallery title provided'}");
+			return;
+		}
+
+		$title = stripslashes($_REQUEST['title']);
+
+		$title_url = $title_url_base = url::title($title);
+
+		$existing_gallery = ORM::factory('gallery')->where('title_url', $title_url_base)->find();
+
+		for($suffix_counter = 2; $existing_gallery->loaded; $suffix_counter++){
+			$title_url = $title_url_base . '_' . $suffix_counter;
+			$existing_gallery = ORM::factory('gallery')->where('title_url', $title_url)->find();
+		}
+
+		$gallery = ORM::factory('gallery');
+		$gallery->title = $title;
+		$gallery->title_url = $title_url;
+		$gallery->date = 'now';
+
+		$gallery->save();
+
+		echo "{'stat': 'ok', 'gallery_id': '{$gallery->id}'}";
+	}
+
 	function listAll(){
 		header('Content-Type: application/json');
 

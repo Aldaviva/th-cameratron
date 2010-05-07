@@ -15,12 +15,12 @@
 
 					<div>
 						<label for="location">Location</label>
-						<input id="location" name="location" type="text" />
+						<input id="location" name="location" type="text" value="Javits Center" />
 					</div>
 
 					<div>
 						<label for="photographer">Photographer</label>
-						<input id="photographer" name="photographer" type="text" />
+						<input id="photographer" name="photographer" type="text" value="Ben Hutchison" />
 					</div>
 				</div>
 				
@@ -41,12 +41,12 @@
 
 			<div class="status" id="status-active" style="display: none">
 				<object id="piechart" type="image/svg+xml" data="<?= url::file('media/img/piechart.svg')?>">Uploading</object>
-				<a href="#" id="status-cancel">cancel</a>
-				<span id="status-heading">Initialization</span>
-				<span id="status-subheading">of data structures</span>
+				<a href="#" id="status-cancel">stop</a>
+				<span id="status-heading"></span>
+				<span id="status-subheading"></span>
 			</div>
 
-			<div class="status" id="status-standby" style="/*display: none*/">
+			<div class="status" id="status-standby">
 				<button id="submit" type="submit">Upload</button>
 			</div>
 

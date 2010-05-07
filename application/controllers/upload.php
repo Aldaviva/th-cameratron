@@ -2,7 +2,7 @@
 
 class Upload_Controller extends SiteTemplate_Controller {
 
-	private $ticketLifetime = 480; //8 minutes in seconds
+	private static $ticketLifetime = 480; //8 minutes in seconds
 
 	function index($existingGalleryID = ''){
 
@@ -58,16 +58,18 @@ class Upload_Controller extends SiteTemplate_Controller {
 		header('Content-Type: application/json');
 
 		if(!isset($_POST['SID']) || !$this->isValidTicket($_POST['SID'])){
-			exit("{'stat': 'fail', 'message': 'No valid upload ticket provided.'}");
+			echo("{'stat': 'fail', 'message': 'No valid upload ticket provided.'}");
+			return;
 		}
 
 		if(!is_numeric($_POST['gallery_id'])){
-			exit("{'stat': 'fail', 'message': 'No valid gallery id provided.'}");
+			echo("{'stat': 'fail', 'message': 'No valid gallery id provided.'}");
+			return;
 		}
 
 		foreach ($_FILES as $fieldName => $file) {
 			$basename = basename($file['name']);
-			$destinationPath = "/home/httpd/html/photos2/".$_POST['gallery_id'].'/'.strip_tags($basename);
+//			$destinationPath = "/home/httpd/html/photos2/".$_POST['gallery_id'].'/'.strip_tags($basename);
 			$tempPath = $file['tmp_name'];
 
 			$size = @getImageSize($tempPath);
@@ -87,23 +89,27 @@ class Upload_Controller extends SiteTemplate_Controller {
 				$this->invalidFile($basename, 'the gallery does not exist');
 			} else {
 
-				$parentDir = dirname($destinationPath);
-				if(!file_exists($parentDir)){
-					mkdir($parentDir);
-					chmod($parentDir, 0770);
-				}
-				move_uploaded_file($tempPath, $destinationPath);
-				chmod($destinationPath, 0660);
-
-				/*TODO: read EXIF data, put in database */
 				$photo = ORM::factory('photo');
 				$photo->gallery_id = $gallery->id;
 				$photo->basename = $basename;
 				$photo->location = stripslashes($_POST['location']);
 				$photo->photographer = stripslashes($_POST['photographer']);
-				if($datetime = $this->readEXIFTimestamp($photo)){
+
+				$destinationPath = $photo->getFilename();
+
+				$parentDir = dirname($destinationPath);
+				if(!file_exists($parentDir)){
+					mkdir($parentDir);
+					chmod($parentDir, 02770);
+				}
+
+				move_uploaded_file($tempPath, $destinationPath);
+				chmod($destinationPath, 0660);
+
+				if($datetime = $this->readEXIFTimestamp($photo->getFilename())){
 					$photo->datetime = date(TIMESTAMP_SQL, $datetime);
 				}
+
 				$photo->save();
 
 				echo "{'stat': 'ok', 'file': '".addslashes($basename)."'}";
@@ -111,57 +117,28 @@ class Upload_Controller extends SiteTemplate_Controller {
 		}
 	}
 
-	function createGallery(){
-		
-		$this->_cancelTemplate();
-		header('Content-Type: application/json');
+	private function readEXIFTimestamp($file){
 
-		if(!isset($_POST['SID']) || !$this->isValidTicket($_POST['SID'])){
-			exit("{'stat': 'fail', 'message': 'No valid upload ticket provided'}");
-		}
-
-		$title = stripslashes($_POST['title']);
-
-		$title_url = $title_url_base = url::title($title);
-
-		$existing_gallery = ORM::factory('gallery')->where('title_url', $title_url_base)->find();
-
-		for($suffix_counter = 2; $existing_gallery->loaded; $suffix_counter++){
-			$title_url = $title_url_base . '_' . $suffix_counter;
-			$existing_gallery = ORM::factory('gallery')->where('title_url', $title_url)->find();
-		}
-
-		$gallery = ORM::factory('gallery');
-		$gallery->title = $title;
-		$gallery->title_url = $title_url;
-		$gallery->date = 'now';
-
-		$gallery->save();
-
-		echo "{'stat': 'ok', 'gallery_id': '{$gallery->id}'}";
-	}
-
-	private function readEXIFTimestamp($photo){
-		$photo = ORM::factory('photo', $photo);
-
-		if($exif = exif_read_data($photo->getFilename())){
-			$timestamp = date_parse_from_format('Y:m:d H:i:s', $exif['DateTimeOriginal']);
+		if($exif = exif_read_data($file)){
+			$tok = sscanf($exif['DateTimeOriginal'], '%4d:%2d:%2d %2d:%2d:%2d');
+			return mktime($tok[3], $tok[4], $tok[5], $tok[1], $tok[2], $tok[0]);
+//			$timestamp = date_parse_from_format('Y:m:d H:i:s', $exif['DateTimeOriginal']);
+		} else {
+			return false;
 		}
 	}
 
 	private function invalidFile($name, $reason = 'unknown') {
-		exit("{'stat': 'fail', 'message': 'File $name is invalid because $reason.'}");
+		echo("{'stat': 'fail', 'message': 'File $name is invalid because $reason.'}");
 	}
 
-	private function isValidTicket($sid){
-
-		$this->_cancelTemplate();
+	static function isValidTicket($sid){
 
 		session_id($sid);
 		session_start();
 
 		return !empty($_SESSION)
-			&& (time() - $_SESSION['Start time'] < $this->ticketLifetime)
+			&& (time() - $_SESSION['Start time'] < self::$ticketLifetime)
 			&& ($_SESSION['Client IP'] == $_SERVER['REMOTE_ADDR']);
 	}
 

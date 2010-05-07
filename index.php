@@ -10,7 +10,7 @@
 /**
  * Application-specific constants
  */
-define('TIMESTAMP_SQL', 'Y-m-d H:m:s');
+define('TIMESTAMP_SQL', 'Y-m-d H:i:s');
 
 /**
  * Define the website environment status. When this flag is set to TRUE, some

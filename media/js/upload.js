@@ -8,7 +8,7 @@ dojo.declare('Cameratron.Uploader', null, {
 
 	swfUrl: '/js/yui2/yui/build/uploader/assets/uploader.swf',
 	ticketUrl: '/cameratron/private/getTicket.php',
-	galleryCreationScript: '/cameratron/upload/createGallery',
+	galleryCreationScript: '/cameratron/gallery/create',
 
 	constructor: function(form_id, filelist_id){
 
@@ -40,22 +40,22 @@ dojo.declare('Cameratron.Uploader', null, {
 			this.widget.addListener('uploadCancel', dojo.hitch(this, this.uploadCancelHandler));
 
 			dojo.connect(this.form, 'onsubmit', this, this.submit);
+			dojo.connect(dojo.byId('status-cancel'), 'onclick', this, this.cancel);
 			dojo.connect(dojo.byId("piechart"), 'onload', this, function(){this.pieChartLoaded.callback({loaded: true})});
 
-			var store = new dojo.data.ItemFileReadStore({
+			var galleryListStore = new dojo.data.ItemFileReadStore({
 				url: '/cameratron/gallery/listAll'
 			});
 
 			this.titleSelect = new dijit.form.ComboBox({
 					id: 'title',
 					name: "title",
-					store: store,
+					store: galleryListStore,
+					autoComplete: false,
 					searchAttr: "title",
 					labelAttr: "datetitle",
-					labelType: 'html',
-					format: function(value, constraints){
-						return value.toUpperCase();
-					}},
+					labelType: 'html'
+				},
 				"title"
 			);
 		});
@@ -64,73 +64,96 @@ dojo.declare('Cameratron.Uploader', null, {
 	init: function(){
 
 		this.numFiles = 0;
+		this.transferredFiles = 0;
 		this.totalBytes = 0;
 		this.transferredBytes = 0;
+		this.errorFiles = [];
 
 		this.widget.setAllowMultipleFiles(true);
 		this.widget.setFileFilters([{
 			extensions: "*.jpg",
 			description: 'JPEG (*.jpg)'
 		}]);
+		this.widget.setSimUploadLimit(1); //otherwise photos get out of order
 		console.log('Uploader initialized');
 	},
 
 	submit: function(event){
 
-		alert('submit handler running');
-
 		event.preventDefault();
 
 		this.setModeToActive();
 
+		this.setStatusText('Authorization', 'underway');
+
 		console.log("Requesting upload ticket.");
 
-		//request ticket
 		dojo.xhrGet({
 			url: this.ticketUrl
-
 			,load: dojo.hitch(this, function(data){
 
 				this.SID = data;
 				console.log('Received upload ticket: '+this.SID+'.');
-				
-				var gallery_id = dijit.byId('title').attr('item');
-				if(null === gallery_id) {
+				this.setStatusText('Authorization', 'successful');
+				this.setPieChart(0.1);
+
+				this.gallery_id = dijit.byId('title').attr('item').id[0];
+				if(null === this.gallery_id) {
 					this.submitGalleryCreation();
 				} else {
+					this.setPieChart(0.19);
 					this.submitPhotos();
 				}
-			
+
 			})
-			,error: function(error){
+			,error: function(error, ioargs){
 				console.error('Error requesting upload ticket: '+error);
-			}
+
+				if(ioargs.xhr.status == 401){
+					this.setStatusText('Fault Detected', 'refused to authorize');
+				} else {
+					this.setStatusText('Fault Detected', 'failed to authorize');
+				}
+			},
+			failOk: true
 		});
 	},
 
 	submitGalleryCreation: function(){
 
+		this.setStatusText('Construction', 'GalleryFactory.createNewGallery()');
+
 		dojo.xhrPost({
 
 			url: this.galleryCreationScript
 
-			,postData: dojo.objectToQuery({SID: this.SID})
+			,postData: dojo.objectToQuery({
+				SID: this.SID,
+				title: dijit.byId('title').attr('value')
+			})
 
-			,load: dojo.hitch(this, function(data){
-				var responseObj = dojo.fromJSON(data);
+			,handleAs: 'json'
+
+			,load: dojo.hitch(this, function(responseObj){
+//				var responseObj = dojo.fromJson(data);
 				if(responseObj.stat == 'ok'){
 
 					this.gallery_id = responseObj.gallery_id;
 					console.info('Created gallery with ID = '+this.gallery_id);
+					this.setStatusText('Construction', 'successfully created gallery');
+					this.setPieChart(0.2);
 					this.submitPhotos();
 
 				} else {
-					console.warning('Error creating gallery: '+responseObj.message);
+					this.setStatusText('Fault Detected', 'refusal to create gallery');
+					console.warn('Error creating gallery: '+responseObj.message);
 				}
 			})
 			,error: function(error){
+				this.setStatusText('Fault Detected', 'failed to create gallery');
 				console.error('Error creating gallery: '+error);
-			}
+			},
+			failOk: true
 		});
 	},
 
@@ -142,8 +165,10 @@ dojo.declare('Cameratron.Uploader', null, {
 		};
 		dojo.mixin(postData, dojo.formToObject(this.form));
 
+		this.setStatusText('Transferral', 'commencing');
+		console.info('Submitting upload job.');
+
 		this.widget.uploadAll(this.uploadScript, "POST", postData);
-		console.info('Submitted upload job.');
 	},
 
 	fileSelectHandler: function(event){
@@ -164,55 +189,82 @@ dojo.declare('Cameratron.Uploader', null, {
 	},
 
 	uploadStartHandler: function(event){
+
 		var file = this.getFileById(event.id);
 		console.log('Starting upload of '+file.name);
+		this.setStatusText('Transferral', 'starting for '+file.name);
 
 		this.transferredBytes = 0;
 	},
 
 	uploadProgressHandler: function(event){
+
 		var file = this.getFileById(event.id);
 
 		file.transferredBytes = event.bytesLoaded;
 
-		var transferredBytes = 0;
+		this.transferredBytes = 0;
 		dojo.forEach(this.files, function(file){
-			transferredBytes += file.transferredBytes;
-		}, this);
-		this.transferredBytes = transferredBytes;
-		this.setPieChart(this.transferredBytes/this.totalBytes*0.8+0.1); //leave 0%-10% and 90%-100% for init/cleanup tasks
+			this.transferredBytes += file.transferredBytes;
+		}, this); //TODO: this may need some work (numerator seems to be 0)
+		this.setPieChart(this.transferredBytes/this.totalBytes*0.8+0.2);
 
 		this.setProgressBar(file.id, file.transferredBytes/file.size);
+
+		//scroll file list to active file?
 	},
 
 	uploadCompleteHandler: function(event){
+
 		var file = this.getFileById(event.id);
 
-		var responseObj = dojo.fromJSON(event.data);
+		this.transferredFiles++;
+
+		var responseObj = dojo.fromJson(event.data);
 
 		if(responseObj.stat == 'ok'){
 			console.info('Finished upload of '+file.name+'.');
+			this.setStatusText('Transferral', 'finished for '+file.name);
 		} else {
-			console.warning('Error uploading '+file.name+': '+responseObj.message);
+			console.warn('Error uploading '+file.name+': '+responseObj.message);
+			this.setStatusText('Transferral', 'failed for '+file.name);
+			this.errorFiles.push(file);
 		}
 
-		//if all uploads are done, change status to some success message
-		//make link so user can view gallery
+		if(this.transferredFiles == this.numFiles){
+			this.finish();
+		}
+		
 	},
 
 	uploadErrorHandler: function(event){
+
 		var file = this.getFileById(event.id);
 		console.error('Failed to upload ' + file.name + ": "+event.status);
-
-		//give option to roll back changes?
+		this.errorFiles.push(file);
+		this.setStatusText('Transferral', 'failed for '+file.name);
 	},
 
-	uploadCancelHandler: function(file_id){
+	uploadCancelHandler: function(event){
+
 		var file = this.getFileById(event.id);
-		dojo.warning(file.name +" was cancelled.");
-		//give option to roll back changes?
-		this.setModeToStandby();
-		//is file list empty at this point?
+		console.info(file.name +" was cancelled.");
+	},
+
+	cancel: function(event){
+		event.preventDefault();
+		console.warn('Upload canceled');
+
+		this.setStatusText('Interruption', "gallery has a subset of these photos");
+
+		dojo.style('status-cancel', 'visibility', 'hidden');
+	},
+
+	finish: function(){
+		//TODO: make link so user can view gallery
+		this.setPieChart(1);
+		this.setStatusText('Completion', 'of all photo transfers');
+		dojo.style('status-cancel', 'visibility', 'hidden');
 	},
 
 	updateFileList: function(){
@@ -236,7 +288,6 @@ dojo.declare('Cameratron.Uploader', null, {
 			console.log('File '+ item.name + " is in the upload queue.");
 
 			item.listItem = dojo.place('<li><span class="filename">'+item.name.replace(/\.jpg$/i,'.')+'<abbr>JPG</abbr></span> <a href="#" class="remove">&times;</a> <div class="progress" style="display:none"><div style="width:0"></div></div></li>', this.fileListNode, 'last');
-			//dojo.query('a.remove', item.listItem)[0].connect('onclick', this, dojo.hitch(this, this.removeQueueItem, item.id));
 			var removeLink = dojo.query('a.remove', item.listItem)[0];
 			dojo.connect(removeLink, 'onclick', this, dojo.hitch(this, this.removeQueueItem, item.id));
 		}, this);
@@ -251,14 +302,12 @@ dojo.declare('Cameratron.Uploader', null, {
 	},
 
 	removeQueueItem: function(file_id, event){
+
 		this.widget.removeFile(file_id);
 
 		event.preventDefault();
 
 		var name = this.files[file_id].name;
-
-		/*delete this.files[file_id];
-		delete this.fileOrdering[file_id];*/
 
 		this.fileOrdering = dojo.filter(this.fileOrdering, function(item){
 			return item != file_id;
@@ -266,39 +315,44 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		this.updateFileList();
 
-		console.log('Removed file '+ name +' from queue.');
+		console.log('Removed photo '+ name +' from queue.');
 	},
 
 	setModeToActive: function(){
+
 		dojo.query('.progress').style('display', 'block');
 
 		dojo.query('.remove').style('display', 'none');
 
-		dojo.query('input[type=text]', 'upload').attr('disabled', 'disabled');
-		dijit.query('title').attr('readOnly', true);
+//		dojo.query('input[type=text]', 'upload').attr('disabled', 'disabled');
+//		dijit.byId('title').attr('readOnly', true);
 
+		dojo.style('status-cancel', 'visibility', 'visible');
 		dojo.style('status-active', 'display', 'block');
 		dojo.style('status-standby', 'display', 'none');
 
 		this.setPieChart(0);
+		this.setStatusText('Initialization', 'systems warming up');
 
-		//hide add photos button
+		//TODO: hide add photos button
 
 	},
 
 	setModeToStandby: function(){
+
 		dojo.query('.progress').style('display', 'none');
 
 		dojo.query('.remove').style('display', 'inline');
 
-		dojo.query('input[type=text]', 'upload').removeAttr('disabled');
-		dijit.query('title').attr('readOnly', false);
+//		dojo.query('input[type=text]', 'upload').removeAttr('disabled');
+//		dijit.query('title').attr('readOnly', false);
 
 		dojo.style('status-active', 'display', 'none');
 		dojo.style('status-standby', 'display', 'block');
 	},
 	
 	setProgressBar: function(file_id, percent){
+
 		var file = this.getFileById(file_id);
 		dojo.style(dojo.query('.progress div', file.listItem)[0], 'width', percent*100+'%');
 	},
@@ -319,6 +373,7 @@ dojo.declare('Cameratron.Uploader', null, {
 				svgdoc = object.getSVGDocument();
 			} catch(exception) {
 				console.error('Neither the HTMLObjectElement nor the GetSVGDocument interface are implemented');
+				return;
 			}
 
 			if (svgdoc && svgdoc.defaultView)
@@ -329,6 +384,7 @@ dojo.declare('Cameratron.Uploader', null, {
 				svgwin = object.getWindow();
 			} catch(exception) {
 				console.error('The DocumentView interface is not supported\nNon-W3C methods of obtaining "window" also failed');
+				return;
 			}
 
 			svgwin.setPercent(percent);
@@ -344,8 +400,6 @@ dojo.declare('Cameratron.Uploader', null, {
 		return this.files[id];
 	},
 	
-	
-
 	normalizeID: function(id){
 		return 'file'+dojo.string.pad(id.replace('file', ''), 8, '0');
 	}
