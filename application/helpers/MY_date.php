@@ -1,5 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+/**
+ * Conversion for the stupid Tech House hex year numbering
+ */
+
 class date extends date_Core {
 
 	public static function thYear($timestamp = NULL){

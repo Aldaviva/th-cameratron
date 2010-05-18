@@ -17,8 +17,9 @@ h2 {
 	top: 0;
 	margin: 15px 290px 0 145px;
 	padding-left: 28px;
-	min-width: 312px;
-	height: 24px;
+	/*padding-bottom: 2px;*/
+	/*min-width: 312px;*/
+	/*height: 24px;*/
 	font: 21px "Univers LT Std 45 Light", "U Light";
 }
 

@@ -71,13 +71,13 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		$this->content->bigFirstPhoto = true;
 		$this->stylesheets[] = 'collection.css';
 
-		$this->content->photos = $gallery->photos;
+		$this->content->photos = $gallery->getPhotos();
 		$this->heading = $gallery->title;
 
 		$this->title = array('Photography', $gallery->title);
     }
 
-	function photoList($title_url = null){
+	/*function photoListOld($title_url = null){
 		header('Content-Type: application/json');
 		
 		$this->_cancelTemplate();
@@ -87,12 +87,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			return;
 		}
 
-		$title_url = str_replace('.json', '', $title_url);
-
 		$gallery = Gallery_Model::getByTitleUrl($title_url);
-
-		echo "/* Gallery data for ".$gallery->title." */\n";
-
 
 		$data = $gallery->as_array();
 
@@ -101,6 +96,30 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		}
 
 		echo json_encode($data);
+	}*/
+
+	function photoList($title_url = null){
+		header('Content-Type: application/json');
+
+		$this->_cancelTemplate();
+
+		if(is_null($title_url)){
+			echo "/* No gallery requested */ {}";
+			return;
+		}
+
+		$gallery = ORM::factory('gallery')->getByTitleUrl($title_url);
+
+		$store = array('identifier' => 'id');
+
+		foreach($gallery->getPhotos() as $i => $photo){
+			$photo_data = $photo->as_array();
+			$photo_data['sort_index'] = $i;
+			$photo_data['datetime'] = array('_type' => 'unixtimestamp', '_value' => $photo_data['datetime']);
+			$store['items'][] = $photo_data;
+		}
+		
+		echo json_encode($store);
 	}
 
 	function create(){
@@ -144,7 +163,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 
 		$this->_cancelTemplate();
 
-		$galleries = ORM::factory('gallery')->orderby('date', 'desc')->find_all();
+		$galleries = ORM::factory('gallery')->orderby(Gallery_Model::$ordering)->find_all();
 
 		$result = new stdClass();
 		$result->stat = 'ok';

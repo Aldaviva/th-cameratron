@@ -15,12 +15,12 @@
 
 					<div>
 						<label for="location">Location</label>
-						<input id="location" name="location" type="text" value="Javits Center" />
+						<input id="location" name="location" type="text" />
 					</div>
 
 					<div>
 						<label for="photographer">Photographer</label>
-						<input id="photographer" name="photographer" type="text" value="Ben Hutchison" />
+						<input id="photographer" name="photographer" type="text" />
 					</div>
 				</div>
 				

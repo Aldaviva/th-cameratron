@@ -4,13 +4,18 @@ class Photo_Model extends ORM {
 
 	protected $belongs_to = array('gallery');
 
+	static $ordering = array('datetime' => 'asc', 'basename' => 'asc');
+
 	static function search($question){
+
+		if(trim($question) == ''){
+			return array();
+		}
 
 		$question = "%".stripslashes($question)."%";
 		$question = Database::instance()->escape_str($question);
 
-		$results = self::factory('photo')->
-			//join('galleries', 'gallery.id', 'photos.gallery_id')->
+		$results = ORM::factory('photo')->
 			with('gallery')->
 			where("description ILIKE '$question'")->
 			orwhere("people ILIKE '$question'")->
@@ -20,13 +25,6 @@ class Photo_Model extends ORM {
 		return $results;
 
 	}
-	
-	/*static function getByGalleryBasename($gallery_id, $basename){
-		return self::factory('photo')->where(array(
-			'gallery_id' => $gallery_id,
-			'basename' => $basename))->find();
-	}*/
-
 
 	function getURL($width = null, $height = null){
 
@@ -55,7 +53,7 @@ class Photo_Model extends ORM {
 	}
 
 	function _getOffsetPhoto($offset){
-		$photoIds = $this->gallery->photos->primary_key_array();
+		$photoIds = $this->gallery->getPhotos()->primary_key_array();
 		$photoIdsFlipped = array_flip($photoIds);
 
 		$resultOrdering = ($photoIdsFlipped[$this->id]+$offset) % count($photoIds);

@@ -4,13 +4,14 @@ class Gallery_Model extends ORM {
 
 	protected $has_many	= array('photos');
 
+	static $ordering = array('date' => 'desc');
+
 	static function getByTitleUrl($title_url){
-//		return self::factory('gallery')->where('title',$title)->find();
-		return self::factory('gallery')->where('title_url', $title_url)->find();
+		return ORM::factory('gallery')->where('title_url', $title_url)->find();
 	}
 
 	static function get_all($limit = null, $offset = null){
-		$query = self::factory('gallery')->orderBy('date', 'desc');
+		$query = self::factory('gallery')->orderby(self::$ordering);
 
 		if(!is_null($offset) && !is_null($limit)){
 			$query->limit($limit, $offset);
@@ -24,9 +25,12 @@ class Gallery_Model extends ORM {
 	}	
 
 	function getPhoto($basename){
-		$answer = $this->where('basename', $basename)->photos->current();
-		$this->reload(); //otherwise, the photos array is permanently filtered to this one photo
+		$answer = ORM::factory('gallery', $this->id)->where('basename', $basename)->photos->current();
 		return $answer;
+	}
+
+	function getPhotos(){
+		return ORM::factory('gallery', $this->id)->orderby(Photo_Model::$ordering)->photos;
 	}
 
 	function numPhotos(){
@@ -34,7 +38,8 @@ class Gallery_Model extends ORM {
 	}
 
 	function getFirstPhoto(){
-		return $this->photos[0];
+		$photos = $this->getPhotos();
+		return $photos[0];
 	}
 
 	function __get($key){
@@ -45,7 +50,7 @@ class Gallery_Model extends ORM {
 				}
 				
 				if(is_null($this->poster_photo_id)){
-					return $this->photos[0];
+					return $this->getFirstPhoto();
 				} else {
 					return new Photo_Model($this->poster_photo_id);
 				}

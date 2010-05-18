@@ -287,8 +287,14 @@ dojo.declare('Cameratron.Uploader', null, {
 
 			console.log('File '+ item.name + " is in the upload queue.");
 
-			item.listItem = dojo.place('<li><span class="filename">'+item.name.replace(/\.jpg$/i,'.')+'<abbr>JPG</abbr></span> <a href="#" class="remove">&times;</a> <div class="progress" style="display:none"><div style="width:0"></div></div></li>', this.fileListNode, 'last');
-			var removeLink = dojo.query('a.remove', item.listItem)[0];
+//			item.listItem = dojo.place('<li><span class="filename">'+item.name.replace(/\.jpg$/i,'.')+'<abbr>JPG</abbr></span> <a href="#" class="remove">&times;</a> <div class="progress" style="display:none"><div style="width:0"></div></div></li>', this.fileListNode, 'last');
+			item.listItem = dojo.create('li');
+			dojo.create('span', {'class': 'filename', 'innerHTML': item.name.replace(/\.jpg$/i,'.')+'<abbr>JPG</abbr>'}, item.listItem);
+			var removeLink = dojo.create('a', {'href': '#', 'class': 'remove', 'innerHTML': '&times;'}, item.listItem);
+			dojo.place('<div class="progress" style="display:none"><div style="width:0"></div></div>', item.listItem);
+			dojo.place(item.listItem, this.fileListNode);
+			
+//			var removeLink = dojo.query('a.remove', item.listItem)[0];
 			dojo.connect(removeLink, 'onclick', this, dojo.hitch(this, this.removeQueueItem, item.id));
 		}, this);
 

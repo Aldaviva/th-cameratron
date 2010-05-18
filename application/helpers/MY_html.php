@@ -1,5 +1,10 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+/**
+ * I added the ability to prefix a site-wide javascript or css folder into these
+ * links if they are relative
+ */
+
 class html extends html_Core {
 
 	public static function stylesheet($style, $media = FALSE, $index = FALSE) {

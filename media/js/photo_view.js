@@ -1,77 +1,80 @@
+dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dojo.date.locale');
 dojo.require('dojox.fx.scroll')
 dojo.require('dojox.image');
 
-dojo.addOnLoad(function(){
-	dojo.attr('selectedPhoto', 'src', '');
-	dojo.style('submit', 'display', 'none');
-})
-
 dojo.declare('Cameratron.Navigation', null, {
 
-	constructor: function(grandparent, title_url, selectedId){
+	constructor: function(grandparent, title_url){
 
 		this.grandparent = grandparent;
+		this.gallery_title_url = title_url;
 
-		this.galleryData = {};
-		this.selectedPhotoIndex = 0;
-		this.selectedPhoto = {};
+		this.selectedPhoto = null;
+		this.numPhotos = -1;
 
 		this.lastResizeTime = -1; //milliseconds since unix epoc
-		this.resizeMinInterval = 3000; //milliseconds
+		this.resizeMinInterval = 1000; //milliseconds
 		this.resizeTimer = null;
 
+		dojo.addOnLoad(this, function(){
+			dojo.style('submit', 'display', 'none');
 
-		dojo.xhrGet({
-			url: grandparent.base_url+'gallery/photoList/'+title_url+'.json'
-			,handleAs: 'json'
-			,load: dojo.hitch(this, 'dataLoaded', selectedId)
-			,error: function(errStr){
-				alert(errStr);
-			}
-		});
-
-	},
-	dataLoaded: function(selectedId, data){
-		dojo.forEach(data.photos, function(item, index){
-			dojo.mixin(item, new Cameratron.Photo(this.grandparent)); //cast to Cameratron.Photo
-
-			if(item.id == selectedId){
-				this.selectedPhotoIndex = index;
-				this.selectedPhoto = data.photos[index];
-			}
-		}, this);
-
-		this.galleryData = data;
-		
-		this.resizeWindowHandler();
-		
-		this.scrollThumbs(true);
-
-		/* bind keyboard event handlers */
-		dojo.connect(dojo.doc, 'onkeypress', dojo.hitch(this, 'keyHandler'));
-		dojo.query('input').onkeypress(function(event){
-			event.stopPropagation();
-		});
-
-		dojo.connect(window, 'onresize', dojo.hitch(this, 'resizeWindowHandler', false));
-
-		dojo.query('#thumbs a').forEach(function(node, index){
-			dojo.connect(node, 'onclick', this, function(event){
-				event.preventDefault();
-				this.replaceImage(index);
-				return false;
+			this.store = new dojo.data.ItemFileWriteStore({
+				 url:	this.grandparent.base_url + '/gallery/photoList/'+title_url
+				,typeMap: this.typeMap
+				,urlPreventCache: true
 			});
-		}, this);
 
-		dojo.connect(dojo.doc, (!dojo.isMozilla ? "onmousewheel" : "DOMMouseScroll"), function(e){
-			var scroll = e[(!dojo.isMozilla ? "wheelDelta" : "detail")] * (!dojo.isMozilla ? 1 : -1);
-			dojo.byId('thumbs').scrollLeft -= scroll;
+			this.store.fetch({
+				 query: {}
+				,onBegin: function(size){
+					this.numPhotos = size;
+				}
+				,onItem: function(item){
+					dojo.mixin(item, new Cameratron.Photo(this.grandparent));
+					if(window.location.hash.length > 2
+							&& this.store.getValue(item, 'basename') == window.location.hash.substr(2)){
+						this.selectedPhoto = item;
+					}
+				}
+				,onComplete: function(){
+					if(this.selectedPhoto != null){
+						this.replaceImage(this.selectedPhoto);
+						this.resizeWindowHandler();
+					} else {
+						this.firstImage();
+					}
+					this.scrollThumbs(true);
+				}
+				,scope: this
+			});
+
+			dojo.connect(dojo.doc, 'onkeypress', dojo.hitch(this, 'keyHandler'));
+			dojo.query('input').onkeypress(function(event){
+				event.stopPropagation();
+			});
+
+			dojo.connect(window, 'onresize', dojo.hitch(this, 'resizeWindowHandler', false));
+
+			dojo.query('#thumbs a').forEach(function(node, index){
+				dojo.connect(node, 'onclick', this, function(event){
+					event.preventDefault();
+					this.replaceImageIndex(index);
+					return false;
+				});
+			}, this);
+
+			dojo.connect(dojo.doc, (!dojo.isMozilla ? "onmousewheel" : "DOMMouseScroll"), function(e){
+				var scroll = e[(!dojo.isMozilla ? "wheelDelta" : "detail")] * (!dojo.isMozilla ? 1 : -1);
+				dojo.byId('thumbs').scrollLeft -= scroll;
+			});
+
 		});
 
 	},
 	isValidIndex: function(index){
-		return 0 <= index && index < this.galleryData.photos.length;
+		return 0 <= index && index < this.numPhotos;
 	},
 	nextImage: function(){
 		this.replaceImageOffset(1);
@@ -80,33 +83,46 @@ dojo.declare('Cameratron.Navigation', null, {
 		this.replaceImageOffset(-1);
 	},
 	firstImage: function(){
-		this.replaceImage(0);
+		this.replaceImageIndex(0);
 	},
 	lastImage: function(){
-		this.replaceImage(this.galleryData.photos.length - 1);
+		this.replaceImageIndex(this.numPhotos - 1);
+	},
+	setSelectedPhoto: function(item){
+		this.selectedPhoto = item;
+	},
+	replaceImageIndex: function(index){
+		index = Math.min(Math.max(0, index), this.numPhotos-1);
+		this.store.fetch({
+			 query: {sort_index: index}
+			,onItem: dojo.hitch(this, function(item){
+				this.replaceImage(item);
+			 })
+		});
 	},
 	replaceImageOffset: function(offset){
-		var newIndex = this.selectedPhotoIndex + offset;
-		this.replaceImage(newIndex);
+		var newIndex = this.selectedPhoto.get('sort_index') + offset;
+		this.replaceImageIndex(newIndex);
 	},
-	replaceImage: function(newPhotoIndex){
+	preloadOffset: function(offset){
+		var newIndex = this.selectedPhoto.get('sort_index') + offset;
+		this.store.fetch({
+			 query: {sort_index: newIndex}
+			,onItem: dojo.hitch(this, function(item){
+				item.preload();
+			})
+		});
+	},
+	replaceImage: function(item){
 
-		if(!this.isValidIndex(newPhotoIndex)){
-			return;
-		}
+		this.setSelectedPhoto(item);
 
-		this.selectedPhotoIndex = newPhotoIndex;
-
-		this.selectedPhoto = this.galleryData.photos[this.selectedPhotoIndex];
-
-		dojo.byId('selectedPhoto').src = this.selectedPhoto.getThumbURL();
+		dojo.byId('selectedPhoto').src = this.selectedPhoto.getBigURL();
 		dojo.byId('selectedPhoto').parentNode.href = this.selectedPhoto.getFullURL();
 
-		dojo.query('#metadata input[name=photo_id]')[0].value = this.selectedPhoto.id;
+		dojo.query('#metadata input[name=photo_id]')[0].value = this.selectedPhoto.get('id');
 		dojo.forEach(['description', 'people', 'location', 'photographer'], function(item){
-			var newValue = ( this.selectedPhoto[item] !== null)
-					? this.selectedPhoto[item]
-					: '';
+			var newValue = this.selectedPhoto.get(item, '')
 			var element = dojo.byId(item);
 			element.value = '';
 			setTimeout(dojo.hitch(this, function(el, newValue){ //this is to make sure that the text area is scrolled all the way to the left
@@ -116,13 +132,15 @@ dojo.declare('Cameratron.Navigation', null, {
 		}, this);
 		dojo.byId('datetime').value = this.selectedPhoto.getDateTime();
 		
-		var activeSpan = dojo.query('#thumbs .active')[0];
-		dojo.addClass(activeSpan, "visited");
-		dojo.removeClass(activeSpan, "active");
-		activeSpan = dojo.query('#thumbs span')[this.selectedPhotoIndex];
+		dojo.query('#thumbs .active').addClass("visited").removeClass("active");
+		activeSpan = dojo.query('#thumbs span')[this.selectedPhoto.get('sort_index')];
 		dojo.addClass(activeSpan, "active");
 
-		dojo.byId('original-size').href = this.selectedPhoto.getFullURL();
+		dojo.byId('badge-permalink').href =	this.grandparent.base_url+"photo/view/"+this.gallery_title_url+"/#/"+this.selectedPhoto.get('basename');
+		dojo.byId('badge-original-size').href = this.selectedPhoto.getFullURL();
+		dojo.byId('badge-set-key-photo').href = this.grandparent.base_url+"gallery/setPoster/"+this.selectedPhoto.get('gallery_id')+"/"+this.selectedPhoto.get('id');
+
+		window.location.hash = '#/'+this.selectedPhoto.get('basename');
 
 		dojo.forEach([-2, -1, 1, 2], function(offset){
 			this.preloadOffset(offset);
@@ -153,18 +171,6 @@ dojo.declare('Cameratron.Navigation', null, {
 			case dojo.keys.END:
 				this.lastImage();
 				break;
-		}
-	},
-	isFirst: function(selectedPhotoIndex){
-		return selectedPhotoIndex == 0;
-	},
-	isLast: function(selectedPhotoIndex){
-		return selectedPhotoIndex == this.galleryData.photos.length - 1;
-	},
-	preloadOffset: function(offset){
-		var newIndex = this.selectedPhotoIndex + offset;
-		if(this.isValidIndex(newIndex)){
-			this.galleryData.photos[newIndex].preload();
 		}
 	},
 	scrollThumbs: function(skipAnimation){
@@ -210,7 +216,7 @@ dojo.declare('Cameratron.Navigation', null, {
 			//alert('resizing');
 			this.lastResizeTime = timeNow;
 
-			dojo.byId('selectedPhoto').src = this.selectedPhoto.getThumbURL();
+			dojo.byId('selectedPhoto').src = this.selectedPhoto.getBigURL();
 			//this.preloadOffset(1);
 		} else {
 			//alert('not resizing');
@@ -221,6 +227,17 @@ dojo.declare('Cameratron.Navigation', null, {
 		} else {
 			//alert('Called from timer');
 		}
+	},
+	typeMap: {
+		"unixtimestamp": {
+			type: Date,
+			serialize: function(value){
+				return value.getTime()/1000;
+			},
+			deserialize: function(value){
+				return new Date(value*1000);
+			}
+		}
 	}
 });
 
@@ -228,30 +245,32 @@ dojo.declare('Cameratron.Photo', null, {
 	constructor: function(grandparent){
 		this.grandparent = grandparent;
 	},
-	getThumbURL: function(){
-		return this.grandparent.base_url + 'photo/resample/' + this.grandparent.getBigPhotoSize('width') + 'x' + this.grandparent.getBigPhotoSize('height') + '/' + this.id + '.jpg'
+	get: function(attrib, defaultVal){
+		return this._S.getValue(this, attrib, defaultVal);
+	},
+	getBigURL: function(){
+		var width = window.innerWidth - 186;
+		var height = window.innerHeight - 215;
+		return this.grandparent.base_url + 'photo/resample/' + width + 'x' + height + '/' + this.get('id') + '.jpg'
 	},
 	getFullURL: function(){
-		return this.grandparent.base_url + 'photo/original/' + this.gallery_id + '/' + this.basename;
+		return this.grandparent.base_url + 'photo/original/' + this.get('gallery_id') + '/' + this.get('basename');
 	},
 	preload: function(){
-		dojox.image.preload([this.getThumbURL()]);
+		dojox.image.preload([this.getBigURL()]);
 	},
 	getDateTime: function(){
-		if(this.datetime > 0){
-			var timestamp = new Date(this.datetime * 1000);
-			var newString = dojo.date.locale.format(timestamp, {
-					datePattern: "MMMM d, yyyy,",
-					timePattern: "h:mm"
-				});
-			/* why doesn't dojo's date formatter let me use custom AM/PM text?? */
-			newString += dojo.date.locale.format(timestamp, {
-				timePattern: 'a',
-				selector: 'time'
-			}).toLowerCase();
-			return newString;
+		var datetime = this.get('datetime');
+		if(datetime){
+			return dojo.date.locale.format(datetime, {
+				datePattern: "MMMM d, yyyy,",
+				timePattern: "h:mma",
+				am: 'am',
+				pm: 'pm'
+			});
 		} else {
 			return '';
 		}
 	}
+	
 });

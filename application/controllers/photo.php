@@ -22,7 +22,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 			$this->content->selectedPhoto = $gallery->getPhoto($photo_basename);
 		}
 
-		$this->content->siblingPhotos = $gallery->photos;
+		$this->content->siblingPhotos = $gallery->getPhotos();
 
 		$this->badge = new View('badge');
 		$this->badge->links = array(
@@ -52,7 +52,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 			,array(
 				'text'	=> 'Permalink',
 				'title'	=> 'Link to this specific photo',
-				'href'	=> 'photo/view/'.$gallery_title_url.'/'.$this->content->selectedPhoto->basename
+				'href'	=> 'photo/view/'.$gallery_title_url.'/#/'.$this->content->selectedPhoto->basename
 			)
 			,array(
 				'text'	=> 'Edit metadata',
@@ -123,8 +123,6 @@ class Photo_Controller extends SiteTemplate_Controller {
 			)
 		));
 
-		$this->content->heading = "Search results: $question";
-
 		$this->content->photos = Photo_Model::search($question);
 
 		$this->title = array('Photography', 'Search: '.html::specialchars($question));
@@ -159,7 +157,6 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 		$this->_cancelTemplate();
 
-		//$id = str_replace('.jpg','', $id);
 		$id = pathinfo($id, PATHINFO_FILENAME);
 		list($maxWidth, $maxHeight) = explode('x', $size);
 		
@@ -183,8 +180,8 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$originalWidth = $image->width;
 		$originalHeight = $image->height;
 		$ratio = min(1, $maxWidth/$originalWidth, $maxHeight/$originalHeight);
-		$newWidth = round($originalWidth * $ratio);
-		$newHeight = round($originalHeight * $ratio);
+		$newWidth = ceil($originalWidth * $ratio);
+		$newHeight = ceil($originalHeight * $ratio);
 
 		/*echo "original: ($originalWidth x $originalHeight)<br>";
 		echo "max: ($maxWidth x $maxHeight)<br>";

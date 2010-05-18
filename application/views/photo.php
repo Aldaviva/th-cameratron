@@ -15,19 +15,21 @@
 	<?
 
 		foreach($siblingPhotos as $subIndex => $photo){
-			$attribs = ($selectedPhoto->id == $photo->id) ? array('class' => 'active') : array();
+			//$attribs = ($selectedPhoto->id == $photo->id) ? array('class' => 'active') : array();
 
 			$img = html::image($photo->getURL(75, 50));
 
 			$a = html::anchor('photo/view/'.$gallery_title_url.'/'.$photo->basename, $img);
-			echo "<span".html::attributes($attribs).">$a</span>";
+//			echo "<span".html::attributes($attribs).">$a</span>";
+			echo "<span>$a</span>";
 		}
 	?>
 </div>
 
 <script type="text/javascript">
+	document.getElementById('selectedPhoto').src = '';
 	dojo.addOnLoad(function(){
-		cameratron.navigation = new Cameratron.Navigation(cameratron, '<?= $gallery_title_url ?>', <?= $selectedPhoto->id ?>);
+		cameratron.navigation = new Cameratron.Navigation(cameratron, '<?= $gallery_title_url ?>');
 	});
 
 </script>
