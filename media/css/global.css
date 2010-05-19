@@ -51,6 +51,11 @@ abbr {
 	font-variant: small-caps;
 }
 
+input.empty {
+	font-style: italic !important;
+	color: #8c8c8c;
+}
+
 .clear {
 	clear: both;
 }
@@ -212,10 +217,10 @@ header #badge-permalink {
 	background: url('../img/search_divider.png') no-repeat right center;
 }
 
-#searchbox #q.empty {
+/*#searchbox #q.empty {
 	font-style: italic;
 	color: #8c8c8c;
-}
+}*/
 
 #searchbox button[type=submit] {
 	width: 26px;

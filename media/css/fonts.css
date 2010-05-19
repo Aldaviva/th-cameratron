@@ -1,13 +1,13 @@
 /* A font by Jos Buivenga (exljbris) -> www.exljbris.com */
 @font-face {
-	font-family: "Museo Slab";
-	src: url("../fonts/Museo_Slab_500.otf") format("opentype");
-}
-
-/* A font by Jos Buivenga (exljbris) -> www.exljbris.com */
-@font-face {
 	font-family: "D";
 	src: url("../fonts/Delicious Roman.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "D Italic";
+	font-style: italic;
+	src: url("../fonts/Delicious Italic.otf") format("opentype");
 }
 
 @font-face {

@@ -58,6 +58,17 @@ dojo.declare('Cameratron.Uploader', null, {
 				},
 				"title"
 			);
+
+			if(existingGallery != ''){
+				galleryListStore.fetch({
+					 query: {id: existingGallery}
+					,onItem: function(item){
+						this.titleSelect.attr('item', item);
+					}
+					,scope: this
+				});
+			}
+			
 		});
 	},
 

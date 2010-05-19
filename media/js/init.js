@@ -1,60 +1,59 @@
+dojo.require("dijit.form._FormWidget");
+
 var cameratron = new Cameratron();
 
 function Cameratron(){
 
 	this.base_url = '/cameratron/';
 
-	/*this.getBigPhotoSize = function(dimension){
-		switch(dimension){
-			case 'width':
-				return window.innerWidth - 186;
-			case 'height':
-				return window.innerHeight - 215;
-		}
-	}*/
-
 	return this;
 }
 
-dojo.declare('Cameratron.SearchBox', null, {
+dojo.addOnLoad(function(){
+	dojo.declare('Cameratron.PlaceholderTextBox', [dijit._Widget], {
 
-	constructor: function(input_id){
-		dojo.addOnLoad(this, function(){
-			this.inputElement = dojo.byId(input_id);
-
-			dojo.connect(this.inputElement, 'focus', this, this.focusHandler);
-			dojo.connect(this.inputElement, 'blur', this, this.unFocusHandler);
-			dojo.connect(this.inputElement.form, 'submit', this, this.submitHandler);
+		 emptyClass: 'empty'
+		,emptyText: ''
+		
+		,postCreate: function(){
+			dojo.connect(this.srcNodeRef, 'focus', this, this.focusHandler);
+			dojo.connect(this.srcNodeRef, 'blur', this, this.unFocusHandler);
 
 			this.unFocusHandler();
-		});
-	},
-
-	inputIsEmpty: function(){
-		return this.inputElement.value == '' || this.inputElement.value == "Search";
-	},
-
-	focusHandler: function(event){
-		if(this.inputIsEmpty()){
-			this.inputElement.value = '';
-			dojo.removeClass(this.inputElement, 'empty');
 		}
-	},
 
-	unFocusHandler: function(event){
-		if(this.inputIsEmpty()){
-			this.inputElement.value = 'Search';
-			dojo.addClass(this.inputElement, 'empty');
+		,inputIsEmpty: function(){
+			var value = this.srcNodeRef.value;
+			return value == '' || value == this.attr('emptyText');
 		}
-	},
 
-	submitHandler: function(event){
+		,focusHandler: function(){
+			if(this.inputIsEmpty()){
+				this.srcNodeRef.value = '';
+				dojo.removeClass(this.srcNodeRef, this.attr('emptyClass'));
+			}
+		}
+
+		,unFocusHandler: function(){
+			if(this.inputIsEmpty()){
+				this.srcNodeRef.value = this.attr('emptyText');
+				dojo.addClass(this.srcNodeRef, this.attr('emptyClass'));
+			} else {
+				dojo.removeClass(this.srcNodeRef, this.attr('emptyClass'));
+			}
+		}
+
+		,_setValueAttr: function(value){
+			this.srcNodeRef.value = value;
+			this.unFocusHandler();
+		}
+	});
+
+	cameratron.searchbox = new Cameratron.PlaceholderTextBox({emptyText: 'Search'}, 'q');
+	dojo.connect(cameratron.searchbox.domNode.form, 'onsubmit', cameratron.searchbox, function(event){
 		if(this.inputIsEmpty()){
 			event.preventDefault();
-			this.inputElement.focus();
+			this.srcNodeRef.focus();
 		}
-	}
-
+	})
 });
-
-cameratron.searchbox = new Cameratron.SearchBox('q');

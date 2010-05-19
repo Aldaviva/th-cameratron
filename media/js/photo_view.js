@@ -1,5 +1,6 @@
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dojo.date.locale');
+dojo.require('dojo.hash');
 dojo.require('dojox.fx.scroll')
 dojo.require('dojox.image');
 
@@ -18,14 +19,18 @@ dojo.declare('Cameratron.Navigation', null, {
 		this.resizeTimer = null;
 
 		dojo.addOnLoad(this, function(){
+			//hide submit button
 			dojo.style('submit', 'display', 'none');
 
+			//initialize data store
 			this.store = new dojo.data.ItemFileWriteStore({
 				 url:	this.grandparent.base_url + '/gallery/photoList/'+title_url
 				,typeMap: this.typeMap
 				,urlPreventCache: true
 			});
 
+			//create Photo objects out of data store items
+			//find initially selected photo
 			this.store.fetch({
 				 query: {}
 				,onBegin: function(size){
@@ -33,8 +38,8 @@ dojo.declare('Cameratron.Navigation', null, {
 				}
 				,onItem: function(item){
 					dojo.mixin(item, new Cameratron.Photo(this.grandparent));
-					if(window.location.hash.length > 2
-							&& this.store.getValue(item, 'basename') == window.location.hash.substr(2)){
+					if(this.selectedPhoto == null
+							&& this.store.getValue(item, 'basename') == dojo.hash().substr(1)){
 						this.selectedPhoto = item;
 					}
 				}
@@ -50,24 +55,43 @@ dojo.declare('Cameratron.Navigation', null, {
 				,scope: this
 			});
 
-			dojo.connect(dojo.doc, 'onkeypress', dojo.hitch(this, 'keyHandler'));
+			//arrow key event handler
+			dojo.connect(dojo.doc, 'onkeypress', this, 'keyHandler');
 			dojo.query('input').onkeypress(function(event){
 				event.stopPropagation();
 			});
 
+			//window resizing event handler
 			dojo.connect(window, 'onresize', dojo.hitch(this, 'resizeWindowHandler', false));
 
+			//clicking on thumbnails handler
 			dojo.query('#thumbs a').forEach(function(node, index){
 				dojo.connect(node, 'onclick', this, function(event){
 					event.preventDefault();
 					this.replaceImageIndex(index);
-					return false;
 				});
 			}, this);
 
+			//scroll wheel horizontal thumb scrolling handler
 			dojo.connect(dojo.doc, (!dojo.isMozilla ? "onmousewheel" : "DOMMouseScroll"), function(e){
 				var scroll = e[(!dojo.isMozilla ? "wheelDelta" : "detail")] * (!dojo.isMozilla ? 1 : -1);
 				dojo.byId('thumbs').scrollLeft -= scroll;
+			});
+
+			//turn text boxes into PlaceholderTextBoxes, with hints when empty
+			dojo.query('input[type=text]', 'metadata').forEach(function(textbox){
+				new Cameratron.PlaceholderTextBox({
+					emptyText: textbox.title
+					}, textbox);
+			}, this);
+
+			//back button changes the # part of URL, which this handles
+			dojo.subscribe('/dojo/hashchange', this, this.hashHandler);
+
+			//badge link for Edit Metadata will focus the description field
+			dojo.connect(dojo.byId('badge-edit-metadata'), 'click', this, function(event){
+				event.preventDefault();
+				dojo.byId('description').select();
 			});
 
 		});
@@ -87,9 +111,6 @@ dojo.declare('Cameratron.Navigation', null, {
 	},
 	lastImage: function(){
 		this.replaceImageIndex(this.numPhotos - 1);
-	},
-	setSelectedPhoto: function(item){
-		this.selectedPhoto = item;
 	},
 	replaceImageIndex: function(index){
 		index = Math.min(Math.max(0, index), this.numPhotos-1);
@@ -113,24 +134,33 @@ dojo.declare('Cameratron.Navigation', null, {
 			})
 		});
 	},
-	replaceImage: function(item){
+	replaceImage: function(item, updateHash){
 
-		this.setSelectedPhoto(item);
+		if(typeof updateHash == 'undefined'){
+			updateHash = true;
+		}
+
+		this.selectedPhoto = item;
 
 		dojo.byId('selectedPhoto').src = this.selectedPhoto.getBigURL();
 		dojo.byId('selectedPhoto').parentNode.href = this.selectedPhoto.getFullURL();
 
 		dojo.query('#metadata input[name=photo_id]')[0].value = this.selectedPhoto.get('id');
-		dojo.forEach(['description', 'people', 'location', 'photographer'], function(item){
-			var newValue = this.selectedPhoto.get(item, '')
-			var element = dojo.byId(item);
-			element.value = '';
-			setTimeout(dojo.hitch(this, function(el, newValue){ //this is to make sure that the text area is scrolled all the way to the left
+		dojo.forEach(['description', 'people', 'location', 'photographer', 'datetime'], function(item){
+			var newValue;
+			if(item == 'datetime'){
+				newValue = this.selectedPhoto.getDateTime();
+			} else {
+				newValue = this.selectedPhoto.get(item, '')
+			}
+//			var element = dojo.byId(item);
+//			element.value = '';
+			dijit.byId(item).attr('value', newValue);
+			/*setTimeout(dojo.hitch(this, function(el, newValue){ //this is to make sure that the text area is scrolled all the way to the left
 				el.value = newValue;
-				el.title = newValue;
-			}, element, newValue), 10);
+			}, element, newValue), 10);*/
 		}, this);
-		dojo.byId('datetime').value = this.selectedPhoto.getDateTime();
+//		dojo.byId('datetime').value = this.selectedPhoto.getDateTime();
 		
 		dojo.query('#thumbs .active').addClass("visited").removeClass("active");
 		activeSpan = dojo.query('#thumbs span')[this.selectedPhoto.get('sort_index')];
@@ -140,7 +170,9 @@ dojo.declare('Cameratron.Navigation', null, {
 		dojo.byId('badge-original-size').href = this.selectedPhoto.getFullURL();
 		dojo.byId('badge-set-key-photo').href = this.grandparent.base_url+"gallery/setPoster/"+this.selectedPhoto.get('gallery_id')+"/"+this.selectedPhoto.get('id');
 
-		window.location.hash = '#/'+this.selectedPhoto.get('basename');
+		if(updateHash){
+			dojo.hash('/'+this.selectedPhoto.get('basename'));
+		}
 
 		dojo.forEach([-2, -1, 1, 2], function(offset){
 			this.preloadOffset(offset);
@@ -172,6 +204,15 @@ dojo.declare('Cameratron.Navigation', null, {
 				this.lastImage();
 				break;
 		}
+	},
+	hashHandler: function(hash){
+		this.store.fetch({
+			query: {basename: hash.substr(1)}
+			,onItem: function(item){
+				this.replaceImage(item, false);
+			}
+			,scope: this
+		});
 	},
 	scrollThumbs: function(skipAnimation){
 
