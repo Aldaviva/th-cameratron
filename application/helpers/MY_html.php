@@ -8,12 +8,14 @@
 class html extends html_Core {
 
 	public static function stylesheet($style, $media = FALSE, $index = FALSE) {
+
 		$prefix = Kohana::config('cameratron.css_prefix', true);
 
 		return self::link($style, 'stylesheet', 'text/css', '.css', $media, $index, $prefix);
 	}
 
 	public static function link($href, $rel, $type, $suffix = FALSE, $media = FALSE, $index = FALSE, $prefix = '') {
+
 		$compiled = '';
 
 		if (is_array($href))

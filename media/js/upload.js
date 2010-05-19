@@ -7,8 +7,10 @@ dojo.require('dijit.form.ComboBox');
 dojo.declare('Cameratron.Uploader', null, {
 
 	swfUrl: '/js/yui2/yui/build/uploader/assets/uploader.swf',
-	ticketUrl: '/cameratron/private/getTicket.php',
-	galleryCreationScript: '/cameratron/gallery/create',
+//	ticketUrl: '/cameratron/private/getTicket.php',
+	ticketUrl: '/cameratron/secure.php/upload/getTicket',
+	galleryCreationScript: '/cameratron/secure.php/gallery/create',
+	uploadScript: '/cameratron/upload/receivePhoto',
 
 	constructor: function(form_id, filelist_id){
 
@@ -18,7 +20,7 @@ dojo.declare('Cameratron.Uploader', null, {
 		dojo.addOnLoad(this, function(){
 
 			this.form = dojo.byId(form_id);
-			this.uploadScript = this.form.action;
+//			this.uploadScript = this.form.action;
 			this.fileListNode = dojo.byId(filelist_id);
 			this.gallery_id = -1;
 

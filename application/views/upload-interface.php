@@ -2,7 +2,7 @@
 
 	<div class="dialog nihilo">
 
-		<?= form::open('upload/receivePhoto', array('id' => 'upload', 'method' => 'post')); ?>
+		<?= form::open('', array('id' => 'upload', 'method' => 'post')); ?>
 
 			<h3>Photo Transfer</h3>
 			

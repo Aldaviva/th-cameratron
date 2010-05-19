@@ -18,7 +18,7 @@ $config['site_protocol'] = '';
  *
  * This can be removed by using URL rewriting.
  */
-$config['index_page'] = '';
+$config['index_page'] = (LOGGED_IN) ? 'secure.php' : '';
 
 /**
  * Fake file extension that will be added to all generated URLs. Example: .html

@@ -77,27 +77,6 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		$this->title = array('Photography', $gallery->title);
     }
 
-	/*function photoListOld($title_url = null){
-		header('Content-Type: application/json');
-		
-		$this->_cancelTemplate();
-
-		if(is_null($title_url)){
-			echo "{'stat': 'fail', 'message': 'No gallery requested'}";
-			return;
-		}
-
-		$gallery = Gallery_Model::getByTitleUrl($title_url);
-
-		$data = $gallery->as_array();
-
-		foreach($gallery->photos as $photo){
-			$data['photos'][] = $photo->as_array();
-		}
-
-		echo json_encode($data);
-	}*/
-
 	function photoList($title_url = null){
 		header('Content-Type: application/json');
 
@@ -125,10 +104,15 @@ class Gallery_Controller extends SiteTemplate_Controller {
 	function create(){
 
 		$this->_cancelTemplate();
-//		header('Content-Type: application/json');
+		header('Content-Type: application/json');
 
-		if(!isset($_REQUEST['SID']) || !Upload_Controller::isValidTicket($_REQUEST['SID'])){
+		/*if(!isset($_REQUEST['SID']) || !Upload_Controller::isValidTicket($_REQUEST['SID'])){
 			echo ("{'stat': 'fail', 'message': 'No valid upload ticket provided'}");
+			return;
+		}*/
+
+		if(!LOGGED_IN){
+			header('HTTP/1.0 401 Unauthorized', true, 401);
 			return;
 		}
 		
@@ -183,19 +167,28 @@ class Gallery_Controller extends SiteTemplate_Controller {
 	}
 
 	function setPoster($gallery_id, $photo_id){
+
+		$this->_cancelTemplate();
+
 		$gallery = new Gallery_Model($gallery_id);
 		$photo = new Photo_Model($photo_id);
 
+		$response = array();
+
 		if($photo->gallery->id == $gallery->id){
 			$gallery->poster_photo_id = $photo->id;
+			$gallery->save();
+			$response['stat'] = 'ok';
+		} else {
+			$response['stat'] = 'fail';
+			$response['message'] = 'This photo does not belong to this gallery.';
 		}
 
-		$gallery->save();
+		echo json_encode($response);
 
-		if(!request::is_ajax()){
+		/*if(!request::is_ajax()){
 			url::redirect(request::referrer());
-		}
-
+		}*/
 
 	}
 

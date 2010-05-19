@@ -106,6 +106,11 @@ dojo.declare('Cameratron.Navigation', null, {
 				dojo.byId('description').select();
 			});
 
+			dojo.connect(dojo.byId('badge-set-key-photo'), 'onclick', this, function(event){
+				event.preventDefault();
+				this.selectedPhoto.setAsPoster();
+			});
+
 		});
 
 	},
@@ -177,7 +182,8 @@ dojo.declare('Cameratron.Navigation', null, {
 
 		dojo.byId('badge-permalink').href =	this.grandparent.base_url+"photo/view/"+this.gallery_title_url+"/#/"+this.selectedPhoto.get('basename');
 		dojo.byId('badge-original-size').href = this.selectedPhoto.getFullURL();
-		dojo.byId('badge-set-key-photo').href = this.grandparent.base_url+"gallery/setPoster/"+this.selectedPhoto.get('gallery_id')+"/"+this.selectedPhoto.get('id');
+		dojo.byId('badge-set-key-photo').attr('href', this.grandparent.base_url+"gallery/setPoster/"+this.selectedPhoto.get('gallery_id')+"/"+this.selectedPhoto.get('id'));
+
 
 		if(updateHash){
 			dojo.hash('/'+this.selectedPhoto.get('basename'));
@@ -371,6 +377,22 @@ dojo.declare('Cameratron.Photo', null, {
 				break;
 		}
 		this._S.setValue(this, key, value);
+	},
+	setAsPoster: function(){
+		dojo.xhrGet({
+			 url: '/cameratron/gallery/setPoster/'+this.get('gallery_id')+'/'+this.get('id')
+			,handleAs: 'json'
+			,load: function(response){
+				if(response.stat == 'ok'){
+					alert('This is now the preview photo for this gallery.');
+				} else {
+					alert('Error: Server refused to set the preview photo for this gallery.');
+				}
+			}
+			,error: function(){
+				alert('Error: could not set preview photo.\nCheck your network connection.');
+			}
+		});
 	}
 	
 });

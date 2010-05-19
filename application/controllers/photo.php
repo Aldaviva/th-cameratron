@@ -62,10 +62,10 @@ class Photo_Controller extends SiteTemplate_Controller {
 				//'id'	=> 'edit_metadata_badgebutton'
 			)
 			,array(
-				'text'	=> 'Set key photo',
+				'text'	=> 'Set as preview',
 				'title'	=> 'This gallery will be listed using this picture as its thumbnail',
 				'href'	=> "gallery/setPoster/{$gallery->id}/{$this->content->selectedPhoto->id}",
-				//'id'	=> 'set_poster_badgebutton'
+				'id'	=> 'badge-set-key-photo'
 			)
 		);
 

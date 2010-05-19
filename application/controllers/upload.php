@@ -142,6 +142,24 @@ class Upload_Controller extends SiteTemplate_Controller {
 			&& ($_SESSION['Client IP'] == $_SERVER['REMOTE_ADDR']);
 	}
 
+	function getTicket(){
+		$this->_cancelTemplate();
+
+		if(!LOGGED_IN){
+			header('HTTP/1.0 401 Unauthorized', true, 401);
+			return;
+		}
+
+		ini_set('session.use_cookies', false);
+
+		session_start();
+
+		$_SESSION['Client IP'] = $_SERVER['REMOTE_ADDR'];
+		$_SESSION['Start time'] = time();
+
+		echo session_id();
+	}
+
 }
 
 ?>
