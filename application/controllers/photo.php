@@ -9,6 +9,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 		$this->stylesheets[] = 'photo_view.css';
 		$this->scripts[] = 'photo_view.js';
+		$this->scripts[] = 'strtotime_mini.js';
 
 		$gallery = Gallery_Model::getByTitleUrl($gallery_title_url);
 

@@ -20,7 +20,8 @@ dojo.declare('Cameratron.Navigation', null, {
 
 		dojo.addOnLoad(this, function(){
 			//hide submit button
-			dojo.style('submit', 'display', 'none');
+//			dojo.style('submit', 'display', 'none');
+			dojo.query('.buttons', 'metadata').style('display', 'none');
 
 			//initialize data store
 			this.store = new dojo.data.ItemFileWriteStore({
@@ -28,6 +29,7 @@ dojo.declare('Cameratron.Navigation', null, {
 				,typeMap: this.typeMap
 				,urlPreventCache: true
 			});
+			this.store._saveCustom = dojo.hitch(this, this._flushChanges);
 
 			//create Photo objects out of data store items
 			//find initially selected photo
@@ -45,7 +47,7 @@ dojo.declare('Cameratron.Navigation', null, {
 				}
 				,onComplete: function(){
 					if(this.selectedPhoto != null){
-						this.replaceImage(this.selectedPhoto);
+						this.replaceImage(this.selectedPhoto, true, true);
 						this.resizeWindowHandler();
 					} else {
 						this.firstImage();
@@ -84,6 +86,16 @@ dojo.declare('Cameratron.Navigation', null, {
 					emptyText: textbox.title
 					}, textbox);
 			}, this);
+
+			dojo.query('input[type=text]', 'metadata')
+				.connect('onchange', this, this.metadataChanged)
+				.connect('oninput', this, function(){
+					dojo.query('.buttons', 'metadata').style('display', 'block');
+				});
+
+			dojo.connect(dojo.byId('metadata'), 'onsubmit', this, this.metadataSubmit);
+
+			dojo.connect(dojo.byId('cancel'), 'onclick', this, this.metadataCancel);
 
 			//back button changes the # part of URL, which this handles
 			dojo.subscribe('/dojo/hashchange', this, this.hashHandler);
@@ -134,10 +146,13 @@ dojo.declare('Cameratron.Navigation', null, {
 			})
 		});
 	},
-	replaceImage: function(item, updateHash){
+	replaceImage: function(item, updateHash, skipAnimation){
 
 		if(typeof updateHash == 'undefined'){
 			updateHash = true;
+		}
+		if(typeof skipAnimation == 'undefined'){
+			skipAnimation = false;
 		}
 
 		this.selectedPhoto = item;
@@ -146,21 +161,15 @@ dojo.declare('Cameratron.Navigation', null, {
 		dojo.byId('selectedPhoto').parentNode.href = this.selectedPhoto.getFullURL();
 
 		dojo.query('#metadata input[name=photo_id]')[0].value = this.selectedPhoto.get('id');
-		dojo.forEach(['description', 'people', 'location', 'photographer', 'datetime'], function(item){
-			var newValue;
-			if(item == 'datetime'){
-				newValue = this.selectedPhoto.getDateTime();
+		dojo.forEach(['description', 'people', 'location', 'photographer', 'datetime'], function(fieldName){
+			var value;
+			if(fieldName == 'datetime'){
+				value = this.selectedPhoto.formatDateTime();
 			} else {
-				newValue = this.selectedPhoto.get(item, '')
+				value = this.selectedPhoto.get(fieldName, '');
 			}
-//			var element = dojo.byId(item);
-//			element.value = '';
-			dijit.byId(item).attr('value', newValue);
-			/*setTimeout(dojo.hitch(this, function(el, newValue){ //this is to make sure that the text area is scrolled all the way to the left
-				el.value = newValue;
-			}, element, newValue), 10);*/
+			dijit.byId(fieldName).attr('value', value);
 		}, this);
-//		dojo.byId('datetime').value = this.selectedPhoto.getDateTime();
 		
 		dojo.query('#thumbs .active').addClass("visited").removeClass("active");
 		activeSpan = dojo.query('#thumbs span')[this.selectedPhoto.get('sort_index')];
@@ -178,7 +187,7 @@ dojo.declare('Cameratron.Navigation', null, {
 			this.preloadOffset(offset);
 		}, this);
 
-		this.scrollThumbs();
+		this.scrollThumbs(skipAnimation);
 
 	},
 	keyHandler: function(event){
@@ -258,7 +267,6 @@ dojo.declare('Cameratron.Navigation', null, {
 			this.lastResizeTime = timeNow;
 
 			dojo.byId('selectedPhoto').src = this.selectedPhoto.getBigURL();
-			//this.preloadOffset(1);
 		} else {
 			//alert('not resizing');
 		}
@@ -269,14 +277,54 @@ dojo.declare('Cameratron.Navigation', null, {
 			//alert('Called from timer');
 		}
 	},
+	metadataChanged: function(event){
+		this.selectedPhoto.setMetadata(event.currentTarget.name, event.currentTarget.value);
+	},
+	metadataSubmit: function(event){
+		event.preventDefault();
+		this.store.save({
+			onComplete: function(){
+				dojo.query('.buttons', 'metadata').style('display', 'none');
+				alert('Save complete.');
+			},
+			onError: function(errorData){
+				alert(errorData);
+			}
+		});
+	},
+	metadataCancel: function(){
+		this.store.revert();
+		this.replaceImage(this.selectedPhoto, false, true);
+		dojo.query('.buttons', 'metadata').style('display', 'none');
+	},
+	_flushChanges: function(saveCompleteCallback, saveFailedCallback){
+		var fieldsToSend = ['description', 'people', 'datetime', 'location', 'photographer'];
+		var data = [];
+		var dirtyItem;
+		for(var cleanItem in this.store._pending._modifiedItems){
+			dirtyItem = this.store._itemsByIdentity[cleanItem];
+			var dataItem = {};
+			dojo.forEach(fieldsToSend, function(fieldName){
+				dataItem[fieldName] = this.store._flatten(dirtyItem.get(fieldName));
+			}, this);
+			data.push(dataItem);
+		}
+		alert(dojo.toJson(data, true));
+		saveCompleteCallback();
+	},
 	typeMap: {
 		"unixtimestamp": {
 			type: Date,
-			serialize: function(value){
-				return value.getTime()/1000;
+			serialize: function(dateObj){
+				return dateObj.getTime()/1000;
+//				return value;
 			},
-			deserialize: function(value){
-				return new Date(value*1000);
+			deserialize: function(timestamp){
+				if(timestamp){
+					return new Date(timestamp*1000);
+				} else {
+					return null;
+				}
 			}
 		}
 	}
@@ -284,7 +332,7 @@ dojo.declare('Cameratron.Navigation', null, {
 
 dojo.declare('Cameratron.Photo', null, {
 	constructor: function(grandparent){
-		this.grandparent = grandparent;
+		//this.grandparent = grandparent;
 	},
 	get: function(attrib, defaultVal){
 		return this._S.getValue(this, attrib, defaultVal);
@@ -292,15 +340,15 @@ dojo.declare('Cameratron.Photo', null, {
 	getBigURL: function(){
 		var width = window.innerWidth - 186;
 		var height = window.innerHeight - 215;
-		return this.grandparent.base_url + 'photo/resample/' + width + 'x' + height + '/' + this.get('id') + '.jpg'
+		return cameratron.base_url + 'photo/resample/' + width + 'x' + height + '/' + this.get('id') + '.jpg'
 	},
 	getFullURL: function(){
-		return this.grandparent.base_url + 'photo/original/' + this.get('gallery_id') + '/' + this.get('basename');
+		return cameratron.base_url + 'photo/original/' + this.get('gallery_id') + '/' + this.get('basename');
 	},
 	preload: function(){
 		dojox.image.preload([this.getBigURL()]);
 	},
-	getDateTime: function(){
+	formatDateTime: function(){
 		var datetime = this.get('datetime');
 		if(datetime){
 			return dojo.date.locale.format(datetime, {
@@ -312,6 +360,18 @@ dojo.declare('Cameratron.Photo', null, {
 		} else {
 			return '';
 		}
+	},
+	setMetadata: function(key, value){
+//		alert('Changing photo '+this.get('id')+"'s "+key+" field to "+value);
+		switch(key){
+			case 'datetime':
+				value = new Date(strtotime(value)*1000);
+				break;
+			default:
+				break;
+		}
+		this._S.setValue(this, key, value);
 	}
 	
 });
+

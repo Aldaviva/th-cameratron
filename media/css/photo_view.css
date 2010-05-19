@@ -31,7 +31,7 @@ body {
 
 #metadata input[type='text'] {
 	font: 12px "Delicious", "D";
-	position: absolute;
+	/*position: absolute;*/
 	border: none;
 	background: transparent;
 }
@@ -44,7 +44,7 @@ body {
 #metadata input#people {
 	font-size: 14px;
 	left: 5px;
-	top: 38px;
+	top: 14px;
 }
 
 #metadata input#datetime {
@@ -62,19 +62,30 @@ body {
 	top: 40px;
 }
 
+#metadata .left {
+	position: absolute;
+	left: 0;
+	right: 220px;
+}
+
 #metadata input#description, #metadata input#people {
-	width: 73%;
+	/*width: 73%;*/
+	width: 100%;
+	position: relative;
 }
 
 #metadata input#datetime, #metadata input#location, #metadata input#photographer {
 	text-align: right;
-	width: 25%;
+	width: 200px;
+	position: absolute;
 }
 
-#metadata input[type='submit'] {
+#metadata .buttons {
 	position: absolute;
-	right: 15px;
-	top: 54px;
+	/*right: 15px;
+	top: 54px;*/
+	right: -5px;
+	top: -14px;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -90,7 +101,8 @@ body {
 	left: 0;
 	overflow: scroll;
 	overflow-y: hidden;
-	padding: 17px 46px 25px;
+	/*padding: 17px 46px 25px;*/
+	padding: 17px 17px 25px;
 	position: fixed;
 	right: 0;
 	white-space: nowrap;
