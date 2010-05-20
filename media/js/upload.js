@@ -13,9 +13,9 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		this.grandparent = grandparent;
 
-		ticketUrl = grandparent.base_url + 'secure.php/upload/getTicket';
-		galleryCreationScript = grandparent.base_url + 'secure.php/gallery/create';
-		uploadScript = grandparent.base_url + 'upload/receivePhoto';
+		this.ticketUrl = grandparent.base_url + 'secure.php/upload/getTicket';
+		this.galleryCreationScript = grandparent.base_url + 'secure.php/gallery/create';
+		this.uploadScript = grandparent.base_url + 'upload/receivePhoto';
 
 		YAHOO.widget.Uploader.SWFURL = this.swfUrl;
 		this.pieChartLoaded = new dojo.Deferred();

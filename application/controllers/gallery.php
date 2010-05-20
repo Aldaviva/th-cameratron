@@ -27,10 +27,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			)
 		);
 
-		$this->content->pagination = new Pagination(array(
-			'total_items'=>Gallery_Model::numGalleries(),
-			'items_per_page' => 24)
-		);
+		$this->content->pagination = Gallery_Model::getPagination();
 
 		$this->content->galleries = Gallery_Model::get_all(
 			$this->content->pagination->items_per_page,
@@ -56,7 +53,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 					,array(
 						'text'	=> 'All Galleries',
 						'title'	=> 'See all of our galleries',
-						'href'	=> '/gallery'
+						'href'	=> '/gallery/?page='.$gallery->getOverviewPage()
 					)
 					,array(
 						'text'	=> 'Upload',

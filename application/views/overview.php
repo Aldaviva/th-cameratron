@@ -16,7 +16,7 @@ foreach($galleries as $gallery){
 			);
 
 	$linkURL = ($isEmptyGallery)
-			? 'gallery/edit/'.$gallery->title_url
+			? 'upload/index/'.$gallery->id
 			: 'gallery/view/'.$gallery->title_url;
 
 	echo html::anchor($linkURL,

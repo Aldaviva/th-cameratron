@@ -31,7 +31,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 			,array(
 				'text'	=> 'All Galleries',
 				'title'	=> 'See all of our galleries',
-				'href'	=> '/gallery'
+				'href'	=> '/gallery/?page='.$gallery->getOverviewPage()
 			)
 			,array(
 				'text'	=> 'Upload',

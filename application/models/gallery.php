@@ -11,7 +11,7 @@ class Gallery_Model extends ORM {
 	}
 
 	static function get_all($limit = null, $offset = null){
-		$query = self::factory('gallery')->orderby(self::$ordering);
+		$query = ORM::factory('gallery')->orderby(self::$ordering);
 
 		if(!is_null($offset) && !is_null($limit)){
 			$query->limit($limit, $offset);
@@ -21,7 +21,7 @@ class Gallery_Model extends ORM {
 	}
 
 	static function numGalleries(){
-		return self::factory('gallery')->count_all();
+		return ORM::factory('gallery')->count_all();
 	}	
 
 	function getPhoto($basename){
@@ -45,6 +45,23 @@ class Gallery_Model extends ORM {
 	function enforceMinPhotoDate(){
 		$this->date = $this->db->select('MIN(datetime) AS mindate')->where('gallery_id', $this->id)->get('photos')->current()->mindate;
 		$this->save();
+	}
+
+	static function getPagination(){
+		static $pagination = null;
+		if(is_null($pagination)){
+			$pagination = new Pagination(array(
+				'total_items'=>Gallery_Model::numGalleries(),
+				'items_per_page' => 24)
+			);
+		}
+		return $pagination;
+	}
+
+	function getOverviewPage(){
+		$sort_indices = array_flip($this->get_all()->primary_key_array());
+		$sort_index = $sort_indices[$this->id];
+		return self::getPagination()->getPageByIndex($sort_index);
 	}
 
 	function __get($key){
