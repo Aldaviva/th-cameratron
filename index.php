@@ -13,6 +13,15 @@
 define('TIMESTAMP_SQL', 'Y-m-d H:i:s');
 
 /**
+ * Because of Apache access rules, anyone accessing this page will be
+ * either on-campus or (off-campus and have logged in with a valid Tech
+ * House username+password combination).
+ */
+if(!defined('LOGGED_IN')){
+	define('LOGGED_IN', false);
+}
+
+/**
  * Define the website environment status. When this flag is set to TRUE, some
  * module demonstration controllers will result in 404 errors. For more information
  * about this option, read the documentation about deploying Kohana.

@@ -42,6 +42,11 @@ class Gallery_Model extends ORM {
 		return $photos[0];
 	}
 
+	function enforceMinPhotoDate(){
+		$this->date = $this->db->select('MIN(datetime) AS mindate')->where('gallery_id', $this->id)->get('photos')->current()->mindate;
+		$this->save();
+	}
+
 	function __get($key){
 		switch ($key){
 			case 'poster_photo':

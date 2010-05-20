@@ -75,22 +75,40 @@ class Photo_Controller extends SiteTemplate_Controller {
 	}
 
 	function edit(){
+		
+		$this->_cancelTemplate();
 
-		$photo = new Photo_Model($_GET['photo_id']);
-
-		foreach(array('description', 'people', 'location', 'photographer') as $field){
-			$photo->$field = $_GET[$field] or '';
+		header('Content-Type: application/json');
+		if(!LOGGED_IN){
+			header('HTTP/1.0 401 Unauthorized', true, 401);
+			return;
 		}
 
-		if($datetime = strtotime($_GET['datetime'])){ /* not a mistake, strtotime will return 0 if failure */
-			$photo->datetime = date(TIMESTAMP_SQL, $datetime);
+		$response = array('stat' => 'ok');
+
+		foreach(json_decode($_POST['metadata']) as $metadata){
+
+			$photo = ORM::factory('photo', $metadata->id);
+
+			foreach(array('description', 'people', 'location', 'photographer') as $field){
+				$photo->$field = $metadata->$field;
+			}
+			$photo->datetime = date(TIMESTAMP_SQL, $metadata->datetime->_value);
+
+			$photo->gallery->enforceMinPhotoDate();
+
+//			if($datetime = strtotime($_GET['datetime'])){ // not a mistake, strtotime will return 0 if failure
+//				$photo->datetime = date(TIMESTAMP_SQL, $datetime);
+//			}
+
+			$photo->save();
 		}
 
-		$photo->save();
+		echo json_encode($response);
 
-		if(!request::is_ajax()){
+		/*if(!request::is_ajax()){
 			url::redirect(request::referrer());
-		}
+		}*/
 	}
 
 	//find any photo that matches this question
@@ -160,6 +178,8 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 		$id = pathinfo($id, PATHINFO_FILENAME);
 		list($maxWidth, $maxHeight) = explode('x', $size);
+		$maxWidth = max(1, $maxWidth);
+		$maxHeight = max(1, $maxHeight);
 		
 		$photo = new Photo_Model($id);
 		$filename = $photo->getFilename();

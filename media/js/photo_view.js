@@ -11,6 +11,8 @@ dojo.declare('Cameratron.Navigation', null, {
 		this.grandparent = grandparent;
 		this.gallery_title_url = title_url;
 
+		this.editMetadataScript = grandparent.base_url + 'secure.php/photo/edit';
+
 		this.selectedPhoto = null;
 		this.numPhotos = -1;
 
@@ -111,6 +113,10 @@ dojo.declare('Cameratron.Navigation', null, {
 				this.selectedPhoto.setAsPoster();
 			});
 
+			dojo.connect(dojo.byId('nav_previous'), 'onclick', this, this.prevImage);
+
+			dojo.connect(dojo.byId('nav_next'), 'onclick', this, this.nextImage);
+
 		});
 
 	},
@@ -182,7 +188,7 @@ dojo.declare('Cameratron.Navigation', null, {
 
 		dojo.byId('badge-permalink').href =	this.grandparent.base_url+"photo/view/"+this.gallery_title_url+"/#/"+this.selectedPhoto.get('basename');
 		dojo.byId('badge-original-size').href = this.selectedPhoto.getFullURL();
-		dojo.byId('badge-set-key-photo').attr('href', this.grandparent.base_url+"gallery/setPoster/"+this.selectedPhoto.get('gallery_id')+"/"+this.selectedPhoto.get('id'));
+		dojo.byId('badge-set-key-photo').href = this.grandparent.base_url+"gallery/setPoster/"+this.selectedPhoto.get('gallery_id')+"/"+this.selectedPhoto.get('id');
 
 
 		if(updateHash){
@@ -194,6 +200,21 @@ dojo.declare('Cameratron.Navigation', null, {
 		}, this);
 
 		this.scrollThumbs(skipAnimation);
+
+		var sort_index = this.selectedPhoto.get('sort_index');
+
+		if(sort_index == 0){
+//			dojo.style('nav_previous', {'backgroundImage': 'url(../img/thumbs_arrow-left_disabled.png)', 'cursor': 'default'});
+			dojo.addClass('nav_previous', 'disabled');
+		} else {
+			dojo.removeClass('nav_previous', 'disabled');
+		}
+
+		if(sort_index == this.numPhotos - 1){
+			dojo.addClass('nav_next', 'disabled');
+		} else {
+			dojo.removeClass('nav_next', 'disabled');
+		}
 
 	},
 	keyHandler: function(event){
@@ -291,10 +312,10 @@ dojo.declare('Cameratron.Navigation', null, {
 		this.store.save({
 			onComplete: function(){
 				dojo.query('.buttons', 'metadata').style('display', 'none');
-				alert('Save complete.');
+//				alert('Save successful.');
 			},
 			onError: function(errorData){
-				alert(errorData);
+				alert('Error saving metadata changes: '+errorData);
 			}
 		});
 	},
@@ -304,19 +325,35 @@ dojo.declare('Cameratron.Navigation', null, {
 		dojo.query('.buttons', 'metadata').style('display', 'none');
 	},
 	_flushChanges: function(saveCompleteCallback, saveFailedCallback){
-		var fieldsToSend = ['description', 'people', 'datetime', 'location', 'photographer'];
+		var fieldsToSend = ['id', 'description', 'people', 'datetime', 'location', 'photographer'];
 		var data = [];
 		var dirtyItem;
 		for(var cleanItem in this.store._pending._modifiedItems){
 			dirtyItem = this.store._itemsByIdentity[cleanItem];
 			var dataItem = {};
 			dojo.forEach(fieldsToSend, function(fieldName){
-				dataItem[fieldName] = this.store._flatten(dirtyItem.get(fieldName));
+				var value = this.store._flatten(dirtyItem.get(fieldName));
+//				alert('value '+value+' is of type '+(typeof value));
+				dataItem[fieldName] = (typeof value == 'string' && dojo.trim(value) == '') ? null : value;
 			}, this);
 			data.push(dataItem);
 		}
-		alert(dojo.toJson(data, true));
-		saveCompleteCallback();
+//		alert(dojo.toJson(data, true));
+		dojo.xhrPost({
+			 url: this.editMetadataScript
+			,postData: 'metadata='+dojo.toJson(data)
+			,handleAs: 'json'
+			,load: dojo.hitch(this, function(responseObj){
+				if(responseObj.stat == 'ok'){
+					saveCompleteCallback();
+				} else {
+					saveFailedCallback(responseObj.message);
+				}
+			})
+			,error: dojo.hitch(this, function(error){
+				saveFailedCallback('Server error.\nCheck your internet connection.');
+			})
+		});
 	},
 	typeMap: {
 		"unixtimestamp": {
@@ -380,7 +417,7 @@ dojo.declare('Cameratron.Photo', null, {
 	},
 	setAsPoster: function(){
 		dojo.xhrGet({
-			 url: '/cameratron/gallery/setPoster/'+this.get('gallery_id')+'/'+this.get('id')
+			 url: cameratron.base_url + 'secure.php/gallery/setPoster/'+this.get('gallery_id')+'/'+this.get('id')
 			,handleAs: 'json'
 			,load: function(response){
 				if(response.stat == 'ok'){

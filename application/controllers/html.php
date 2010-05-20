@@ -12,7 +12,7 @@ abstract class HTML_Controller extends Template_Controller {
 	function _render(){
 		array_unshift($this->title, 'Tech House');
 
-		$this->template->title = (LOGGED_IN ? '[SECURE] ' : '[NOT SECURE] ').implode(' | ', $this->title);
+		$this->template->title = implode(' | ', $this->title);
 		$this->template->scripts = $this->scripts;
 		$this->template->stylesheets = $this->stylesheets;
 		

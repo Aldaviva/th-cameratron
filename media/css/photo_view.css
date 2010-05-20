@@ -23,6 +23,7 @@ body {
 	position: relative;
 	min-width: 585px;
 	text-align: left;
+	margin: 0 28px;
 }
 
 #metadata label span {
@@ -82,11 +83,67 @@ body {
 
 #metadata .buttons {
 	position: absolute;
-	/*right: 15px;
-	top: 54px;*/
 	right: -5px;
 	top: -14px;
 }
+
+#metadata .buttons input {
+	border: none;
+	cursor: pointer;
+	background-color: #f0f0f0;
+	padding: 3px 6px;
+	margin-left: 0.5em;
+	font: 12px "Univers LT Std 57 Cn", "U Condensed";
+	text-transform: uppercase;
+}
+
+#metadata #submit {
+	color: white;
+	background-color: #6FA672;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Nav arrows
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#nav_previous, #nav_next {
+	text-indent: -9999px;
+	border: none;
+	cursor: pointer;
+	background-color: #f0f0f0;
+	background-repeat: no-repeat;
+	background-position: 5px 15px;
+	width: 16px;
+	height: 41px;
+	position: absolute;
+	bottom: 3px;
+}
+
+#nav_previous.disabled, #nav_next.disabled {
+	cursor: default;
+	background-color: transparent;
+}
+
+#nav_previous {
+	left: -28px;
+	background-image: url('../img/thumbs_arrow-left.png');
+}
+
+#nav_previous.disabled {
+	background-image: url('../img/thumbs_arrow-left_disabled.png');
+}
+
+#nav_next {
+	right: -28px;
+	background-image: url('../img/thumbs_arrow-right.png');
+}
+
+#nav_next.disabled {
+	background-image: url('../img/thumbs_arrow-right_disabled.png');
+}
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
 *

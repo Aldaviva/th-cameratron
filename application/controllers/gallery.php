@@ -104,13 +104,13 @@ class Gallery_Controller extends SiteTemplate_Controller {
 	function create(){
 
 		$this->_cancelTemplate();
-		header('Content-Type: application/json');
 
 		/*if(!isset($_REQUEST['SID']) || !Upload_Controller::isValidTicket($_REQUEST['SID'])){
 			echo ("{'stat': 'fail', 'message': 'No valid upload ticket provided'}");
 			return;
 		}*/
 
+		header('Content-Type: application/json');
 		if(!LOGGED_IN){
 			header('HTTP/1.0 401 Unauthorized', true, 401);
 			return;
@@ -169,6 +169,12 @@ class Gallery_Controller extends SiteTemplate_Controller {
 	function setPoster($gallery_id, $photo_id){
 
 		$this->_cancelTemplate();
+
+		header('Content-Type: application/json');
+		if(!LOGGED_IN){
+			header('HTTP/1.0 401 Unauthorized', true, 401);
+			return;
+		}
 
 		$gallery = new Gallery_Model($gallery_id);
 		$photo = new Photo_Model($photo_id);

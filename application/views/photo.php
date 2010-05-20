@@ -1,6 +1,8 @@
 <div class="big">
 		<?= html::anchor($selectedPhoto->getURL(), html::image($selectedPhoto->getURL(870,390), array('id'=>'selectedPhoto'))) ?>
 		<?= form::open('photo/edit', array('method' => 'get', 'id' => 'metadata')) ?>
+			<?= form::input(array('id'=>'nav_previous', 'type'=>'button'), 'Previous photo'); ?>
+			<?= form::input(array('id'=>'nav_next', 'type'=>'button'), 'Next photo'); ?>
 			<input type='hidden' name="photo_id" value='<?= $selectedPhoto->id ?>' />
 			<div class="left">
 				<label><span>Description</span><?= form::input(array('id' => 'description', 'name' => 'description', 'value' => $selectedPhoto->description, 'title' => 'description')) ?></label>
@@ -10,7 +12,7 @@
 			<label><span>Location</span><?= form::input('location', $selectedPhoto->location, ' title="location"') ?></label>
 			<label><span>Photographer</span><?= form::input('photographer', $selectedPhoto->photographer, ' title="photographer"') ?></label>
 			<div class="buttons">
-				<?= form::input(array('name'=>'cancel', 'id'=>'cancel', 'type'=>'button'), 'Cancel'); ?>
+				<?= form::input(array('name'=>'cancel', 'id'=>'cancel', 'type'=>'button'), 'Revert'); ?>
 				<?= form::submit('submit', 'Save'); ?>
 			</div>
 		<?= form::close(); ?>

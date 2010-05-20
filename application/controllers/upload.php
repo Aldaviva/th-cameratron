@@ -108,6 +108,7 @@ class Upload_Controller extends SiteTemplate_Controller {
 
 				if($datetime = $this->readEXIFTimestamp($photo->getFilename())){
 					$photo->datetime = date(TIMESTAMP_SQL, $datetime);
+					$photo->gallery->date = min($photo->gallery->date, $photo->datetime);
 				}
 
 				$photo->save();

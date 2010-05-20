@@ -8,11 +8,14 @@ dojo.declare('Cameratron.Uploader', null, {
 
 	swfUrl: '/js/yui2/yui/build/uploader/assets/uploader.swf',
 //	ticketUrl: '/cameratron/private/getTicket.php',
-	ticketUrl: '/cameratron/secure.php/upload/getTicket',
-	galleryCreationScript: '/cameratron/secure.php/gallery/create',
-	uploadScript: '/cameratron/upload/receivePhoto',
 
-	constructor: function(form_id, filelist_id){
+	constructor: function(grandparent, form_id, filelist_id){
+
+		this.grandparent = grandparent;
+
+		ticketUrl = grandparent.base_url + 'secure.php/upload/getTicket';
+		galleryCreationScript = grandparent.base_url + 'secure.php/gallery/create';
+		uploadScript = grandparent.base_url + 'upload/receivePhoto';
 
 		YAHOO.widget.Uploader.SWFURL = this.swfUrl;
 		this.pieChartLoaded = new dojo.Deferred();
@@ -424,4 +427,4 @@ dojo.declare('Cameratron.Uploader', null, {
 	}
 });
 
-cameratron.uploader = new Cameratron.Uploader('upload', 'filelist');
+cameratron.uploader = new Cameratron.Uploader(cameratron, 'upload', 'filelist');
