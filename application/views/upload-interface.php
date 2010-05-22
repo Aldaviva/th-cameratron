@@ -61,5 +61,5 @@
 </div>
 
 <script type="text/javascript">
-	var existingGallery = <?= $existingGallery ?>;
+	var existingGallery = <?= $existingGallery ? $existingGallery : 'null' ?>;
 </script>

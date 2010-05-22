@@ -64,7 +64,7 @@ dojo.declare('Cameratron.Uploader', null, {
 				"title"
 			);
 
-			if(existingGallery != ''){
+			if(existingGallery != null){
 				galleryListStore.fetch({
 					 query: {id: existingGallery}
 					,onItem: function(item){
@@ -82,7 +82,7 @@ dojo.declare('Cameratron.Uploader', null, {
 		this.numFiles = 0;
 		this.transferredFiles = 0;
 		this.totalBytes = 0;
-		this.transferredBytes = 0;
+//		this.transferredBytes = 0;
 		this.errorFiles = [];
 
 		this.widget.setAllowMultipleFiles(true);
@@ -113,10 +113,12 @@ dojo.declare('Cameratron.Uploader', null, {
 				this.setStatusText('Authorization', 'successful');
 				this.setPieChart(0.1);
 
-				this.gallery_id = dijit.byId('title').attr('item').id[0];
-				if(null === this.gallery_id) {
+				var item = dijit.byId('title').attr('item');
+				if(null === item) {
 					this.submitGalleryCreation();
 				} else {
+					this.gallery_id = item.id[0];
+					this.gallery_title_url = item.title_url[0];
 					this.setPieChart(0.19);
 					this.submitPhotos();
 				}
@@ -155,6 +157,7 @@ dojo.declare('Cameratron.Uploader', null, {
 				if(responseObj.stat == 'ok'){
 
 					this.gallery_id = responseObj.gallery_id;
+					this.gallery_title_url = responseObj.title_url;
 					console.info('Created gallery with ID = '+this.gallery_id);
 					this.setStatusText('Construction', 'successfully created gallery');
 					this.setPieChart(0.2);
@@ -210,7 +213,7 @@ dojo.declare('Cameratron.Uploader', null, {
 		console.log('Starting upload of '+file.name);
 		this.setStatusText('Transferral', 'starting for '+file.name);
 
-		this.transferredBytes = 0;
+//		this.transferredBytes = 0;
 	},
 
 	uploadProgressHandler: function(event){
@@ -219,11 +222,21 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		file.transferredBytes = event.bytesLoaded;
 
-		this.transferredBytes = 0;
-		dojo.forEach(this.files, function(file){
-			this.transferredBytes += file.transferredBytes;
-		}, this); //TODO: this may need some work (numerator seems to be 0)
-		this.setPieChart(this.transferredBytes/this.totalBytes*0.8+0.2);
+		console.log('file '+file.name+' has uploaded '+event.bytesLoaded+' bytes');
+
+//		dojo.forEach(this.files, function(file){
+//			transferredBytes += file.transferredBytes;
+//		}, this); //TODO: this may need some work (numerator seems to be 0)
+
+
+		var transferredBytes = 0;
+		for(var i = 0; i < this.fileOrdering.length; i++){
+			transferredBytes += this.files[this.fileOrdering[i]].transferredBytes;
+		}
+		console.log('after summing, transferredBytes = '+transferredBytes);
+
+
+		this.setPieChart(transferredBytes/this.totalBytes*0.8+0.2);
 
 		this.setProgressBar(file.id, file.transferredBytes/file.size);
 
@@ -259,6 +272,7 @@ dojo.declare('Cameratron.Uploader', null, {
 		console.error('Failed to upload ' + file.name + ": "+event.status);
 		this.errorFiles.push(file);
 		this.setStatusText('Transferral', 'failed for '+file.name);
+		dojo.style('status-cancel', 'visibility', 'hidden');
 	},
 
 	uploadCancelHandler: function(event){
@@ -281,14 +295,17 @@ dojo.declare('Cameratron.Uploader', null, {
 		this.setPieChart(1);
 		this.setStatusText('Completion', 'of all photo transfers');
 		dojo.style('status-cancel', 'visibility', 'hidden');
+		dojo.create('a', {id: 'status-gallerylink', href: this.grandparent.base_url+'gallery/view/'+this.gallery_title_url, innerHTML: 'view gallery'}, 'status-active');
 	},
 
 	updateFileList: function(){
 		//assumes this.files and this.fileOrdering have been set already
 
 		this.fileOrdering = this.fileOrdering.sort(dojo.hitch(this, function(a, b){
-			return this.normalizeID(a) > this.normalizeID(b);
+			return this.normalizeID(a) - this.normalizeID(b);
 		}));
+
+		console.log("fileOrdering after sort: "+this.fileOrdering);
 
 		dojo.empty(this.fileListNode);
 		this.totalBytes = 0;
@@ -356,7 +373,7 @@ dojo.declare('Cameratron.Uploader', null, {
 		this.setPieChart(0);
 		this.setStatusText('Initialization', 'systems warming up');
 
-		//TODO: hide add photos button
+		dojo.style('addButton', 'visibility', 'hidden');
 
 	},
 
@@ -371,6 +388,9 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		dojo.style('status-active', 'display', 'none');
 		dojo.style('status-standby', 'display', 'block');
+		dojo.style('status-cancel', 'visibility', 'hidden');
+
+		dojo.style('addButton', 'visibility', 'visible');
 	},
 	
 	setProgressBar: function(file_id, percent){
@@ -423,7 +443,8 @@ dojo.declare('Cameratron.Uploader', null, {
 	},
 	
 	normalizeID: function(id){
-		return 'file'+dojo.string.pad(id.replace('file', ''), 8, '0');
+//		return 'file'+dojo.string.pad(id.replace('file', ''), 8, '0');
+		return parseInt(id.replace('file', ''));
 	}
 });
 

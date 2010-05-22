@@ -33,6 +33,12 @@
 
 @font-face {
 	font-family: "U";
+	font-style: italic;
+	src: url("../fonts/UniversLTStd-Obl.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "U";
 	font-weight: bold;
 	src: url("../fonts/UniversLTStd-Bold.otf") format("opentype");
 }

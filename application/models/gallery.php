@@ -6,6 +6,24 @@ class Gallery_Model extends ORM {
 
 	static $ordering = array('date' => 'desc');
 
+	static function search($question){
+
+		if(trim($question) == ''){
+			return array();
+		}
+
+		$question = "%".stripslashes($question)."%";
+		$question = Database::instance()->escape_str($question);
+
+		$results = ORM::factory('gallery')->
+			where("title ILIKE '$question'")->
+			orderBy(self::$ordering)->
+			find_all();
+
+		return $results;
+
+	}
+
 	static function getByTitleUrl($title_url){
 		return ORM::factory('gallery')->where('title_url', $title_url)->find();
 	}
@@ -52,7 +70,7 @@ class Gallery_Model extends ORM {
 		if(is_null($pagination)){
 			$pagination = new Pagination(array(
 				'total_items'=>Gallery_Model::numGalleries(),
-				'items_per_page' => 24)
+				'items_per_page' => 18)
 			);
 		}
 		return $pagination;

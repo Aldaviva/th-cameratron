@@ -19,7 +19,7 @@ class Photo_Model extends ORM {
 			with('gallery')->
 			where("description ILIKE '$question'")->
 			orwhere("people ILIKE '$question'")->
-			orderBy(array('gallery.date' => 'desc', 'datetime' => 'asc'))->
+			orderBy(array_merge(array('gallery.date' => 'desc'), self::$ordering))->
 			find_all();
 
 		return $results;

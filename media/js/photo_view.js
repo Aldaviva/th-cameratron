@@ -62,7 +62,12 @@ dojo.declare('Cameratron.Navigation', null, {
 			//arrow key event handler
 			dojo.connect(dojo.doc, 'onkeypress', this, 'keyHandler');
 			dojo.query('input').onkeypress(function(event){
-				event.stopPropagation();
+//				if(event.keyCode != dojo.keys.PAGE_UP && event.keyCode != dojo.keys.PAGE_DOWN){
+					event.stopPropagation();
+//				} else {
+//					event.target.blur();
+//					setTimeout(dojo.hitch(event, function(){this.target.select()}), 100);
+//				}
 			});
 
 			//window resizing event handler
@@ -219,19 +224,21 @@ dojo.declare('Cameratron.Navigation', null, {
 	},
 	keyHandler: function(event){
 		switch(event.keyCode){
-			case dojo.keys.UP_ARROW:
+//			case dojo.keys.UP_ARROW:
 			case dojo.keys.LEFT_ARROW:
 				this.prevImage();
 				break;
-			case dojo.keys.DOWN_ARROW:
+//			case dojo.keys.DOWN_ARROW:
 			case dojo.keys.RIGHT_ARROW:
 				this.nextImage();
 				break;
 			case dojo.keys.PAGE_UP:
-				this.replaceImageOffset(-5);
+//				this.replaceImageOffset(-5);
+				this.prevImage();
 				break;
 			case dojo.keys.PAGE_DOWN:
-				this.replaceImageOffset(5);
+//				this.replaceImageOffset(5);
+				this.nextImage();
 				break;
 			case dojo.keys.HOME:
 				this.firstImage();
@@ -321,6 +328,13 @@ dojo.declare('Cameratron.Navigation', null, {
 	},
 	metadataCancel: function(){
 		this.store.revert();
+		this.store.fetch({
+			query: {}
+			,onItem: function(item){
+				dojo.mixin(item, new Cameratron.Photo(this.grandparent));
+			}
+		});
+		//need to do mixins again
 		this.replaceImage(this.selectedPhoto, false, true);
 		dojo.query('.buttons', 'metadata').style('display', 'none');
 	},

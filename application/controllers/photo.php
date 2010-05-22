@@ -111,42 +111,6 @@ class Photo_Controller extends SiteTemplate_Controller {
 		}*/
 	}
 
-	//find any photo that matches this question
-	function search(/*$question = null*/){
-
-		$question = $_GET['q'];
-
-		if(is_null($question)){
-			url::redirect('gallery');
-		}
-
-		$this->content = new View('collection');
-		$this->content->bigFirstPhoto = false;
-		$this->heading = "Search results for '".html::specialchars($question)."'";
-
-		$this->stylesheets[] = 'collection.css';
-
-		$this->badge = new View('badge', array(
-			'links' => array(
-				"hr"
-				,array(
-					'text'	=> 'All Galleries',
-					'title'	=> 'See all of our galleries',
-					'href'	=> '/gallery'
-				)
-				,array(
-					'text'	=> 'Upload',
-					'title'	=> 'Make a new blank gallery to put photos in',
-					'href'	=> 'gallery/upload/'
-				)
-			)
-		));
-
-		$this->content->photos = Photo_Model::search($question);
-
-		$this->title = array('Photography', 'Search: '.html::specialchars($question));
-	}
-
 	function original($gallery_id, $basename){
 		if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])){
 			header('HTTP/1.1 304 Not Modified'); //complete hack to let the browser use its cache if it has one

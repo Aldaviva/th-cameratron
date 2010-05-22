@@ -68,6 +68,8 @@
 	background-image: url('../img/upload_existinggalleries.png');
 	width: 115px;
 	height: 14px;
+	text-indent: -999px;
+	overflow: hidden;
 }
 
 #widget_title_dropdown {
@@ -194,7 +196,7 @@
 	margin-top: 23px;
 }
 
-#upload #status-cancel {
+#upload #status-cancel, #upload #status-gallerylink {
 	position: relative;
 	top: 11px;
 }

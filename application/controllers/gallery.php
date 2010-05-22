@@ -4,6 +4,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 
 	function index(){
 		$this->stylesheets[] = 'overview.css';
+		$this->stylesheets[] = 'polaroids.css';
 
 		$this->content = new View('overview');
 
@@ -74,6 +75,43 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		$this->title = array('Photography', $gallery->title);
     }
 
+	function search(){
+
+		$question = $_GET['q'];
+
+		if(is_null($question)){
+			url::redirect('gallery');
+		}
+
+		$this->content = new View('collection');
+		$this->content->bigFirstPhoto = false;
+		$this->heading = "Search results for '".html::specialchars($question)."'";
+
+		$this->stylesheets[] = 'polaroids.css';
+		$this->stylesheets[] = 'collection.css';
+
+		$this->badge = new View('badge', array(
+			'links' => array(
+				"hr"
+				,array(
+					'text'	=> 'All Galleries',
+					'title'	=> 'See all of our galleries',
+					'href'	=> '/gallery'
+				)
+				,array(
+					'text'	=> 'Upload',
+					'title'	=> 'Make a new blank gallery to put photos in',
+					'href'	=> 'gallery/upload/'
+				)
+			)
+		));
+
+		$this->content->galleries = Gallery_Model::search($question);
+		$this->content->photos = Photo_Model::search($question);
+
+		$this->title = array('Photography', 'Search: '.html::specialchars($question));
+	}
+
 	function photoList($title_url = null){
 		header('Content-Type: application/json');
 
@@ -136,7 +174,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 
 		$gallery->save();
 
-		echo "{'stat': 'ok', 'gallery_id': '{$gallery->id}'}";
+		echo "{'stat': 'ok', 'gallery_id': '{$gallery->id}', 'title_url': '{$gallery->title_url}'}";
 	}
 
 	function listAll(){
@@ -156,6 +194,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 				'title'	=> $gallery->title,
 				'id'	=> $gallery->id,
 				'date'	=> $gallery->date,
+				'title_url'	=> $gallery->title_url,
 				'datetitle'	=> '<em>'.date("'y", $gallery->date).'</em> '.$gallery->title
 			);
 		}

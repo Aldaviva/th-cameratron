@@ -1,5 +1,17 @@
+.big h3 {
+	font: 13px "Univers LT Std 57 Cn", "U Condensed";
+	color: #3e3e3e;
+	text-transform: uppercase;
+	margin-bottom: 11px;
+	margin-left: 2px;
+}
+
+#polaroids { /*only for search results page */
+	margin-bottom: 13px;
+}
+
 #thumbs {
-	/*line-height: 117px;*/
+
 }
 
 #thumbs img {

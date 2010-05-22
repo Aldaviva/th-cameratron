@@ -1,6 +1,6 @@
 <?= $badge ?>
 
-<?= form::open('/photo/search', array('id' => 'searchbox', 'method' => 'get')); ?>
+<?= form::open('/gallery/search', array('id' => 'searchbox', 'method' => 'get')); ?>
 	<div>
 		<?=	form::input('q', (isset($_GET['q']) ? $_GET['q'] : 'Search')); ?><button type="submit">Search</button>
 	</div>

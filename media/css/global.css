@@ -215,6 +215,7 @@ header #badge-permalink {
 	border: none;
 	padding: 0 6px;
 	background: url('../img/search_divider.png') no-repeat right center;
+	font: 14px "Univers LT Std 55", "U";
 }
 
 /*#searchbox #q.empty {
