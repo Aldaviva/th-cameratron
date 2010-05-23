@@ -256,7 +256,8 @@ dojo.declare('Cameratron.Uploader', null, {
 			this.setStatusText('Transferral', 'finished for '+file.name);
 		} else {
 			console.warn('Error uploading '+file.name+': '+responseObj.message);
-			this.setStatusText('Transferral', 'failed for '+file.name);
+			//this.setStatusText('Transferral', 'failed for '+file.name);
+			this.setStatusText('Failure', responseObj.message);
 			this.errorFiles.push(file);
 		}
 
@@ -271,7 +272,7 @@ dojo.declare('Cameratron.Uploader', null, {
 		var file = this.getFileById(event.id);
 		console.error('Failed to upload ' + file.name + ": "+event.status);
 		this.errorFiles.push(file);
-		this.setStatusText('Transferral', 'failed for '+file.name);
+		this.setStatusText('Failure', event.status);
 		dojo.style('status-cancel', 'visibility', 'hidden');
 	},
 

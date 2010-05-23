@@ -92,8 +92,12 @@ class Upload_Controller extends SiteTemplate_Controller {
 				$photo = ORM::factory('photo');
 				$photo->gallery_id = $gallery->id;
 				$photo->basename = $basename;
-				$photo->location = stripslashes($_POST['location']);
-				$photo->photographer = stripslashes($_POST['photographer']);
+				if(!empty($_POST['location'])){
+					$photo->location = stripslashes($_POST['location']);
+				}
+				if(!empty($_POST['photographer'])){
+					$photo->photographer = stripslashes($_POST['photographer']);
+				}
 
 				$destinationPath = $photo->getFilename();
 
@@ -108,7 +112,9 @@ class Upload_Controller extends SiteTemplate_Controller {
 
 				if($datetime = $this->readEXIFTimestamp($photo->getFilename())){
 					$photo->datetime = date(TIMESTAMP_SQL, $datetime);
-					$photo->gallery->date = min($photo->gallery->date, $photo->datetime);
+					$photo->save();
+					$photo->gallery->enforceMinPhotoDate();
+					//$photo->gallery->date = min($photo->gallery->date, $photo->datetime);
 				}
 
 				$photo->save();

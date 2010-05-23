@@ -14,6 +14,6 @@ $config['js_prefix'] = 'media/js';
  * Directory (relative to site_domain) in which the photo gallery directories
  * are located
  */
-$config['galleries_dir'] = '../photos1';
+$config['galleries_dir'] = '../photos';
 
 ?>

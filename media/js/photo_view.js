@@ -184,6 +184,9 @@ dojo.declare('Cameratron.Navigation', null, {
 			} else {
 				value = this.selectedPhoto.get(fieldName, '');
 			}
+			if(value == null){
+				value = '';
+			}
 			dijit.byId(fieldName).attr('value', value);
 		}, this);
 		
