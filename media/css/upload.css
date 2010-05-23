@@ -209,20 +209,22 @@
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #upload .leftcolumn, #upload .rightcolumn {
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	width: 50%;
+	/*box-sizing: border-box;
+	-moz-box-sizing: border-box;*/
+	
 	padding: 0 3px;
 }
 
 #upload .leftcolumn {
 	float: left;
+	width: 215px;
 	padding-right: 5px;
 	border-right: 1px solid #acacad;
 }
 
 #upload .rightcolumn {
 	float: right;
+	width: 214px;
 	padding-left: 11px;
 }
 

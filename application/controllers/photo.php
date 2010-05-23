@@ -128,6 +128,8 @@ class Photo_Controller extends SiteTemplate_Controller {
 		header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', strtotime('+1 month')));
 		header('Last-Modified: '.gmdate('D, d M Y H:i:s \G\M\T', filemtime($filename)));
 
+		ob_end_flush();
+
 		readfile($filename);
 	}
 

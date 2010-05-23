@@ -7,10 +7,15 @@ body {
 *	Selected Photo
 *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.big {
+	text-align: center;
+}
+
 #selectedPhoto {
 	border: 1px solid white;
-	display: block;
-	margin: 0 auto;
+	/*display: block;
+	margin: 0 auto;*/
+	/*text-align: center;*/
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
