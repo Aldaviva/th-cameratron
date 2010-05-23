@@ -104,7 +104,7 @@ class Upload_Controller extends SiteTemplate_Controller {
 				$parentDir = dirname($destinationPath);
 				if(!file_exists($parentDir)){
 					mkdir($parentDir);
-					chmod($parentDir, 02770);
+					chmod($parentDir, 02775);
 				}
 
 				move_uploaded_file($tempPath, $destinationPath);

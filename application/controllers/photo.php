@@ -5,13 +5,21 @@ class Photo_Controller extends SiteTemplate_Controller {
 	function view($gallery_title_url = null, $photo_basename = null){
 		if(is_null($gallery_title_url)){
 			url::redirect('gallery');
+			return;
+		}
+
+		$gallery = Gallery_Model::getByTitleUrl($gallery_title_url);
+
+		if(!$gallery->loaded){
+			url::redirect('gallery');
+			return;
 		}
 
 		$this->stylesheets[] = 'photo_view.css';
 		$this->scripts[] = 'photo_view.js';
 		$this->scripts[] = 'strtotime_mini.js';
 
-		$gallery = Gallery_Model::getByTitleUrl($gallery_title_url);
+
 
 		$this->content = new View('photo');
 

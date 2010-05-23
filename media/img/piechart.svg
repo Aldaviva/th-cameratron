@@ -47,7 +47,7 @@
 			SVGDocument = LoadEvent.target.ownerDocument
 		}
 
-		SVGPoint.create = function(x, y){
+		function createPoint(x, y){
 			var newPoint = SVGDocument.documentElement.createSVGPoint();
 			newPoint.x = x;
 			newPoint.y = y;
@@ -72,9 +72,9 @@
 		function setPercent(percent){
 
 			//alert('setting to '+percent);
-		
+
 			var radius = 75;
-		
+
 			var nw = SVGDocument.getElementById('nw');
 			var sw = SVGDocument.getElementById('sw');
 			var se = SVGDocument.getElementById('se');
@@ -85,10 +85,10 @@
 			var angle, xOffset, yOffset;
 
 			if(percent >= 1){
-				replaceLast(ne.points, SVGPoint.create(125, 50));
-				replaceLast(se.points, SVGPoint.create(50, 125));
-				replaceLast(sw.points, SVGPoint.create(-25, 50));
-				replaceLast(nw.points, SVGPoint.create(50, -25));
+				replaceLast(ne.points, createPoint(125, 50));
+				replaceLast(se.points, createPoint(50, 125));
+				replaceLast(sw.points, createPoint(-25, 50));
+				replaceLast(nw.points, createPoint(50, -25));
 
 			} else if(percent >= .75){
 				angle = (percent-.75)/.25*(Math.PI/2);
@@ -101,9 +101,9 @@
 
 				replaceLast(nw.points, newPoint);
 
-				replaceLast(ne.points, SVGPoint.create(125, 50));
-				replaceLast(se.points, SVGPoint.create(50, 125));
-				replaceLast(sw.points, SVGPoint.create(-25, 50));
+				replaceLast(ne.points, createPoint(125, 50));
+				replaceLast(se.points, createPoint(50, 125));
+				replaceLast(sw.points, createPoint(-25, 50));
 			} else if(percent > .5){
 				angle = (percent-.5)/.25*(Math.PI/2);
 
@@ -117,8 +117,8 @@
 
 				replaceLast(nw.points, clone(nw.points.getItem(1)));
 
-				replaceLast(ne.points, SVGPoint.create(125, 50));
-				replaceLast(se.points, SVGPoint.create(50, 125));
+				replaceLast(ne.points, createPoint(125, 50));
+				replaceLast(se.points, createPoint(50, 125));
 			} else if(percent > .25){
 				angle = (percent-.25)/.25*(Math.PI/2);
 
@@ -133,7 +133,7 @@
 				replaceLast(nw.points, clone(nw.points.getItem(1)));
 				replaceLast(sw.points, clone(sw.points.getItem(1)));
 
-				replaceLast(ne.points, SVGPoint.create(125, 50));
+				replaceLast(ne.points, createPoint(125, 50));
 			} else if(percent >= 0){
 				angle = (percent)/.25*(Math.PI/2);
 

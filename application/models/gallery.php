@@ -24,6 +24,14 @@ class Gallery_Model extends ORM {
 
 	}
 
+	function unlink(){
+		if($this->numPhotos() == 0){
+			$directory = Kohana::config('cameratron.galleries_dir').'/'.$this->id;
+			rmdir($directory);
+			$this->delete();
+		}
+	}
+
 	static function getByTitleUrl($title_url){
 		return ORM::factory('gallery')->where('title_url', $title_url)->find();
 	}

@@ -27,8 +27,12 @@ class Photo_Model extends ORM {
 	}
 
 	function unlink(){
+		$gallery = $this->gallery;
 		unlink($this->getFilename());
 		$this->delete();
+		if($gallery->numPhotos() == 0){
+			$gallery->unlink();
+		}
 	}
 
 	function getURL($width = null, $height = null){
