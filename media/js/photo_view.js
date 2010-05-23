@@ -465,7 +465,7 @@ dojo.declare('Cameratron.Photo', null, {
 				handleAs: 'json',
 				load: function(response){
 					if(response.stat == 'ok'){
-						alert('Deleting photo \u2013 photo deleted.');
+//						alert('Deleting photo \u2013 photo deleted.');
 						location.reload();
 					} else {
 						alert(response.message);

@@ -211,7 +211,7 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		var file = this.getFileById(event.id);
 		console.log('Starting upload of '+file.name);
-		this.setStatusText('Transferral', 'starting for '+file.name);
+		this.setStatusText('Transferral', file.name);
 
 //		this.transferredBytes = 0;
 	},
@@ -224,23 +224,25 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		console.log('file '+file.name+' has uploaded '+event.bytesLoaded+' bytes');
 
-//		dojo.forEach(this.files, function(file){
-//			transferredBytes += file.transferredBytes;
-//		}, this); //TODO: this may need some work (numerator seems to be 0)
-
-
 		var transferredBytes = 0;
 		for(var i = 0; i < this.fileOrdering.length; i++){
 			transferredBytes += this.files[this.fileOrdering[i]].transferredBytes;
 		}
 		console.log('after summing, transferredBytes = '+transferredBytes);
 
-
 		this.setPieChart(transferredBytes/this.totalBytes*0.8+0.2);
 
 		this.setProgressBar(file.id, file.transferredBytes/file.size);
 
 		//scroll file list to active file?
+//		file.listItem.scrollIntoView();
+
+		var listItem = file.listItem;
+		var list = this.fileListNode;
+
+		if((listItem.offsetTop + listItem.offsetHeight) > (list.offsetTop + list.offsetHeight + list.scrollTop)){
+			list.scrollTop += Math.round(list.offsetHeight * 0.75);
+		}
 	},
 
 	uploadCompleteHandler: function(event){
@@ -253,7 +255,7 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		if(responseObj.stat == 'ok'){
 			console.info('Finished upload of '+file.name+'.');
-			this.setStatusText('Transferral', 'finished for '+file.name);
+			//this.setStatusText('Transferral', 'finished for '+file.name);
 		} else {
 			console.warn('Error uploading '+file.name+': '+responseObj.message);
 			//this.setStatusText('Transferral', 'failed for '+file.name);
@@ -295,7 +297,7 @@ dojo.declare('Cameratron.Uploader', null, {
 		//TODO: make link so user can view gallery
 		this.setPieChart(1);
 		this.setStatusText('Completion', 'of all photo transfers');
-		dojo.style('status-cancel', 'visibility', 'hidden');
+		dojo.style('status-cancel', 'display', 'none');
 		dojo.create('a', {id: 'status-gallerylink', href: this.grandparent.base_url+'gallery/view/'+this.gallery_title_url, innerHTML: 'view gallery'}, 'status-active');
 	},
 
@@ -367,7 +369,7 @@ dojo.declare('Cameratron.Uploader', null, {
 //		dojo.query('input[type=text]', 'upload').attr('disabled', 'disabled');
 //		dijit.byId('title').attr('readOnly', true);
 
-		dojo.style('status-cancel', 'visibility', 'visible');
+		dojo.style('status-cancel', 'display', 'inline');
 		dojo.style('status-active', 'display', 'block');
 		dojo.style('status-standby', 'display', 'none');
 
@@ -389,7 +391,7 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		dojo.style('status-active', 'display', 'none');
 		dojo.style('status-standby', 'display', 'block');
-		dojo.style('status-cancel', 'visibility', 'hidden');
+		dojo.style('status-cancel', 'display', 'none');
 
 		dojo.style('addButton', 'visibility', 'visible');
 	},

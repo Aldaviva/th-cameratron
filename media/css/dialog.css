@@ -3,6 +3,8 @@
 	/*height: 390px;*/
 	position: relative;
 	margin: 67px auto 17px;
+
+	font: 13px "Univers LT Std 55", "U";
 }
 
 .dialog form {
