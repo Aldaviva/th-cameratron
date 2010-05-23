@@ -16,4 +16,9 @@ $config['js_prefix'] = 'media/js';
  */
 $config['galleries_dir'] = '../photos';
 
+/**
+ * Users in any of these groups are allowed to delete photos
+ */
+$config['deleter_groups'] = array('webmaster', 'president', 'evil');
+
 ?>

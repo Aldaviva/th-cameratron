@@ -62,12 +62,7 @@ dojo.declare('Cameratron.Navigation', null, {
 			//arrow key event handler
 			dojo.connect(dojo.doc, 'onkeypress', this, 'keyHandler');
 			dojo.query('input').onkeypress(function(event){
-//				if(event.keyCode != dojo.keys.PAGE_UP && event.keyCode != dojo.keys.PAGE_DOWN){
 					event.stopPropagation();
-//				} else {
-//					event.target.blur();
-//					setTimeout(dojo.hitch(event, function(){this.target.select()}), 100);
-//				}
 			});
 
 			//window resizing event handler
@@ -91,7 +86,7 @@ dojo.declare('Cameratron.Navigation', null, {
 			dojo.query('input[type=text]', 'metadata').forEach(function(textbox){
 				new Cameratron.PlaceholderTextBox({
 					emptyText: textbox.title
-					}, textbox);
+				}, textbox);
 			}, this);
 
 			dojo.query('input[type=text]', 'metadata')
@@ -118,10 +113,14 @@ dojo.declare('Cameratron.Navigation', null, {
 				this.selectedPhoto.setAsPoster();
 			});
 
+			dojo.connect(dojo.byId('badge-delete'), 'onclick', this, function(event){
+				event.preventDefault();
+				this.selectedPhoto.unlink();
+			});
+
 			dojo.connect(dojo.byId('nav_previous'), 'onclick', this, this.prevImage);
 
 			dojo.connect(dojo.byId('nav_next'), 'onclick', this, this.nextImage);
-
 		});
 
 	},
@@ -197,6 +196,7 @@ dojo.declare('Cameratron.Navigation', null, {
 		dojo.byId('badge-permalink').href =	this.grandparent.base_url+"photo/view/"+this.gallery_title_url+"/#/"+this.selectedPhoto.get('basename');
 		dojo.byId('badge-original-size').href = this.selectedPhoto.getFullURL();
 		dojo.byId('badge-set-key-photo').href = this.grandparent.base_url+"gallery/setPoster/"+this.selectedPhoto.get('gallery_id')+"/"+this.selectedPhoto.get('id');
+		dojo.byId('badge-delete').href = this.grandparent.base_url+"secure.php/photo/delete/"+this.selectedPhoto.get('id');
 
 
 		if(updateHash){
@@ -315,19 +315,29 @@ dojo.declare('Cameratron.Navigation', null, {
 		}
 	},
 	metadataChanged: function(event){
+		console.log('metadata changing');
 		this.selectedPhoto.setMetadata(event.currentTarget.name, event.currentTarget.value);
 	},
 	metadataSubmit: function(event){
 		event.preventDefault();
-		this.store.save({
-			onComplete: function(){
-				dojo.query('.buttons', 'metadata').style('display', 'none');
-//				alert('Save successful.');
-			},
-			onError: function(errorData){
-				alert('Error saving metadata changes: '+errorData);
-			}
+
+		console.log('metadata submitting');
+
+		dojo.query('input[type=text]').forEach(function(inputBox){
+			inputBox.blur();
 		});
+
+		setTimeout(dojo.hitch(this, function(){
+			this.store.save({
+				onComplete: function(){
+					dojo.query('.buttons', 'metadata').style('display', 'none');
+	//				alert('Save successful.');
+				},
+				onError: function(errorData){
+					alert('Error saving metadata changes: '+errorData);
+				}
+			});
+		}), 10);
 	},
 	metadataCancel: function(){
 		this.store.revert();
@@ -399,7 +409,7 @@ dojo.declare('Cameratron.Photo', null, {
 	},
 	getBigURL: function(){
 		var width = window.innerWidth - 186;
-		var height = window.innerHeight - 215;
+		var height = window.innerHeight - 220;
 		return cameratron.base_url + 'photo/resample/' + width + 'x' + height + '/' + this.get('id') + '.jpg'
 	},
 	getFullURL: function(){
@@ -447,6 +457,22 @@ dojo.declare('Cameratron.Photo', null, {
 				alert('Error: could not set preview photo.\nCheck your network connection.');
 			}
 		});
+	},
+	unlink: function(){
+		if(confirm('Are you sure you want to delete this photo?')){
+			dojo.xhrGet({
+				url: cameratron.base_url + 'secure.php/photo/delete/'+this.get('id'),
+				handleAs: 'json',
+				load: function(response){
+					if(response.stat == 'ok'){
+						alert('Deleting photo \u2013 photo deleted.');
+						location.reload();
+					} else {
+						alert(response.message);
+					}
+				}
+			});
+		}
 	}
 	
 });

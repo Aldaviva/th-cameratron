@@ -67,6 +67,11 @@ class Photo_Controller extends SiteTemplate_Controller {
 				'href'	=> "gallery/setPoster/{$gallery->id}/{$this->content->selectedPhoto->id}",
 				'id'	=> 'badge-set-key-photo'
 			)
+			,array(
+				'text'	=> 'Delete',
+				'title'	=> 'Remove this photo from the gallery (must be an officer or webmaster).',
+				'href'	=> 'photo/delete/'.$this->content->selectedPhoto->id
+			)
 		);
 
 		$this->heading = array('text' => $gallery->title, 'href' => "/gallery/view/{$gallery->title_url}");
@@ -192,6 +197,31 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 	}
 
+	function delete($photoID){
+		$this->_cancelTemplate();
+
+		if(!LOGGED_IN){
+			header('HTTP/1.0 401 Unauthorized', true, 401);
+			return;
+		}
+
+		$response = array('stat' => 'ok');
+
+       	$photo = ORM::factory('photo', $photoID);
+
+		$username = $_SERVER['PHP_AUTH_USER'];
+
+		$groups = explode(' ', exec("groups $username"));
+
+		if(array_intersect($groups, Kohana::config('cameratron.deleter_groups'))){
+			$photo->unlink();
+		} else {
+			$response['stat'] = 'fail';
+			$response['message'] = 'Only the President or Webmaster can delete photos.';
+		}
+
+		echo json_encode($response);
+	}
 
 	private function _shouldBeCached($width, $height){
 		$area = $width * $height;

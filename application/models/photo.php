@@ -26,6 +26,11 @@ class Photo_Model extends ORM {
 
 	}
 
+	function unlink(){
+		unlink($this->getFilename());
+		$this->delete();
+	}
+
 	function getURL($width = null, $height = null){
 
 		if(is_null($width) && is_null($height)){ //original size

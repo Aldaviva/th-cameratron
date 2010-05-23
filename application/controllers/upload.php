@@ -126,7 +126,7 @@ class Upload_Controller extends SiteTemplate_Controller {
 
 	private function readEXIFTimestamp($file){
 
-		if($exif = exif_read_data($file)){
+		if(($exif = exif_read_data($file)) && (isset($exif['DateTimeOriginal']))){
 			$tok = sscanf($exif['DateTimeOriginal'], '%4d:%2d:%2d %2d:%2d:%2d');
 			return mktime($tok[3], $tok[4], $tok[5], $tok[1], $tok[2], $tok[0]);
 //			$timestamp = date_parse_from_format('Y:m:d H:i:s', $exif['DateTimeOriginal']);

@@ -101,7 +101,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 				,array(
 					'text'	=> 'Upload',
 					'title'	=> 'Make a new blank gallery to put photos in',
-					'href'	=> 'gallery/upload/'
+					'href'	=> '/upload'
 				)
 			)
 		));
