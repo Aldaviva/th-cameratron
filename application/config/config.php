@@ -4,7 +4,7 @@
  * then a full URL will be used, eg: http://localhost/kohana/. If it only includes
  * the path, and a site_protocol is specified, the domain will be auto-detected.
  */
-$config['site_domain'] = '/cameratron/';
+$config['site_domain'] = '/photogallery/';
 
 /**
  * Force a default protocol to be used by the site. If no site_protocol is
@@ -93,7 +93,7 @@ $config['log_directory'] = APPPATH.'logs';
  * Enable or disable displaying of Kohana error pages. This will not affect
  * logging. Turning this off will disable ALL error pages.
  */
-$config['display_errors'] = TRUE;
+$config['display_errors'] = false;
 
 /**
  * Enable or disable statistics in the final output. Stats are replaced via

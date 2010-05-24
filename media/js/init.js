@@ -4,7 +4,7 @@ var cameratron = new Cameratron();
 
 function Cameratron(){
 
-	this.base_url = '/cameratron/';
+	this.base_url = '/photogallery/';
 
 	return this;
 }

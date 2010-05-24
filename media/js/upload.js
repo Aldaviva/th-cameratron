@@ -49,7 +49,7 @@ dojo.declare('Cameratron.Uploader', null, {
 			dojo.connect(dojo.byId("piechart"), 'onload', this, function(){this.pieChartLoaded.callback({loaded: true})});
 
 			var galleryListStore = new dojo.data.ItemFileReadStore({
-				url: '/cameratron/gallery/listAll'
+				url: this.grandparent.base_url + 'gallery/listAll'
 			});
 
 			this.titleSelect = new dijit.form.ComboBox({
