@@ -39,8 +39,12 @@ class Gallery_Model extends ORM {
 	static function get_all($limit = null, $offset = null){
 		$query = ORM::factory('gallery')->orderby(self::$ordering);
 
-		if(!is_null($offset) && !is_null($limit)){
-			$query->limit($limit, $offset);
+		if(!is_null($limit)){
+			if(!is_null($offset)){
+				$query->limit($limit, $offset);
+			} else {
+				$query->limit($limit);
+			}
 		}
 
 		return $query->find_all();
@@ -78,7 +82,7 @@ class Gallery_Model extends ORM {
 		if(is_null($pagination)){
 			$pagination = new Pagination(array(
 				'total_items'=>Gallery_Model::numGalleries(),
-				'items_per_page' => 18)
+				'items_per_page' => Kohana::config('cameratron.galleries_per_page'))
 			);
 		}
 		return $pagination;

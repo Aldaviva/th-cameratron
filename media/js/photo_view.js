@@ -477,3 +477,4 @@ dojo.declare('Cameratron.Photo', null, {
 	
 });
 
+cameratron.navigation = new Cameratron.Navigation(cameratron, gallery_title_url);

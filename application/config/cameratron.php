@@ -21,4 +21,9 @@ $config['galleries_dir'] = '../photos';
  */
 $config['deleter_groups'] = array('webmaster', 'president', 'evil');
 
+/**
+ * How many galleries to show on each page of the Gallery index
+ */
+$config['galleries_per_page'] = 18;
+
 ?>

@@ -112,10 +112,21 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		$this->title = array('Photography', 'Search: '.html::specialchars($question));
 	}
 
-	function photoList($title_url = null){
-		header('Content-Type: application/json');
+	function rss(){
 
 		$this->_cancelTemplate();
+//       	//header('Content-Type: application/xml');
+
+		$content = new View('rss', array('galleries' => Gallery_Model::get_all(Kohana::config('cameratron.galleries_per_page'))));
+
+//		echo "<pre>".html::specialchars($content, FALSE)."</pre>";
+		echo $content;
+	}
+
+	function photoList($title_url = null){
+
+		$this->_cancelTemplate();
+		header('Content-Type: application/json');
 
 		if(is_null($title_url)){
 			echo "/* No gallery requested */ {}";
@@ -139,13 +150,8 @@ class Gallery_Controller extends SiteTemplate_Controller {
 	function create(){
 
 		$this->_cancelTemplate();
-
-		/*if(!isset($_REQUEST['SID']) || !Upload_Controller::isValidTicket($_REQUEST['SID'])){
-			echo ("{'stat': 'fail', 'message': 'No valid upload ticket provided'}");
-			return;
-		}*/
-
 		header('Content-Type: application/json');
+
 		if(!LOGGED_IN){
 			header('HTTP/1.0 401 Unauthorized', true, 401);
 			return;
@@ -178,9 +184,9 @@ class Gallery_Controller extends SiteTemplate_Controller {
 	}
 
 	function listAll(){
-		header('Content-Type: application/json');
 
 		$this->_cancelTemplate();
+		header('Content-Type: application/json');
 
 		$galleries = ORM::factory('gallery')->orderby(Gallery_Model::$ordering)->find_all();
 
@@ -205,8 +211,8 @@ class Gallery_Controller extends SiteTemplate_Controller {
 	function setPoster($gallery_id, $photo_id){
 
 		$this->_cancelTemplate();
-
 		header('Content-Type: application/json');
+
 		if(!LOGGED_IN){
 			header('HTTP/1.0 401 Unauthorized', true, 401);
 			return;
@@ -227,10 +233,6 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		}
 
 		echo json_encode($response);
-
-		/*if(!request::is_ajax()){
-			url::redirect(request::referrer());
-		}*/
 
 	}
 

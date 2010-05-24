@@ -35,8 +35,9 @@
 
 <script type="text/javascript">
 	document.getElementById('selectedPhoto').src = '';
-	dojo.addOnLoad(function(){
+	gallery_title_url = '<?= $gallery_title_url ?>';
+	/*dojo.addOnLoad(function(){
 		cameratron.navigation = new Cameratron.Navigation(cameratron, '<?= $gallery_title_url ?>');
-	});
+	});*/
 
 </script>

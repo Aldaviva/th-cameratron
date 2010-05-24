@@ -8,15 +8,9 @@
 
 		<?= html::stylesheet($stylesheets, array(), false); ?>
 
-		<? if(isset($_GET['isDebug'])): ?>
-			<script type="text/javascript">
-				var djConfig = {
-					isDebug: true
-				}
-			</script>
-		<? endif; ?>
+		<link rel="alternate" type="application/rss+xml" title="Tech House Photography" href="<?= url::site('gallery/rss') ?>" />
 
-		<?= html::script($scripts, false); ?>
+		<script type="text/javascript"></script>
 
 	</head>
 
@@ -26,6 +20,7 @@
 
 		<?= $body ?>
 
+		<?= html::script($scripts, false); ?>
 	</body>
 
 </html>
