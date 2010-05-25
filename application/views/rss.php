@@ -15,6 +15,7 @@ $root = $rss->addChild('channel');
 	$root->link = url::site();
 	$root->description = 'Photographs about Technology House';
 	$root->webMaster = 'webmaster@techhouse.org (Webmaster)';
+	
 	$atomlink = $root->addChild('atom:link', null, 'http://www.w3.org/2005/Atom');
 	$atomlink->addAttribute('href', url::site(url::current()));
 	$atomlink->addAttribute('rel', 'self');
@@ -29,9 +30,8 @@ $root = $rss->addChild('channel');
 		$item->link = url::site('gallery/view/'.$gallery->title_url);
 		$item->guid = $item->link;
 		$item->pubDate = date(DATE_RSS, $gallery->date);
-		$item->description = html::image(url::site($gallery->poster_photo->getURL(340, 220)));
+		$item->description = html::anchor($item->link, html::image(url::site($gallery->poster_photo->getURL(340, 220))));
 	}
-
 
 $doc->formatOutput = true;
 echo $doc->saveXML();
