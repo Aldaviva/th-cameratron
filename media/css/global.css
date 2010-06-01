@@ -77,7 +77,7 @@ header {
 }
 
 header div {
-	background: #c8cacf url(../img/badge_bg_repeat.png) repeat-y;
+	background: #9da2ab url(../img/badge_bg_repeat.png) repeat-y;
 }
 
 header #badge-title {
@@ -181,6 +181,10 @@ header #badge-set-key-photo {
 
 header #badge-permalink {
 	background-image: url('../img/badge_icon-permalink.png');
+}
+
+header #badge-delete {
+	background-image: url('../img/badge_icon-delete_photo.png');
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\

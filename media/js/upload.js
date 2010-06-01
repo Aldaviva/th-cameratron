@@ -15,7 +15,8 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		this.ticketUrl = grandparent.base_url + 'secure.php/upload/getTicket';
 		this.galleryCreationScript = grandparent.base_url + 'secure.php/gallery/create';
-		this.uploadScript = grandparent.base_url + 'upload/receivePhoto';
+		this.uploadScript = grandparent.base_url + 'receivePhoto.php';
+//		this.uploadScript = grandparent.base_url + 'upload/receivePhoto';
 
 		YAHOO.widget.Uploader.SWFURL = this.swfUrl;
 		this.pieChartLoaded = new dojo.Deferred();
@@ -119,7 +120,7 @@ dojo.declare('Cameratron.Uploader', null, {
 				} else {
 					this.gallery_id = item.id[0];
 					this.gallery_title_url = item.title_url[0];
-					this.setPieChart(0.19);
+					this.setPieChart(0.05);
 					this.submitPhotos();
 				}
 
@@ -160,7 +161,7 @@ dojo.declare('Cameratron.Uploader', null, {
 					this.gallery_title_url = responseObj.title_url;
 					console.info('Created gallery with ID = '+this.gallery_id);
 					this.setStatusText('Construction', 'successfully created gallery');
-					this.setPieChart(0.2);
+					this.setPieChart(0.05);
 					this.submitPhotos();
 
 				} else {
@@ -230,7 +231,7 @@ dojo.declare('Cameratron.Uploader', null, {
 		}
 		console.log('after summing, transferredBytes = '+transferredBytes);
 
-		this.setPieChart(transferredBytes/this.totalBytes*0.8+0.2);
+		this.setPieChart(transferredBytes/this.totalBytes*0.95+0.05);
 
 		this.setProgressBar(file.id, file.transferredBytes/file.size);
 

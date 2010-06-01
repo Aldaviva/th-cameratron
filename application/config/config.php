@@ -93,7 +93,7 @@ $config['log_directory'] = APPPATH.'logs';
  * Enable or disable displaying of Kohana error pages. This will not affect
  * logging. Turning this off will disable ALL error pages.
  */
-$config['display_errors'] = true;
+$config['display_errors'] = false;
 
 /**
  * Enable or disable statistics in the final output. Stats are replaced via

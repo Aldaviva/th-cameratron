@@ -15,11 +15,21 @@ Allow from 138.16.0.0/16
 	Deny from all
 </Files>
 
+<Files "secure.php">
+	Satisfy all
+	Allow from all
+</Files>
+
+<Files "receivePhoto.php">
+	Satisfy any
+	Allow from all
+</Files>
+
 # Turn on URL rewriting
 RewriteEngine On
 
 # Installation directory
-RewriteBase /cameratron/
+RewriteBase /photogallery/
 
 # Protect application and system files from being viewed
 RewriteRule ^(application|modules|system) - [F,L]
