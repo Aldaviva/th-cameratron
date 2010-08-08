@@ -8,13 +8,27 @@
  */
 
 /**
+ * Application-specific constants
+ */
+define('TIMESTAMP_SQL', 'Y-m-d H:i:s');
+
+/**
+ * Because of Apache access rules, anyone accessing this page will be
+ * either on-campus or (off-campus and have logged in with a valid Tech
+ * House username+password combination).
+ */
+if(!defined('LOGGED_IN')){
+	define('LOGGED_IN', false);
+}
+
+/**
  * Define the website environment status. When this flag is set to TRUE, some
  * module demonstration controllers will result in 404 errors. For more information
  * about this option, read the documentation about deploying Kohana.
  *
  * @see http://docs.kohanaphp.com/installation/deployment
  */
-define('IN_PRODUCTION', FALSE);
+define('IN_PRODUCTION', true);
 
 /**
  * Website application directory. This directory should contain your application
@@ -31,7 +45,7 @@ $kohana_application = 'application';
  *
  * This path can be absolute or relative to this file.
  */
-$kohana_modules = 'C:/Programs/Servers/Kohana/modules';
+$kohana_modules = '/home/httpd/conf/Kohana_v2.3.4/modules';
 
 /**
  * Kohana system directory. This directory should contain the core/ directory,
@@ -39,7 +53,7 @@ $kohana_modules = 'C:/Programs/Servers/Kohana/modules';
  *
  * This path can be absolute or relative to this file.
  */
-$kohana_system = 'C:/Programs/Servers/Kohana/system';
+$kohana_system = '/home/httpd/conf/Kohana_v2.3.4/system';
 
 /**
  * Test to make sure that Kohana is running on PHP 5.2 or newer. Once you are
@@ -59,7 +73,7 @@ error_reporting(E_ALL & ~E_STRICT);
  * Turning off display_errors will effectively disable Kohana error display
  * and logging. You can turn off Kohana errors in application/config/config.php
  */
-ini_set('display_errors', TRUE);
+ini_set('display_errors', false);
 
 /**
  * If you rename all of your .php files to a different extension, set the new

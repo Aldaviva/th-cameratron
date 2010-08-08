@@ -4,29 +4,63 @@ class Gallery_Model extends ORM {
 
 	protected $has_many	= array('photos');
 
+	static $ordering = array('date' => 'desc');
+
+	static function search($question){
+
+		if(trim($question) == ''){
+			return array();
+		}
+
+		$question = "%".stripslashes($question)."%";
+		$question = Database::instance()->escape_str($question);
+
+		$results = ORM::factory('gallery')->
+			where("title ILIKE '$question'")->
+			orderBy(self::$ordering)->
+			find_all();
+
+		return $results;
+
+	}
+
+	function unlink(){
+		if($this->numPhotos() == 0){
+			$directory = Kohana::config('cameratron.galleries_dir').'/'.$this->id;
+			rmdir($directory);
+			$this->delete();
+		}
+	}
+
 	static function getByTitleUrl($title_url){
-//		return self::factory('gallery')->where('title',$title)->find();
-		return self::factory('gallery')->where('title_url', $title_url)->find();
+		return ORM::factory('gallery')->where('title_url', $title_url)->find();
 	}
 
 	static function get_all($limit = null, $offset = null){
-		$query = self::factory('gallery')->orderBy('date', 'desc');
+		$query = ORM::factory('gallery')->orderby(self::$ordering);
 
-		if(!is_null($offset) && !is_null($limit)){
-			$query->limit($limit, $offset);
+		if(!is_null($limit)){
+			if(!is_null($offset)){
+				$query->limit($limit, $offset);
+			} else {
+				$query->limit($limit);
+			}
 		}
 
 		return $query->find_all();
 	}
 
 	static function numGalleries(){
-		return self::factory('gallery')->count_all();
+		return ORM::factory('gallery')->count_all();
 	}	
 
 	function getPhoto($basename){
-		$answer = $this->where('basename', $basename)->photos->current();
-		$this->reload(); //otherwise, the photos array is permanently filtered to this one photo
+		$answer = ORM::factory('gallery', $this->id)->where('basename', $basename)->photos->current();
 		return $answer;
+	}
+
+	function getPhotos(){
+		return ORM::factory('gallery', $this->id)->orderby(Photo_Model::$ordering)->photos;
 	}
 
 	function numPhotos(){
@@ -34,32 +68,45 @@ class Gallery_Model extends ORM {
 	}
 
 	function getFirstPhoto(){
-		return $this->photos[0];
+		$photos = $this->getPhotos();
+		return $photos[0];
+	}
+
+	function enforceMinPhotoDate(){
+		$this->date = $this->db->select('MIN(datetime) AS mindate')->where('gallery_id', $this->id)->get('photos')->current()->mindate;
+		$this->save();
+	}
+
+	static function getPagination(){
+		static $pagination = null;
+		if(is_null($pagination)){
+			$pagination = new Pagination(array(
+				'total_items'=>Gallery_Model::numGalleries(),
+				'items_per_page' => Kohana::config('cameratron.galleries_per_page'))
+			);
+		}
+		return $pagination;
+	}
+
+	function getOverviewPage(){
+		$sort_indices = array_flip($this->get_all()->primary_key_array());
+		$sort_index = $sort_indices[$this->id];
+		return self::getPagination()->getPageByIndex($sort_index);
 	}
 
 	function __get($key){
 		switch ($key){
-
-			//if no poster image specified, return a random image from this gallery as poster
-			/*case "poster_photo":
-//				$answer = ORM::factory('photo')->where(array('id'=>$this->poster_photo_id, 'gallery_id'=>$this->id))->find();
-				$answer = new Photo_Model($this->poster_photo_id);
-				if(!$answer->loaded){
-					$random = mt_rand(0, $this->numPhotos() - 1);
-					//$answer = self::factory('photo')->where('gallery_id', $this->id)->find_all(1, $random)->current();
-					$answer = $this->photos[$random];
-				}
-				return $answer;*/
-
 			case 'poster_photo':
+				if($this->numPhotos() == 0){
+					return null;
+				}
+				
 				if(is_null($this->poster_photo_id)){
-					return $this->photos[0];
+					return $this->getFirstPhoto();
 				} else {
-					return $this->poster_photo;
+					return new Photo_Model($this->poster_photo_id);
 				}
 
-
-			//change date field to unix timestamp
 			case 'date':
 				$result = parent::__get($key);
 				return strtotime($result);

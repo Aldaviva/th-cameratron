@@ -20,6 +20,10 @@ abstract class HTML_Controller extends Template_Controller {
 
 		parent::_render();
 	}
+
+	function _cancelTemplate(){
+		Event::clear('system.post_controller', array($this, '_render'));
+	}
 }
 
 ?>

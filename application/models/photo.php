@@ -4,26 +4,38 @@ class Photo_Model extends ORM {
 
 	protected $belongs_to = array('gallery');
 
+	static $ordering = array('datetime' => 'asc', 'basename' => 'asc');
+
 	static function search($question){
 
-		$question = "%".$question."%";
+		if(trim($question) == ''){
+			return array();
+		}
+
+		$question = "%".stripslashes($question)."%";
 		$question = Database::instance()->escape_str($question);
 
-		$results = self::factory('photo')->
+		$results = ORM::factory('photo')->
+			with('gallery')->
 			where("description ILIKE '$question'")->
 			orwhere("people ILIKE '$question'")->
-			orderBy('datetime', 'desc')->find_all();
+			orderBy(array_merge(array('gallery.date' => 'desc'), self::$ordering))->
+			find_all();
 
 		return $results;
 
 	}
-	
-	/*static function getByGalleryBasename($gallery_id, $basename){
-		return self::factory('photo')->where(array(
-			'gallery_id' => $gallery_id,
-			'basename' => $basename))->find();
-	}*/
 
+	function unlink(){
+		$gallery = $this->gallery;
+		unlink($this->getFilename());
+		$this->delete();
+		if($gallery->numPhotos() == 0){
+			$gallery->unlink();
+		} else {
+			$gallery->enforceMinPhotoDate();
+		}
+	}
 
 	function getURL($width = null, $height = null){
 
@@ -40,7 +52,7 @@ class Photo_Model extends ORM {
 	}
 
 	function getFilename(){
-		return implode('/', array('data', $this->gallery_id, $this->basename));
+		return implode('/', array(Kohana::config('cameratron.galleries_dir'), $this->gallery_id, $this->basename));
 	}
 
 	function nextPhoto(){
@@ -52,7 +64,7 @@ class Photo_Model extends ORM {
 	}
 
 	function _getOffsetPhoto($offset){
-		$photoIds = $this->gallery->photos->primary_key_array();
+		$photoIds = $this->gallery->getPhotos()->primary_key_array();
 		$photoIdsFlipped = array_flip($photoIds);
 
 		$resultOrdering = ($photoIdsFlipped[$this->id]+$offset) % count($photoIds);

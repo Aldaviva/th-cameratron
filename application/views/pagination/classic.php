@@ -8,12 +8,12 @@
 
 <p class="pagination">
 
-	<?php if ($first_page): ?>
-		<a href="<?php echo str_replace('{page}', 1, $url) ?>">&lsaquo;&nbsp;<?php echo Kohana::lang('pagination.first') ?></a>
-	<?php endif ?>
+	<?php /*if ($first_page): ?>
+		<a href="<?php echo str_replace('{page}', 1, $url) ?>">&laquo;&nbsp;<?php echo Kohana::lang('pagination.first') ?></a>
+	<?php endif*/ ?>
 
 	<?php if ($previous_page): ?>
-		<a href="<?php echo str_replace('{page}', $previous_page, $url) ?>">&lt;</a>
+		<a href="<?php echo str_replace('{page}', $previous_page, $url) ?>"><em>&lsaquo;</em></a>
 	<?php endif ?>
 
 
@@ -29,11 +29,11 @@
 
 
 	<?php if ($next_page): ?>
-		<a href="<?php echo str_replace('{page}', $next_page, $url) ?>">&gt;</a>
+		<a href="<?php echo str_replace('{page}', $next_page, $url) ?>"><em>&rsaquo;</em></a>
 	<?php endif ?>
 
-	<?php if ($last_page): ?>
-		<a href="<?php echo str_replace('{page}', $last_page, $url) ?>"><?php echo Kohana::lang('pagination.last') ?>&nbsp;&rsaquo;</a>
-	<?php endif ?>
+	<?php /*if ($last_page): ?>
+		<a href="<?php echo str_replace('{page}', $last_page, $url) ?>"><?php echo Kohana::lang('pagination.last') ?>&nbsp;&raquo;</a>
+	<?php endif*/ ?>
 
 </p>

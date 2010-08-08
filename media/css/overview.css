@@ -1,57 +1,56 @@
-.big {
-	margin-left: 145px;
-	padding: 2em;
+body {
+	margin-bottom: 2em;
 }
 
-.polaroid {
-	width: 157px;
-	height: 168px;
-	padding: 1px 4px 6px;
-	margin: 0 9px 17px;
-	float: left;
-	background: url(../img/polaroid_bg.png) no-repeat;
-	position: relative;
-}
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Pagination
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-.polaroid .poster_photo {
-	display: table;
-	height: 108px;
-	width: 100%;
-	margin-top: 5px;
-}
 
-.polaroid div {
-	display: table-cell;
-	vertical-align: middle;
+.pagination-container {
+	padding-top: 30px;
 	text-align: center;
-}
-
-.polaroid img {
-	border: none;
-	display: table-cell;
-	line-height: 0;
-	margin: 0 auto;
-}
-
-.polaroid h3, .polaroid .date {
-	color: black;
-	position: absolute;
-	font-family: "Museo Slab 500";
-	margin: 0 10px 0;
-	display: block;
-}
-
-.polaroid h3 {
-	top: 123px;
-	font-size: 16px;
-}
-
-.polaroid .date {
-	top: 141px;
-	font-size: 12px;
-	color: #535353;
+	clear: both;
 }
 
 .pagination {
-	clear: both;
+	font: 14px "Univers LT Std 55", "U";
+	display: inline-block;
+}
+
+.pagination strong {
+	font-weight: 900;
+}
+
+.pagination a {
+	color: #004a80;
+}
+
+.pagination strong, .pagination a {
+	min-width: 13px;
+	float: left;
+	text-align: center;
+	padding: 3px 8px;
+	border-right: 1px solid hsl(0, 0%, 67%);
+}
+
+.pagination :last-child {
+	border-right: none;
+}
+
+.pagination a:visited {
+	color: #662d91;
+}
+
+.pagination a:hover {
+	background-color: hsl(0, 0%, 90%);
+}
+
+.pagination em {
+	font-weight: 900;
+	font-size: 17px;
+	line-height: 1px;
+	font-style: normal;
 }

@@ -1,0 +1,240 @@
+#upload #totals {
+	font-style: italic;
+	color: #818181;
+	font-size: 12px;
+	float: left;
+	margin-top: 7px;
+}
+
+#upload #addButton {
+	font-size: 12px;
+	float: right;
+	margin-top: 7px;
+}
+
+#upload #filelist {
+	margin: 27px 2px 0;
+	/*margin-top: 27px;
+	margin-left: 2px;*/
+	font: 15px/22px "Delicious", "D";
+	max-height: 208px;
+	overflow-y: auto;
+}
+
+#upload #filelist .remove {
+	float: right;
+	margin-right: 1px;
+	line-height: 21px;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	ComboBox
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#upload .dijitComboBox {
+	background: none;
+	border: none;
+	position: relative;
+	margin: 0 0 6px;
+	width: 100%;
+}
+
+#upload .dijitInputField {
+	overflow: visible;
+}
+
+#upload .dijitInlineTable {
+	/*display: inline;
+	box-sizing: inherit;*/
+	/*padding-right: 5px;*/
+}
+
+#upload .dijitValidationIcon {
+	display: none;
+}
+
+#upload .dijitComboBox .dijitButtonNode {
+	border: none;
+	background: none;
+	position: absolute;
+	right: 0;
+	bottom: -2px;
+	padding: 3px;
+}
+
+#upload .dijitComboBox .dijitArrowButtonInner {
+	background-image: url('../img/upload_existinggalleries.png');
+	width: 115px;
+	height: 14px;
+	text-indent: -999px;
+	overflow: hidden;
+}
+
+#widget_title_dropdown {
+	max-width: 197px;
+	max-height: 229px;
+}
+
+#title_popup {
+	border: none;
+	border-top: 1px solid #56595e;
+	font: 14px "Univers LT Std 45 Light", "U Light";
+	line-height: 19px;
+	box-shadow: 0px 2px 4px HSL(0, 0%, 58%);
+}
+
+#title_popup .dijitMenuItem {
+	padding: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+}
+
+#title_popup .dijitMenuItemSelected {
+	background-color: highlight;
+	color: highlighttext;
+}
+
+#title_popup em {
+	font-family: "Univers LT Std 47 Cn LT", "U Light Condensed";
+	background-color: #56595e;
+	color: white;
+	line-height: inherit;
+	padding: 1px 5px 1px 3px;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Progress bar
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#upload .progress {
+	width: 80px;
+	height: 1px;
+	background-color: #bebebe;
+	position: relative;
+	float: right;
+	margin-top: 11px;
+}
+
+#upload .progress div {
+	background-color: #9e0b0f;
+	height: 5px;
+	position: relative;
+	top: -2px;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Status area
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#upload .status {
+	margin-top: 3px;
+	padding-top: 13px;
+	border-top: 1px solid #bebebe;
+	height: 40px;
+}
+
+#upload #status-standby {
+	text-align: right;
+}
+
+#upload #submit {
+	background: url('../img/upload_submit.png') no-repeat 0 0;
+	width: 157px;
+	height: 40px;
+	text-indent: -9999px;
+	border: none;
+	cursor: pointer;
+	margin-top: 3px;
+	margin-right: -2px;
+}
+
+#upload #submit:hover {
+	background-image: url('../img/upload_submit_anim.png');
+}
+
+#upload #submit:active {
+	background-image: url('../img/upload_submit_clicked.png');
+	background-position: 0 1px;
+}
+
+#upload #piechart {
+	display: block;
+	margin: 0 auto;
+	position: absolute;
+	left: 0;
+	right: 0;
+	width: 40px;
+	height: 40px;
+}
+
+#upload .status span {
+	text-align: left;
+	position: absolute;
+	left: 50%;
+	margin-left: 40px;
+	font-family: "Univers LT Std 47 Cn Lt", 'U Light Condensed';
+}
+
+#upload #status-heading {
+	font-size: 18px;
+	margin-top: 1px;
+	text-transform: uppercase;
+}
+
+#upload #status-subheading {
+	font-size: 12px;
+	color: hsl(0, 0%, 40%);
+	margin-top: 23px;
+	margin-right: 23px;
+}
+
+#upload #status-cancel, #upload #status-gallerylink {
+	position: relative;
+	top: 11px;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Layout
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#upload .leftcolumn, #upload .rightcolumn {
+	/*box-sizing: border-box;
+	-moz-box-sizing: border-box;*/
+	
+	padding: 0 3px;
+}
+
+#upload .leftcolumn {
+	float: left;
+	width: 215px;
+	padding-right: 5px;
+	border-right: 1px solid #acacad;
+}
+
+#upload .rightcolumn {
+	float: right;
+	width: 214px;
+	padding-left: 11px;
+}
+
+#upload .rightcolumn label {
+	margin-left: -8px;
+	margin-right: -3px;
+}
+
+#upload .leftcolumn label {
+	margin-left: -3px;
+	margin-right: -2px;
+}

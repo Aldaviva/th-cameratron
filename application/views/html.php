@@ -4,9 +4,13 @@
 	<head>
 		<title><?= $title ?></title>
 
-		<meta charset="utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
 		<?= html::stylesheet($stylesheets, array(), false); ?>
+
+		<link rel="alternate" type="application/rss+xml" title="Tech House Photography" href="<?= url::site('gallery/rss') ?>" />
+
+		<script type="text/javascript"></script>
 
 	</head>
 
@@ -17,7 +21,6 @@
 		<?= $body ?>
 
 		<?= html::script($scripts, false); ?>
-
 	</body>
 
 </html>

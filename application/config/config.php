@@ -4,7 +4,7 @@
  * then a full URL will be used, eg: http://localhost/kohana/. If it only includes
  * the path, and a site_protocol is specified, the domain will be auto-detected.
  */
-$config['site_domain'] = '/sandbox/cameratron/';
+$config['site_domain'] = '/photogallery/';
 
 /**
  * Force a default protocol to be used by the site. If no site_protocol is
@@ -18,27 +18,12 @@ $config['site_protocol'] = '';
  *
  * This can be removed by using URL rewriting.
  */
-$config['index_page'] = '';
+$config['index_page'] = (LOGGED_IN) ? 'secure.php' : '';
 
 /**
  * Fake file extension that will be added to all generated URLs. Example: .html
  */
 $config['url_suffix'] = '';
-
-/**
- * Directory (relative to site_domain) in which .css files are located
- */
-$config['css_prefix'] = 'media/css';
-
-/**
- * Directory (relative to site_domain) in which .js files are located
- */
-$config['js_prefix'] = 'media/js';
-
-/**
- * Directory (relative to site_domain) in which images files are located
- */
-$config['img_prefix'] = 'media/img';
 
 /**
  * Length of time of the internal cache in seconds. 0 or FALSE means no caching.
@@ -108,7 +93,7 @@ $config['log_directory'] = APPPATH.'logs';
  * Enable or disable displaying of Kohana error pages. This will not affect
  * logging. Turning this off will disable ALL error pages.
  */
-$config['display_errors'] = TRUE;
+$config['display_errors'] = false;
 
 /**
  * Enable or disable statistics in the final output. Stats are replaced via

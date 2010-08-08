@@ -8,3 +8,6 @@ application/cache/*
 data/*
 LegacyImport/*
 Design/*
+photo/resample/*
+media/img/*
+media/fonts/*

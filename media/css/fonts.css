@@ -1,10 +1,55 @@
 /* A font by Jos Buivenga (exljbris) -> www.exljbris.com */
-/* TODO: embed Delicious */
-/* TODO: embed Museo Slab */
+@font-face {
+	font-family: "D";
+	src: url("../fonts/Delicious Roman.otf") format("opentype");
+}
 
-/* http://web.archive.org/web/20080205090247/http://pixelfonts.style-force.net/ */
-/* TODO: embed Gros Extended */
+@font-face {
+	font-family: "D";
+	font-style: italic;
+	src: url("../fonts/Delicious Italic.otf") format("opentype");
+}
 
-/* TODO: Figure out what to do with button fonts. Was going to use Glypha 
-	(Adrian Frutiger) but may go with something free, Like Jos' Museo or Museo
-	Slab' */
+@font-face {
+	font-family: "U Condensed";
+	src: url("../fonts/UniversLTStd-Cn.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "U Ultra Condensed";
+	src: url("../fonts/UniversLTStd-UltraCn.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "U Light";
+	src: url("../fonts/UniversLTStd-Light.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "U";
+	font-weight: normal;
+	src: url("../fonts/UniversLTStd.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "U";
+	font-style: italic;
+	src: url("../fonts/UniversLTStd-Obl.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "U";
+	font-weight: bold;
+	src: url("../fonts/UniversLTStd-Bold.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "U";
+	font-weight: 900;
+	src: url("../fonts/UniversLTStd-Black.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "U Light Condensed";
+	src: url("../fonts/UniversLTStd-LightCn.otf") format("opentype");
+}

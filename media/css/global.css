@@ -1,12 +1,63 @@
 body {
 	background: white url(../img/bg_gradient.png) repeat-x;
-	overflow-x: hidden;
+	/*overflow-x: hidden;*/
 	/*overflow: hidden;*/
 	/*width: 100%;*/
+	min-width: 790px;
 }
 
 a {
 	text-decoration: none;
+	/*color: #003663;*/
+	color: #9e0b0f;
+}
+
+h2 {
+	position: absolute;
+	top: 0;
+	margin: 15px 290px 0 145px;
+	padding-left: 28px;
+	/*padding-bottom: 2px;*/
+	/*min-width: 312px;*/
+	/*height: 24px;*/
+	font: 21px "Univers LT Std 45 Light", "U Light";
+}
+
+.big {
+	clear: left;
+	margin: 64px 0 0 145px;
+	padding: 0 28px;
+}
+
+h2 a {
+	color: inherit;
+}
+
+h2 a:before {
+	content: '‹ ';
+	font-family: "Univers LT Std 55", "U";
+	font-weight: bold;
+}
+
+.ellipses {
+	white-space: nowrap;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+}
+
+abbr {
+	text-transform: lowercase;
+	font-variant: small-caps;
+}
+
+input.empty {
+	font-style: italic !important;
+	color: #8c8c8c;
+}
+
+.clear {
+	clear: both;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -22,20 +73,29 @@ header {
 	position: absolute;
 	z-index: 8;
 	width: 133px;
+	top: 0;
 }
 
 header div {
-	background: #c8cacf url(../img/badge_bg_repeat.png) repeat-y;
+	background: #9da2ab url(../img/badge_bg_repeat.png) repeat-y;
 }
 
-header a#badge-title {
-	background: url(../img/badge_title.png) no-repeat center 18px;
+header #badge-title {
+	background: url(../img/badge_title.png) no-repeat;
+	background-position: 50% 18px;
 	display: block;
 	height: 93px;
 	margin: 0 auto;
 	width: 115px;
-	padding: 18px 0 15px;
-	border-bottom: 1px solid #e4e5e7;
+	padding: 18px 0 0;
+}
+
+header #badge-title:hover {
+	opacity: 0.9;
+}
+
+header #badge-title:active {
+	opacity: 1;
 }
 
 header h1 {
@@ -47,22 +107,135 @@ header a {
 }
 
 header nav ul {
-	padding: 14px 5px 21px;
-	font: 8px/16px "Gros Extended";
+	padding: 0 5px 14px;
+	font: 13px/21px "Univers LT Std 45 Light", "U Light";
 	list-style: none;
 }
 
-header nav a, header nav a:visited {
-	text-decoration: none;
-	padding: 0 12px;
-	border-width: 1px 0;
-	border-style: solid;
-	border-color: transparent;
+header nav a {
+	background-repeat: no-repeat;
+	background-position: 8px 6px;
+	padding-left: 23px;
 	color: white;
+	
 }
 
-header nav a:hover {
-	background: #ed1c24;
-	border-color: #9e0b0f;
+/*header nav a, header nav a:visited {
+	text-decoration: none;
+}*/
+
+header nav li {
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+}
+
+header nav li:hover {
+	/*background: -webkit-gradient(linear, left top, left bottom, from(#a90c11), to(#940a0d));*/
+	background: #9e0b0f url('../img/badge_button_active_bg.png') repeat-x;
+	/*border-top-color: #910a0e;
+	border-bottom-color: #5b0708;*/
+	border-color: #910a0e transparent #5b0708;
+}
+
+header nav .active {
+	/*border-color: #8e929a transparent;*/
+	background-color: #abb0ba;
+}
+
+header nav a:active {
+	text-shadow: 0px 0px 3px white;
+}
+
+header hr {
+	height: 1px;
+	border: none;
 	color: white;
+	background-color: white;
+	opacity: .5;
+	margin: 14px 6px;
+}
+
+header #badge-upload {
+	background-image: url('../img/badge_icon-upload.png');
+}
+
+header #badge-all-galleries {
+	background-image: url('../img/badge_icon-all_galleries.png');
+}
+
+header #badge-this-gallery {
+	background-image: url('../img/badge_icon-this_gallery.png');
+}
+
+header #badge-edit-metadata {
+	background-image: url('../img/badge_icon-edit_metadata.png');
+}
+
+header #badge-original-size {
+	background-image: url('../img/badge_icon-original_size.png');
+}
+
+header #badge-set-key-photo {
+	background-image: url('../img/badge_icon-key_photo.png');
+}
+
+header #badge-permalink {
+	background-image: url('../img/badge_icon-permalink.png');
+}
+
+header #badge-delete {
+	background-image: url('../img/badge_icon-delete_photo.png');
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Search box
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#searchbox {
+	position: absolute;
+	top: 15px;
+	right: 17px;
+	/*padding-right: 17px;*/
+	/*left: 0;*/
+	/*text-align: right;*/
+	/*min-width: 770px;*/
+	height: 30px;
+	
+	background: url("../img/search_bg_right.png") no-repeat right;
+	padding-right: 5px;
+}
+
+#searchbox div {
+	background: url("../img/search_bg_left.png") no-repeat;
+	padding: 4px 0 4px 4px;
+	height: 22px;
+}
+
+#searchbox #q {
+	width: 14em;
+	height: inherit;
+	border: none;
+	padding: 0 6px;
+	background: url('../img/search_divider.png') no-repeat right center;
+	font: 14px "Univers LT Std 55", "U";
+}
+
+/*#searchbox #q.empty {
+	font-style: italic;
+	color: #8c8c8c;
+}*/
+
+#searchbox button[type=submit] {
+	width: 26px;
+	height: 22px;
+	background: url('../img/search_button.png') no-repeat 5px 3px;
+	text-indent: -9999px;
+	border: none;
+	cursor: pointer;
+}
+
+#searchbox button[type=submit]:active {
+	background-position: 5px 4px;
 }

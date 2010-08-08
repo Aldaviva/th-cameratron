@@ -19,12 +19,20 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 	 */
 	public $badge;
 
+	/**
+	 * @var Array|String: either the heading of the page, or the {text, href} hashmap of the heading link
+	 */
+	public $heading;
+
 	function __construct(){
 		parent::__construct();
 
-		$this->scripts[] = "http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js";
+		$this->scripts[] = "dojo/dojo/dojo.js";
+		$this->scripts[] = "init.js";
+
 		$this->stylesheets[] = "reset.css";
 		$this->stylesheets[] = "global.css";
+		$this->stylesheets[] = "fonts.css";
 	}
 
 	function _render(){
@@ -33,6 +41,7 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 		$this->body = new View('mytemplate');
 		$this->body->badge = $this->badge;
 		$this->body->content = $this->content;
+		$this->body->heading = $this->heading;
 
 		parent::_render();
 	}

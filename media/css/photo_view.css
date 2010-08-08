@@ -1,21 +1,5 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-*
-*	Big
-*
-\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-.big{
-	margin-top: 15px;
-	position: absolute;
-	right: 50%;
-	z-index: 7;
-	padding-bottom: 117px;
-}
-
-.big div {
-	margin-left: 145px;
-	position: relative;
-	right: -50%;
-	text-align: center;
+body {
+	overflow-x: hidden;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -23,8 +7,15 @@
 *	Selected Photo
 *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+.big {
+	text-align: center;
+}
+
 #selectedPhoto {
 	border: 1px solid white;
+	/*display: block;
+	margin: 0 auto;*/
+	/*text-align: center;*/
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -37,6 +28,7 @@
 	position: relative;
 	min-width: 585px;
 	text-align: left;
+	margin: 0 28px;
 }
 
 #metadata label span {
@@ -44,8 +36,8 @@
 }
 
 #metadata input[type='text'] {
-	font: 12px "Museo Slab 500";
-	position: absolute;
+	font: 12px "Delicious", "D";
+	/*position: absolute;*/
 	border: none;
 	background: transparent;
 }
@@ -53,12 +45,13 @@
 #metadata input#description {
 	font-size: 20px;
 	top: 12px;
+	height: 23px;
 }
 
 #metadata input#people {
 	font-size: 14px;
 	left: 5px;
-	top: 38px;
+	top: 14px;
 }
 
 #metadata input#datetime {
@@ -76,20 +69,87 @@
 	top: 40px;
 }
 
+#metadata .left {
+	position: absolute;
+	left: 0;
+	right: 220px;
+}
+
 #metadata input#description, #metadata input#people {
-	width: 73%;
+	/*width: 73%;*/
+	width: 100%;
+	position: relative;
 }
 
 #metadata input#datetime, #metadata input#location, #metadata input#photographer {
 	text-align: right;
-	width: 25%;
+	width: 200px;
+	position: absolute;
 }
 
-#metadata input[type='submit'] {
+#metadata .buttons {
 	position: absolute;
-	right: 15px;
-	top: 54px;
+	right: -5px;
+	top: -14px;
 }
+
+#metadata .buttons input {
+	border: none;
+	cursor: pointer;
+	background-color: #f0f0f0;
+	padding: 3px 6px;
+	margin-left: 0.5em;
+	font: 12px "Univers LT Std 57 Cn", "U Condensed";
+	text-transform: uppercase;
+}
+
+#metadata #submit {
+	color: white;
+	background-color: #6FA672;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Nav arrows
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#nav_previous, #nav_next {
+	text-indent: -9999px;
+	border: none;
+	cursor: pointer;
+	background-color: #f0f0f0;
+	background-repeat: no-repeat;
+	background-position: 5px 15px;
+	width: 16px;
+	height: 41px;
+	position: absolute;
+	bottom: 3px;
+}
+
+#nav_previous.disabled, #nav_next.disabled {
+	cursor: default;
+	background-color: transparent;
+}
+
+#nav_previous {
+	left: -28px;
+	background-image: url('../img/thumbs_arrow-left.png');
+}
+
+#nav_previous.disabled {
+	background-image: url('../img/thumbs_arrow-left_disabled.png');
+}
+
+#nav_next {
+	right: -28px;
+	background-image: url('../img/thumbs_arrow-right.png');
+}
+
+#nav_next.disabled {
+	background-image: url('../img/thumbs_arrow-right_disabled.png');
+}
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
 *
@@ -97,15 +157,15 @@
 *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #thumbs {
-	background: #f7f8fa;
-	border-top: 1px solid #d5dbe3;
+	background: url('../img/thumbs_bg.png') repeat-x 0 6px;
 	bottom: 0;
 	clear: both;
 	height: 52px;
 	left: 0;
 	overflow: scroll;
 	overflow-y: hidden;
-	padding: 11px 46px 25px;
+	/*padding: 17px 46px 25px;*/
+	padding: 17px 17px 25px;
 	position: fixed;
 	right: 0;
 	white-space: nowrap;
@@ -116,6 +176,12 @@
 	display: inline-block;
 	min-width: 75px;
 	text-align: center;
+	padding-top: 16px;
+	margin-top: -16px;
+}
+
+#thumbs span.active {
+	background: url('../img/thumbs_currentmarker.png') no-repeat top center;
 }
 
 #thumbs a {
@@ -125,14 +191,19 @@
 	vertical-align: middle;
 }
 
-#thumbs a.active {
+#thumbs .active a {
 	border: 1px solid #9e0b0f;
+	opacity: 1 !important;
 }
 
 #thumbs img {
 	border: 1px solid transparent;
 }
 
-#thumbs a.active img {
+#thumbs .active img {
 	border: 1px solid white;
+}
+
+#thumbs a:visited, #thumbs .visited a {
+	opacity: .67;
 }

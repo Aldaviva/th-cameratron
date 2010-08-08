@@ -1,0 +1,105 @@
+.dialog {
+	width: 504px;
+	/*height: 390px;*/
+	position: relative;
+	margin: 67px auto 17px;
+
+	font: 13px "Univers LT Std 55", "U";
+}
+
+.dialog form {
+	margin: 0 3px;
+	background-color: white;
+	/*height: inherit;*/
+	padding: 16px 23px;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Heading
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+.dialog h3 {
+	font: 26px "Univers LT Std 45 Light", "U Light";
+	margin-bottom: 16px;
+	/*text-shadow: 0 1px 3px rgba(0,0,0,0.2);*/
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Fields
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+.dialog label {
+	display: block;
+	background-color: #f0f0f0;
+	border-top: 1px solid #bebebe;
+	font: 12px "Univers LT Std 59 UltraCn", "U Ultra Condensed";
+	color: #3e3e3e;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	padding: 2px 0 3px 3px;
+}
+
+.dialog label[for]{
+	cursor: text;
+}
+
+.dialog input[type=text] {
+	border: none;
+	font: 22px "Delicious", "D";
+	padding: 8px 0 27px;
+	margin-bottom: 6px;
+	width: 100%;
+	cursor: text;
+}
+
+.dialog input[disabled=disabled] {
+	background: none;
+	color: hsl(0, 0%, 50%);
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+*
+*	Shadows
+*
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+.dialog .left, .dialog .right, .dialog .bottomleft, .dialog .bottomright {
+	position: absolute;
+	width: 3px;
+	background-image: url('../img/dialog-shadow.png');
+	background-repeat: no-repeat;
+} 
+
+.dialog .left {
+	top: 0;
+	left: 0;
+	bottom: 8px;
+	background-position: top left;
+}
+
+.dialog .right {
+	top: 0;
+	right: 0;
+	bottom: 8px;
+	background-position: top right;
+}
+
+.dialog .bottomleft {
+	left: 0;
+	bottom: 0;
+	height: 8px;
+	background-position: bottom left;
+}
+
+.dialog .bottomright {
+	right: 0;
+	bottom: 0;
+	height: 8px;
+	background-position: bottom right;
+}

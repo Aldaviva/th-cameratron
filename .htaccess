@@ -1,8 +1,35 @@
+Satisfy any
+# Allow either AuthShadow...
+AuthName "Techhouse Server Login"
+AuthShadow on
+AuthType Basic
+AuthBasicAuthoritative off
+require valid-user
+# Or from Brown's IP space
+Order Deny,Allow
+Deny from all
+Allow from 128.148.0.0/16
+Allow from 138.16.0.0/16
+
+<Files ".hgignore">
+	Deny from all
+</Files>
+
+<Files "secure.php">
+	Satisfy all
+	Allow from all
+</Files>
+
+<Files "receivePhoto.php">
+	Satisfy any
+	Allow from all
+</Files>
+
 # Turn on URL rewriting
 RewriteEngine On
 
 # Installation directory
-RewriteBase /sandbox/cameratron/
+RewriteBase /photogallery/
 
 # Protect application and system files from being viewed
 RewriteRule ^(application|modules|system) - [F,L]

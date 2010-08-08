@@ -1,14 +1,21 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+/**
+ * I added the ability to prefix a site-wide javascript or css folder into these
+ * links if they are relative
+ */
+
 class html extends html_Core {
 
 	public static function stylesheet($style, $media = FALSE, $index = FALSE) {
-		$prefix = Kohana::config('core.css_prefix', true);
+
+		$prefix = Kohana::config('cameratron.css_prefix', true);
 
 		return self::link($style, 'stylesheet', 'text/css', '.css', $media, $index, $prefix);
 	}
 
 	public static function link($href, $rel, $type, $suffix = FALSE, $media = FALSE, $index = FALSE, $prefix = '') {
+
 		$compiled = '';
 
 		if (is_array($href))
@@ -24,8 +31,11 @@ class html extends html_Core {
 		}
 		else
 		{
-			if (strpos($href, '://') === FALSE)
-			{
+			if(strpos($href, '/') === 0){
+				//Omit prefix for URLS with leading '/'
+				$href = url::base($index).$href;
+				
+			} else if (strpos($href, '://') === FALSE) {
 				// Make the URL absolute
 				$href = url::base($index).$prefix.$href;
 			}
@@ -59,7 +69,7 @@ class html extends html_Core {
 
 	public static function script($script, $index = FALSE) {
 
-		$prefix = Kohana::config('core.js_prefix', true);
+		$prefix = Kohana::config('cameratron.js_prefix', true);
 
 		$compiled = '';
 
@@ -72,7 +82,11 @@ class html extends html_Core {
 		}
 		else
 		{
-			if (strpos($script, '://') === FALSE)
+			if(strpos($script, '/') === 0){
+				//Omit prefix for URLS with leading '/'
+				$script = url::base((bool) $index).$script;
+
+			} else if (strpos($script, '://') === FALSE)
 			{
 				// Add the prefix only when it's not already present
 				$script = url::base((bool) $index).$prefix.$script;
