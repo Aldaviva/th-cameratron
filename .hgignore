@@ -11,3 +11,6 @@ Design/*
 photo/resample/*
 media/img/*
 media/fonts/*
+media/js/dojo
+media/js/dojo-src
+media/js/yui2
