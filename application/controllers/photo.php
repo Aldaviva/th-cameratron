@@ -78,7 +78,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 			,array(
 				'text'	=> 'Delete',
 				'title'	=> 'Remove this photo from the gallery (must be an officer or webmaster).',
-				'href'	=> 'photo/delete/'.$this->content->selectedPhoto->id
+				'href'	=> 'photo/delete/'.$this->content->selectedPhoto->id,
 			)
 		);
 

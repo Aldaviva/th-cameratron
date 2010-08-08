@@ -32,6 +32,8 @@ class Photo_Model extends ORM {
 		$this->delete();
 		if($gallery->numPhotos() == 0){
 			$gallery->unlink();
+		} else {
+			$gallery->enforceMinPhotoDate();
 		}
 	}
 

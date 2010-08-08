@@ -87,6 +87,10 @@ class Upload_Controller extends SiteTemplate_Controller {
 
 			} else if(!$gallery->loaded){
 				$this->invalidFile($basename, 'the gallery does not exist');
+
+			} else if(ORM::factory('photo')->where(array('basename'=>$basename, 'gallery_id'=>$gallery->id))->find()->loaded){
+				$this->invalidFile($basename, 'a file with this name already exists');
+			
 			} else {
 
 				$photo = ORM::factory('photo');

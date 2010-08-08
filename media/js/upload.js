@@ -249,11 +249,11 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		var file = this.getFileById(event.id);
 
-		this.transferredFiles++;
 
 		var responseObj = dojo.fromJson(event.data);
 
 		if(responseObj.stat == 'ok'){
+			this.transferredFiles++;
 			console.info('Finished upload of '+file.name+'.');
 			//this.setStatusText('Transferral', 'finished for '+file.name);
 		} else {

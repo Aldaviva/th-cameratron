@@ -183,6 +183,10 @@ header #badge-permalink {
 	background-image: url('../img/badge_icon-permalink.png');
 }
 
+header #badge-delete {
+	background-image: url('../img/badge_icon-delete_photo.png');
+}
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
 *
 *	Search box
