@@ -112,7 +112,7 @@ class Upload_Controller extends SiteTemplate_Controller {
 				}
 
 				move_uploaded_file($tempPath, $destinationPath);
-				chmod($destinationPath, 0660);
+				chmod($destinationPath, 0664);
 
 				if($datetime = $this->readEXIFTimestamp($photo->getFilename())){
 					$photo->datetime = date(TIMESTAMP_SQL, $datetime);

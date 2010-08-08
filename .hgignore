@@ -8,4 +8,8 @@ application/cache/*
 data/*
 LegacyImport/*
 Design/*
-media/fonts
+photo/resample/*
+media/js/dojo
+media/js/dojo-src
+media/js/yui2
+application/config/database.php

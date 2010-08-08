@@ -15,7 +15,8 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		this.ticketUrl = grandparent.base_url + 'secure.php/upload/getTicket';
 		this.galleryCreationScript = grandparent.base_url + 'secure.php/gallery/create';
-		this.uploadScript = grandparent.base_url + 'upload/receivePhoto';
+		this.uploadScript = grandparent.base_url + 'receivePhoto.php';
+//		this.uploadScript = grandparent.base_url + 'upload/receivePhoto';
 
 		YAHOO.widget.Uploader.SWFURL = this.swfUrl;
 		this.pieChartLoaded = new dojo.Deferred();
@@ -26,6 +27,7 @@ dojo.declare('Cameratron.Uploader', null, {
 //			this.uploadScript = this.form.action;
 			this.fileListNode = dojo.byId(filelist_id);
 			this.gallery_id = -1;
+			this.doctitle = dojo.doc.title;
 
 			dojo.style('swfOverlay', {
 				width: dojo.style('addButton', 'width')+"px",
@@ -249,6 +251,7 @@ dojo.declare('Cameratron.Uploader', null, {
 
 		var file = this.getFileById(event.id);
 
+		this.transferredFiles++;
 
 		var responseObj = dojo.fromJson(event.data);
 
@@ -287,6 +290,8 @@ dojo.declare('Cameratron.Uploader', null, {
 	cancel: function(event){
 		event.preventDefault();
 		console.warn('Upload canceled');
+
+		this.widget.cancel();
 
 		this.setStatusText('Interruption', "gallery has a subset of these photos");
 
@@ -403,6 +408,9 @@ dojo.declare('Cameratron.Uploader', null, {
 	},
 	
 	setPieChart: function(percent){
+
+		//dojo.doc.title = dojo.number.round((percent*100), 1)+'% - '+this.doctitle;
+		dojo.doc.title = dojo.number.format(percent, {pattern: '##.0%'}) + ' - ' + this.doctitle;
 
 		this.pieChartLoaded.addCallback(function(){
 

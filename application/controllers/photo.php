@@ -78,7 +78,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 			,array(
 				'text'	=> 'Delete',
 				'title'	=> 'Remove this photo from the gallery (must be an officer or webmaster).',
-				'href'	=> 'photo/delete/'.$this->content->selectedPhoto->id,
+				'href'	=> 'photo/delete/'.$this->content->selectedPhoto->id
 			)
 		);
 
@@ -170,7 +170,8 @@ class Photo_Controller extends SiteTemplate_Controller {
 				|| (ip::inSubnet($client_ip, "192.168.1.0", 24) && $client_ip != '192.168.1.1')
 				|| $client_ip == '127.0.0.1')
 			? 95 //on resnet
-			: 85; //otherwise
+			//: 85; //otherwise
+			:50;
 		
 		if(!file_exists($filename)){
 			throw new Kohana_404_Exception("Image with id = $id, cwd = ".getcwd().", filename = $filename");
