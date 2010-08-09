@@ -21,6 +21,13 @@ class Mobilegallery_Controller extends Gallery_Controller {
 		$this->heading = 'All Galleries';
 	}
 
+	function view($title_url = NULL){
+
+		$this->stylesheets[] = 'mobile/collection.css';
+
+		parent::view($title_url, false);
+	}
+
 }
 
 ?>

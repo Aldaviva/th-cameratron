@@ -43,7 +43,7 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 		if(Kohana::config('cameratron.mobile')){
 			$this->body = new View('mobile/mytemplate');
 			$this->stylesheets[] = "mobile/global.css";
-			$this->metas['viewport'] = 'width=device-width';
+			$this->metas['viewport'] = 'width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;';
 		} else {
 			$this->body = new View('mytemplate');
 			$this->stylesheets[] = "global.css";

@@ -29,7 +29,7 @@
 	//			echo html::anchor("photo/view/{$photo->gallery->title_url}", $thumb);
 			} else {
 				echo "<span>";
-				$thumb = html::image($photo->getURL(100));
+				$thumb = html::image($photo->getURL($thumbWidth));
 			}
 			echo html::anchor("photo/view/".$photo->gallery->title_url."/#/".$photo->basename, $thumb);
 			echo "</span>";

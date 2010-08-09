@@ -39,7 +39,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		$this->heading = 'All Galleries';
 	}
 
-	function view($title_url = NULL){
+	function view($title_url = NULL, $isFirstPhotoBig = true){
 		if(is_null($title_url)){
 			url::redirect('gallery');
 		}
@@ -66,7 +66,8 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		);
 
 		$this->content = new View('collection');
-		$this->content->bigFirstPhoto = true;
+		$this->content->thumbWidth = (Kohana::config('cameratron.mobile')) ? 158 : 100;
+		$this->content->bigFirstPhoto = $isFirstPhotoBig;
 		$this->stylesheets[] = 'collection.css';
 
 		$this->content->photos = $gallery->getPhotos();
@@ -84,6 +85,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		}
 
 		$this->content = new View('collection');
+		$this->content->thumbWidth = (Kohana::config('cameratron.mobile')) ? 80 : 100;
 		$this->content->bigFirstPhoto = false;
 		$this->heading = "Search results for '".html::specialchars($question)."'";
 
