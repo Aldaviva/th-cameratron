@@ -66,8 +66,8 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		);
 
 		$this->content = new View('collection');
-		$this->content->thumbWidth = (Kohana::config('cameratron.mobile')) ? 158 : 100;
-		$this->content->bigFirstPhoto = $isFirstPhotoBig;
+		$this->content->thumbWidth = $this->_getThumbWidth();
+		$this->content->bigFirstPhoto = $this->_isFirstPhotoBig("view");
 		$this->stylesheets[] = 'collection.css';
 
 		$this->content->photos = $gallery->getPhotos();
@@ -86,7 +86,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 
 		$this->content = new View('collection');
 		$this->content->thumbWidth = (Kohana::config('cameratron.mobile')) ? 80 : 100;
-		$this->content->bigFirstPhoto = false;
+		$this->content->bigFirstPhoto = $this->_isFirstPhotoBig("search");
 		$this->heading = "Search results for '".html::specialchars($question)."'";
 
 		$this->stylesheets[] = 'polaroids.css';
@@ -236,6 +236,19 @@ class Gallery_Controller extends SiteTemplate_Controller {
 
 		echo json_encode($response);
 
+	}
+
+	protected function _getThumbWidth(){
+		return (Kohana::config('cameratron.mobile')) ? 158 : 100;
+	}
+
+	protected function _isFirstPhotoBig($method){
+		switch ($method){
+			case "view":
+				return true;
+			case "search":
+				return false;
+		}
 	}
 
 }

@@ -63,6 +63,13 @@ class Photo_Model extends ORM {
 		return $this->_getOffsetPhoto(-1);
 	}
 
+	function getOrdinal(){
+		$photoIds = $this->gallery->getPhotos()->primary_key_array();
+		$photoIdsFlipped = array_flip($photoIds);
+
+		return $photoIdsFlipped[$this->id];
+	}
+
 	function _getOffsetPhoto($offset){
 		$photoIds = $this->gallery->getPhotos()->primary_key_array();
 		$photoIdsFlipped = array_flip($photoIds);
@@ -72,6 +79,14 @@ class Photo_Model extends ORM {
 		$result = $result[0];
 
 		return new Photo_Model($result);
+	}
+
+	function isFirstPhoto(){
+		return $this->getOrdinal() == 0;
+	}
+
+	function isLastPhoto(){
+		return $this->getOrdinal() == ($this->gallery->numPhotos() - 1);
 	}
 }
 

@@ -1,6 +1,7 @@
 body {
 /*	background: white url(../../img/bg_gradient.png) repeat-x;*/
-	background: white url(../../img/ruler.png) no-repeat;
+/*	background: white url(../../img/ruler.png) no-repeat;*/
+	background: white;
 }
 
 .ellipses {
@@ -22,7 +23,9 @@ a.gallery_link {
 
 h2 {
 	text-align: center;
-	font-size: 1.2em;
+	font-size: 1.7em;
+	margin-top: 0.4em;
+	line-height: 1em;
 }
 
 .small {

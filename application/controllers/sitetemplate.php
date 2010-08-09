@@ -27,6 +27,8 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 	function __construct(){
 		parent::__construct();
 
+		$this->stylesheets[] = "reset.css";
+
 		if(!Kohana::config('cameratron.mobile')){
 			$this->scripts[] = "dojo/dojo/dojo.js";
 			$this->scripts[] = "init.js";
@@ -38,7 +40,7 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 		$this->title = (array) $this->title;
 
 		$this->metas['content-type'] = 'text/html; charset=utf-8';
-		$this->stylesheets[] = "reset.css";
+		
 
 		if(Kohana::config('cameratron.mobile')){
 			$this->body = new View('mobile/mytemplate');
@@ -46,11 +48,12 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 			$this->metas['viewport'] = 'width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;';
 		} else {
 			$this->body = new View('mytemplate');
+			$this->body->badge = $this->badge;
 			$this->stylesheets[] = "global.css";
 			$this->stylesheets[] = "fonts.css";
 		}
 
-		$this->body->badge = $this->badge;
+		
 		$this->body->content = $this->content;
 		$this->body->heading = $this->heading;
 

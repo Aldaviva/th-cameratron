@@ -2,6 +2,8 @@
 
 class Photo_Controller extends SiteTemplate_Controller {
 
+	protected $viewName = "photo"; //which View file to load when view() is called
+
 	function view($gallery_title_url = null, $photo_basename = null){
 		if(is_null($gallery_title_url)){
 			url::redirect('gallery');
@@ -15,13 +17,9 @@ class Photo_Controller extends SiteTemplate_Controller {
 			return;
 		}
 
-		$this->stylesheets[] = 'photo_view.css';
-		$this->scripts[] = 'photo_view.js';
-		$this->scripts[] = 'strtotime_mini.js';
+		$this->_addResources();
 
-
-
-		$this->content = new View('photo');
+		$this->content = new View($this->viewName);
 
 		$this->content->gallery_title_url = $gallery_title_url;
 
@@ -82,7 +80,8 @@ class Photo_Controller extends SiteTemplate_Controller {
 			)
 		);
 
-		$this->heading = array('text' => $gallery->title, 'href' => "/gallery/view/{$gallery->title_url}");
+		$href = (Kohana::config('cameratron.mobile') ? "mobile" : "") . "/gallery/view/{$gallery->title_url}";
+		$this->heading = array('text' => $gallery->title, 'href' => $href);
 		$this->title = array('Photography', $gallery->title);
 
 	}
@@ -237,6 +236,12 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 		return $area < 75000;
 
+	}
+
+	protected function _addResources(){
+		$this->stylesheets[] = 'photo_view.css';
+		$this->scripts[] = 'photo_view.js';
+		$this->scripts[] = 'strtotime_mini.js';
 	}
 
 }

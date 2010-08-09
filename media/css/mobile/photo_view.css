@@ -1,0 +1,40 @@
+h2 {
+	display: none;
+}
+
+#selectedPhoto {
+	max-width: 100%;
+	display: block;
+	margin: 0 auto;
+}
+
+#nav {
+	margin: 1em 0;
+	text-align: center;
+}
+
+#nav button {
+	width: 33%;
+	min-width: 80px;
+	height: 3em;
+	font-size: 1.5em;
+}
+
+dl {
+	margin: 2em 2em 0;
+}
+
+dt {
+	font-weight: bold;
+	font-size: 0.7em;
+	text-transform: uppercase;
+	color: #535353;
+	margin-bottom: 0.5em;
+}
+
+dd {
+	font-size: 1.2em;
+	padding-left: 2em;
+	display: block;
+	margin-bottom: 0.8em;
+}

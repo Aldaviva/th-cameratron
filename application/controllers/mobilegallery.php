@@ -28,6 +28,10 @@ class Mobilegallery_Controller extends Gallery_Controller {
 		parent::view($title_url, false);
 	}
 
+	protected function  _isFirstPhotoBig($method) {
+		return false;
+	}
+
 }
 
 ?>
