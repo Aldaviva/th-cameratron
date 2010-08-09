@@ -26,4 +26,5 @@ $config['deleter_groups'] = array('webmaster', 'president', 'evil');
  */
 $config['galleries_per_page'] = 18;
 
+$config['mobile'] = false;
 ?>

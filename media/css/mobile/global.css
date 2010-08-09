@@ -1,0 +1,71 @@
+body {
+/*	background: white url(../../img/bg_gradient.png) repeat-x;*/
+	background: white url(../../img/ruler.png) no-repeat;
+}
+
+.ellipses {
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+a {
+	text-decoration: none;
+	/*color: #003663;*/
+	color: #9e0b0f;
+}
+
+a.gallery_link {
+	color: black;
+}
+
+h2 {
+	text-align: center;
+	font-size: 1.2em;
+}
+
+.small {
+/*	width: 30em;*/
+/*	background-color: red;*/
+}
+
+.thumbrow {
+	clear: both;
+	margin: 0 2px 0;
+	padding-bottom: 0;
+	padding-right: 0.5em;
+	border-bottom: 1px solid #9da2ab;
+	height: 69px;
+}
+
+.thumbrow .poster_photo {
+	float: left;
+	width: 100px;
+	margin-right: 0.5em;
+	padding: 1px 0;
+	background-color: #f0f0f0;
+}
+
+.thumbrow img {
+	display: block;
+	margin: 0 auto;
+}
+
+.thumbrow h4, .thumbrow .date {
+/*	margin-left: 102px;*/
+}
+
+.thumbrow h4 {
+	font-size: 1.5em;
+	padding-top: 0.75em;
+/*	max-height: 2em;*/
+/*	background: blue;*/
+}
+
+.thumbrow .date {
+	text-align: right;
+	color: #535353;
+	font-style: italic;
+	font-size: 0.8em;
+}
