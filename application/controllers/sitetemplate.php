@@ -27,19 +27,33 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 	function __construct(){
 		parent::__construct();
 
-		$this->scripts[] = "dojo/dojo/dojo.js";
-		$this->scripts[] = "init.js";
-
 		$this->stylesheets[] = "reset.css";
-		$this->stylesheets[] = "global.css";
-		$this->stylesheets[] = "fonts.css";
+
+		if(!Kohana::config('cameratron.mobile')){
+			$this->scripts[] = "dojo/dojo/dojo.js";
+			$this->scripts[] = "init.js";
+		}
 	}
 
 	function _render(){
+
 		$this->title = (array) $this->title;
 
-		$this->body = new View('mytemplate');
-		$this->body->badge = $this->badge;
+		$this->metas['content-type'] = 'text/html; charset=utf-8';
+		
+
+		if(Kohana::config('cameratron.mobile')){
+			$this->body = new View('mobile/mytemplate');
+			$this->stylesheets[] = "mobile/global.css";
+			$this->metas['viewport'] = 'width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;';
+		} else {
+			$this->body = new View('mytemplate');
+			$this->body->badge = $this->badge;
+			$this->stylesheets[] = "global.css";
+			$this->stylesheets[] = "fonts.css";
+		}
+
+		
 		$this->body->content = $this->content;
 		$this->body->heading = $this->heading;
 

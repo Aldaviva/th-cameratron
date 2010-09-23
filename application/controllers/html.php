@@ -8,6 +8,7 @@ abstract class HTML_Controller extends Template_Controller {
 	public $body;
 	public $scripts = array();
 	public $stylesheets = array();
+	public $metas = array();
 
 	function _render(){
 		array_unshift($this->title, 'Tech House');
@@ -15,6 +16,7 @@ abstract class HTML_Controller extends Template_Controller {
 		$this->template->title = implode(' | ', $this->title);
 		$this->template->scripts = $this->scripts;
 		$this->template->stylesheets = $this->stylesheets;
+		$this->template->metas = $this->metas;
 		
 		$this->template->body = $this->body;
 

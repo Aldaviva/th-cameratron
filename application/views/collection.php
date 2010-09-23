@@ -26,12 +26,16 @@
 			if($bigFirstPhoto && $i == 0){
 				echo '<span class="largethumb">';
 				$thumb = html::image($photo->getURL(340, 220));
-	//			echo html::anchor("photo/view/{$photo->gallery->title_url}", $thumb);
 			} else {
 				echo "<span>";
-				$thumb = html::image($photo->getURL(100));
+				$thumb = html::image($photo->getURL($thumbWidth));
 			}
-			echo html::anchor("photo/view/".$photo->gallery->title_url."/#/".$photo->basename, $thumb);
+			if(Kohana::config('cameratron.mobile')){
+				$href = "mobile/photo/view/".$photo->gallery->title_url."/".$photo->basename;
+			} else {
+				$href = "photo/view/".$photo->gallery->title_url."/#/".$photo->basename;
+			}
+			echo html::anchor($href, $thumb);
 			echo "</span>";
 		}
 	} else if($twoSections) {

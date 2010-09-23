@@ -10,6 +10,17 @@ Order Deny,Allow
 Deny from all
 Allow from 128.148.0.0/16
 Allow from 138.16.0.0/16
+# Or a time-limited guest pass to a specific gallery
+Auth_PG_host localhost
+Auth_PG_port 5432
+Auth_PG_user photo
+Auth_PG_database photo
+Auth_PG_pwd DirabquadAbHidyonuk6
+Auth_PG_pwd_table valid_guestpasses
+Auth_PG_uid_field username
+Auth_PG_pwd_field password
+Auth_PG_encrypted Off
+Auth_PG_authoritative off
 
 <Files ".hgignore">
 	Deny from all
