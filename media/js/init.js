@@ -9,6 +9,25 @@ function Cameratron(){
 	return this;
 }
 
+Cameratron.prototype.generateGuestPass(gallery_id) = function(){
+
+	dojo.xhrGet({
+		url: this.base_url + 'secure.php/gallery/generateGuestPass/'+gallery_id
+		,handleAs: 'json'
+		,load: dojo.hitch(this, function(responseObj){
+			if(responseObj.stat == 'ok'){
+				var gallery_title = responseObj.gallery_title;
+				var username = responseObj.username;
+				var password = responseObj.password
+				var expirationDate = responseObj.expirationDate;
+
+				alert("These login credentials will allow access to the gallery \""+gallery_title+"\" until "+expirationDate+":\nUsername: "+username+"\nPassword: "+password);
+			}
+		})
+	});
+
+}
+
 dojo.addOnLoad(function(){
 	dojo.declare('Cameratron.PlaceholderTextBox', [dijit._Widget], {
 

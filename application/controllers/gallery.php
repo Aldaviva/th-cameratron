@@ -61,6 +61,12 @@ class Gallery_Controller extends SiteTemplate_Controller {
 						'title'	=> 'Make a new blank gallery to put photos in',
 						'href'	=> 'upload/index/'.$gallery->id
 					)
+					,"hr"
+					,array(
+						'text'	=> 'Guest Pass',
+						'title'	=> 'Generate a limited-time password to share with non-members',
+						'href'	=> '#'
+					)
 				)
 			)
 		);
@@ -236,6 +242,38 @@ class Gallery_Controller extends SiteTemplate_Controller {
 
 		echo json_encode($response);
 
+	}
+	
+	function generateGuestPass($gallery_id){
+
+		$this->_cancelTemplate();
+		header('Content-Type: application/json');
+
+		if(!LOGGED_IN){
+			header('HTTP/1.0 401 Unauthorized', true, 401);
+			return;
+		}
+		
+		$response = array();
+		
+		$gallery = ORM::factory('gallery', $gallery_id);
+		$guestpass = new GuestPass();
+		
+		$guestpass->username = $gallery->title_url . "_" . mt_rand(1,999);
+		$guestpass->password = mt_rand();
+		$guestpass->gallery_id = $gallery->id;
+		$expiration = strtotime('+3 days');
+		$guestpass->expiration = date(TIMESTAMP_SQL, $expiration);
+		
+		$guestpass->save();
+
+		$response['gallery_title'] = $gallery->title;
+		$response['username'] = $guestpass->username;
+		$response['password'] = $guestpass->password;
+		$response['expiration'] = date('F j, Y', $expiration);
+
+		$response['stat'] = 'ok';
+		echo json_encode($response);
 	}
 
 	protected function _getThumbWidth(){

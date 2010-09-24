@@ -51,6 +51,12 @@ class Photo_Controller extends SiteTemplate_Controller {
 			)
 			,"hr"
 			,array(
+				'text'	=> 'Guest Pass',
+				'title'	=> 'Generate a limited-time password to share with non-members',
+				'href'	=> '#'
+			)
+			,"hr"
+			,array(
 				'text'	=> 'Original size',
 				'title'	=> 'View this photo at 1:1 zoom',
 				'href'	=> $this->content->selectedPhoto->getURL(),
