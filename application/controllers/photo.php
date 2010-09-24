@@ -4,15 +4,17 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 	protected $viewName = "photo"; //which View file to load when view() is called
 
+	private $gallery;
+
 	function view($gallery_title_url = null, $photo_basename = null){
 		if(is_null($gallery_title_url)){
 			url::redirect('gallery');
 			return;
 		}
 
-		$gallery = Gallery_Model::getByTitleUrl($gallery_title_url);
+		$this->gallery = Gallery_Model::getByTitleUrl($gallery_title_url);
 
-		if(!$gallery->loaded){
+		if(!$this->gallery->loaded){
 			url::redirect('gallery');
 			return;
 		}
@@ -24,12 +26,12 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$this->content->gallery_title_url = $gallery_title_url;
 
 		if(is_null($photo_basename)){
-			$this->content->selectedPhoto = $gallery->getFirstPhoto();
+			$this->content->selectedPhoto = $this->gallery->getFirstPhoto();
 		} else {
-			$this->content->selectedPhoto = $gallery->getPhoto($photo_basename);
+			$this->content->selectedPhoto = $this->gallery->getPhoto($photo_basename);
 		}
 
-		$this->content->siblingPhotos = $gallery->getPhotos();
+		$this->content->siblingPhotos = $this->gallery->getPhotos();
 
 		$this->badge = new View('badge');
 		$this->badge->links = array(
@@ -37,19 +39,18 @@ class Photo_Controller extends SiteTemplate_Controller {
 			,array(
 				'text'	=> 'All Galleries',
 				'title'	=> 'See all of our galleries',
-				'href'	=> '/gallery/?page='.$gallery->getOverviewPage()
+				'href'	=> '/gallery/?page='.$this->gallery->getOverviewPage()
 			)
 			,array(
 				'text'	=> 'Upload',
 				'title'	=> 'Make a new blank gallery to put photos in',
-				'href'	=> 'upload/index/'.$gallery->id
+				'href'	=> 'upload/index/'.$this->gallery->id
 			)
 			,array(
 				'text'	=> 'This Gallery',
 				'title'	=> 'See a grid of all the photos in this gallery',
 				'href'	=> 'gallery/view/'.$gallery_title_url
 			)
-			,"hr"
 			,array(
 				'text'	=> 'Guest Pass',
 				'title'	=> 'Generate a limited-time password to share with non-members',
@@ -76,7 +77,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 			,array(
 				'text'	=> 'Set as preview',
 				'title'	=> 'This gallery will be listed using this picture as its thumbnail',
-				'href'	=> "gallery/setPoster/{$gallery->id}/{$this->content->selectedPhoto->id}",
+				'href'	=> "gallery/setPoster/{$this->gallery->id}/{$this->content->selectedPhoto->id}",
 				'id'	=> 'badge-set-key-photo'
 			)
 			,array(
@@ -86,9 +87,9 @@ class Photo_Controller extends SiteTemplate_Controller {
 			)
 		);
 
-		$href = (Kohana::config('cameratron.mobile') ? "mobile" : "") . "/gallery/view/{$gallery->title_url}";
-		$this->heading = array('text' => $gallery->title, 'href' => $href);
-		$this->title = array('Photography', $gallery->title);
+		$href = (Kohana::config('cameratron.mobile') ? "mobile" : "") . "/gallery/view/{$this->gallery->title_url}";
+		$this->heading = array('text' => $this->gallery->title, 'href' => $href);
+		$this->title = array('Photography', $this->gallery->title);
 
 	}
 
@@ -97,7 +98,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$this->_cancelTemplate();
 
 		header('Content-Type: application/json');
-		if(!LOGGED_IN){
+		if(!LOGGED_IN || GUEST){
 			header('HTTP/1.0 401 Unauthorized', true, 401);
 			return;
 		}
@@ -115,18 +116,11 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 			$photo->gallery->enforceMinPhotoDate();
 
-//			if($datetime = strtotime($_GET['datetime'])){ // not a mistake, strtotime will return 0 if failure
-//				$photo->datetime = date(TIMESTAMP_SQL, $datetime);
-//			}
-
 			$photo->save();
 		}
 
 		echo json_encode($response);
 
-		/*if(!request::is_ajax()){
-			url::redirect(request::referrer());
-		}*/
 	}
 
 	function original($gallery_id, $basename){
@@ -137,8 +131,8 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 		$this->_cancelTemplate();
 
-		$gallery = new Gallery_Model($gallery_id);
-		$photo = $gallery->getPhoto($basename);
+		$this->gallery = new Gallery_Model($gallery_id);
+		$photo = $this->gallery->getPhoto($basename);
 
 		$filename = $photo->getFilename();
 
@@ -166,18 +160,9 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$maxHeight = max(1, $maxHeight);
 		
 		$photo = new Photo_Model($id);
+		$this->gallery = $photo->gallery;
 		$filename = $photo->getFilename();
 
-		//choose compression % based on whether the client is on the lan or not
-		$client_ip = $this->input->ip_address();
-		$quality= (ip::inSubnet($client_ip, "138.16.0.0", 16)
-				|| ip::inSubnet($client_ip, "128.148.0.0", 16)
-				|| (ip::inSubnet($client_ip, "192.168.1.0", 24) && $client_ip != '192.168.1.1')
-				|| $client_ip == '127.0.0.1')
-			? 95 //on resnet
-			//: 85; //otherwise
-			:50;
-		
 		if(!file_exists($filename)){
 			throw new Kohana_404_Exception("Image with id = $id, cwd = ".getcwd().", filename = $filename");
 		}
@@ -189,16 +174,23 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$newWidth = ceil($originalWidth * $ratio);
 		$newHeight = ceil($originalHeight * $ratio);
 
-		/*echo "original: ($originalWidth x $originalHeight)<br>";
-		echo "max: ($maxWidth x $maxHeight)<br>";
-		echo "ratio: $ratio<br>";
-		echo "new: ($newWidth x $newHeight)<br>";*/
+		$shouldBeCached = $this->_shouldBeCached($newWidth, $newHeight);
 
-		$image->resize($newWidth, $newHeight);
+		//choose compression % based on whether the client is on the lan or not
+		$client_ip = $this->input->ip_address();
+		$quality = $shouldBeCached
+				|| (ip::inSubnet($client_ip, "138.16.0.0", 16)
+				|| ip::inSubnet($client_ip, "128.148.0.0", 16)
+				|| (ip::inSubnet($client_ip, "192.168.1.0", 24) && $client_ip != '192.168.1.1')
+				|| $client_ip == '127.0.0.1')
+			? 95 //on resnet or for thumbnails
+			:75;
+
+		$image->resize($newWidth, $newHeight)->quality($quality);
 		header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', strtotime('+1 month')));
 		header('Last-Modified: '.gmdate('D, d M Y H:i:s \G\M\T', filemtime($filename)));
 
-		if($this->_shouldBeCached($newWidth, $newHeight)){
+		if($shouldBeCached){
 			$directory = DOCROOT . "photo/resample/$size/";
 			if(!file_exists($directory)){
 				mkdir($directory);
@@ -214,7 +206,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 	function delete($photoID){
 		$this->_cancelTemplate();
 
-		if(!LOGGED_IN){
+		if(!LOGGED_IN || GUEST){
 			header('HTTP/1.0 401 Unauthorized', true, 401);
 			return;
 		}
@@ -248,6 +240,23 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$this->stylesheets[] = 'photo_view.css';
 		$this->scripts[] = 'photo_view.js';
 		$this->scripts[] = 'strtotime_mini.js';
+	}
+
+	protected function _isInvalidGuest() {
+		return $this->_isHiddenPage();
+	}
+
+	protected function _isHiddenPage(){
+		if(GUEST){
+			if(isset($this->gallery)){
+				$guestpass = ORM::factory('guestpass', $_SERVER['PHP_AUTH_USER']);
+				return $guestpass->gallery_id != $this->gallery->id; //this page allows guest access for the correct gallery
+			} else {
+				return true; //this page is never shown to guests
+			}
+		} else {
+			return false; //always allow first-class users
+		}
 	}
 
 }
