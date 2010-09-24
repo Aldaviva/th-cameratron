@@ -19,7 +19,8 @@ Auth_PG_pwd DirabquadAbHidyonuk6
 Auth_PG_pwd_table valid_guestpasses
 Auth_PG_uid_field username
 Auth_PG_pwd_field password
-Auth_PG_encrypted Off
+Auth_PG_encrypted On
+Auth_PG_hash_type MD5
 Auth_PG_authoritative off
 
 <Files ".hgignore">

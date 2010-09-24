@@ -37,6 +37,12 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 
 	function _render(){
 
+		if($this->_isInvalidGuest()){
+			require('/home/httpd/html/errors/401.php');
+
+			exit();
+		}
+
 		$this->title = (array) $this->title;
 
 		$this->metas['content-type'] = 'text/html; charset=utf-8';
@@ -58,6 +64,10 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 		$this->body->heading = $this->heading;
 
 		parent::_render();
+	}
+
+	protected function _isInvalidGuest(){
+		return GUEST;
 	}
 
 }

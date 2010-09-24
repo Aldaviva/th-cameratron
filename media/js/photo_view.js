@@ -102,10 +102,7 @@ dojo.declare('Cameratron.Navigation', null, {
 			//back button changes the # part of URL, which this handles
 			dojo.subscribe('/dojo/hashchange', this, this.hashHandler);
 
-			dojo.connect(dojo.byId('badge-guest-pass'), 'click', this, function(event){
-				event.preventDefault();
-				this.grandparent.generateGuestPass(); //TODO: fill in gallery's ID (or maybe title_url, if easier)
-			});
+			
 
 			//badge link for Edit Metadata will focus the description field
 			dojo.connect(dojo.byId('badge-edit-metadata'), 'click', this, function(event){

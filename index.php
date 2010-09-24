@@ -22,6 +22,11 @@ if(!defined('LOGGED_IN')){
 }
 
 /**
+ * The user has logged in from off-campus using a temporary Guest Pass. They should only see one gallery
+ */
+define('GUEST', isset($_SERVER['PHP_AUTH_USER']) && strncmp($_SERVER['PHP_AUTH_USER'], "guest_", 6) == 0);
+
+/**
  * Define the website environment status. When this flag is set to TRUE, some
  * module demonstration controllers will result in 404 errors. For more information
  * about this option, read the documentation about deploying Kohana.

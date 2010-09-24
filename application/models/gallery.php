@@ -2,7 +2,7 @@
 
 class Gallery_Model extends ORM {
 
-	protected $has_many	= array('photos');
+	protected $has_many	= array('photos', 'guestpasses');
 
 	static $ordering = array('date' => 'desc');
 

@@ -2,6 +2,8 @@
 
 class Gallery_Controller extends SiteTemplate_Controller {
 
+	private $gallery;
+
 	function index(){
 		$this->stylesheets[] = 'overview.css';
 		$this->stylesheets[] = 'polaroids.css';
@@ -44,7 +46,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			url::redirect('gallery');
 		}
 
-		$gallery = Gallery_Model::getByTitleUrl($title_url);
+		$this->gallery = Gallery_Model::getByTitleUrl($title_url);
 
 		$this->badge = new View(
 			'badge',
@@ -54,14 +56,13 @@ class Gallery_Controller extends SiteTemplate_Controller {
 					,array(
 						'text'	=> 'All Galleries',
 						'title'	=> 'See all of our galleries',
-						'href'	=> '/gallery/?page='.$gallery->getOverviewPage()
+						'href'	=> '/gallery/?page='.$this->gallery->getOverviewPage()
 					)
 					,array(
 						'text'	=> 'Upload',
 						'title'	=> 'Make a new blank gallery to put photos in',
-						'href'	=> 'upload/index/'.$gallery->id
+						'href'	=> 'upload/index/'.$this->gallery->id
 					)
-					,"hr"
 					,array(
 						'text'	=> 'Guest Pass',
 						'title'	=> 'Generate a limited-time password to share with non-members',
@@ -74,12 +75,13 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		$this->content = new View('collection');
 		$this->content->thumbWidth = $this->_getThumbWidth();
 		$this->content->bigFirstPhoto = $this->_isFirstPhotoBig("view");
+		$this->content->gallery_title_url = $this->gallery->title_url;
 		$this->stylesheets[] = 'collection.css';
 
-		$this->content->photos = $gallery->getPhotos();
-		$this->heading = $gallery->title;
+		$this->content->photos = $this->gallery->getPhotos();
+		$this->heading = $this->gallery->title;
 
-		$this->title = array('Photography', $gallery->title);
+		$this->title = array('Photography', $this->gallery->title);
     }
 
 	function search(){
@@ -141,11 +143,11 @@ class Gallery_Controller extends SiteTemplate_Controller {
 			return;
 		}
 
-		$gallery = ORM::factory('gallery')->getByTitleUrl($title_url);
+		$this->gallery = ORM::factory('gallery')->getByTitleUrl($title_url);
 
 		$store = array('identifier' => 'id');
 
-		foreach($gallery->getPhotos() as $i => $photo){
+		foreach($this->gallery->getPhotos() as $i => $photo){
 			$photo_data = $photo->as_array();
 			$photo_data['sort_index'] = $i;
 			$photo_data['datetime'] = array('_type' => 'unixtimestamp', '_value' => $photo_data['datetime']);
@@ -160,7 +162,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		$this->_cancelTemplate();
 		header('Content-Type: application/json');
 
-		if(!LOGGED_IN){
+		if(!LOGGED_IN || GUEST){
 			header('HTTP/1.0 401 Unauthorized', true, 401);
 			return;
 		}
@@ -221,7 +223,7 @@ class Gallery_Controller extends SiteTemplate_Controller {
 		$this->_cancelTemplate();
 		header('Content-Type: application/json');
 
-		if(!LOGGED_IN){
+		if(!LOGGED_IN || GUEST){
 			header('HTTP/1.0 401 Unauthorized', true, 401);
 			return;
 		}
@@ -244,33 +246,27 @@ class Gallery_Controller extends SiteTemplate_Controller {
 
 	}
 	
-	function generateGuestPass($gallery_id){
+	function generateGuestPass($gallery_title_url){
 
 		$this->_cancelTemplate();
 		header('Content-Type: application/json');
 
-		if(!LOGGED_IN){
+		if(!LOGGED_IN || GUEST){
 			header('HTTP/1.0 401 Unauthorized', true, 401);
 			return;
 		}
 		
 		$response = array();
 		
-		$gallery = ORM::factory('gallery', $gallery_id);
-		$guestpass = new GuestPass();
-		
-		$guestpass->username = $gallery->title_url . "_" . mt_rand(1,999);
-		$guestpass->password = mt_rand();
-		$guestpass->gallery_id = $gallery->id;
-		$expiration = strtotime('+3 days');
-		$guestpass->expiration = date(TIMESTAMP_SQL, $expiration);
-		
-		$guestpass->save();
+		$gallery = Gallery_Model::getByTitleUrl($gallery_title_url);
+		$guestpass = new GuestPass_Model();
+		$guestpass->init($gallery);
 
 		$response['gallery_title'] = $gallery->title;
+		$response['gallery_url'] = url::site('gallery/view/' . $gallery->title_url, 'https');
 		$response['username'] = $guestpass->username;
-		$response['password'] = $guestpass->password;
-		$response['expiration'] = date('F j, Y', $expiration);
+		$response['password'] = $guestpass->_getClearPassword();
+		$response['expiration'] = date('F j', $guestpass->expiration);
 
 		$response['stat'] = 'ok';
 		echo json_encode($response);
@@ -286,6 +282,23 @@ class Gallery_Controller extends SiteTemplate_Controller {
 				return true;
 			case "search":
 				return false;
+		}
+	}
+
+	protected function _isInvalidGuest() {
+		return $this->_isHiddenPage();
+	}
+
+	protected function _isHiddenPage(){
+		if(GUEST){
+			if(isset($this->gallery)){
+				$guestpass = ORM::factory('guestpass', $_SERVER['PHP_AUTH_USER']);
+				return $guestpass->gallery_id != $this->gallery->id; //this page allows guest access for the correct gallery
+			} else {
+				return true; //this page is never shown to guests
+			}
+		} else {
+			return false; //always allow first-class users
 		}
 	}
 

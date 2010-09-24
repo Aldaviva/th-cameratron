@@ -186,6 +186,10 @@ header #badge-delete {
 	background-image: url('../img/badge_icon-delete_photo.png');
 }
 
+header #badge-guest-pass {
+	background-image: url('../img/badge_icon-guest_pass.png');
+}
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
 *
 *	Search box

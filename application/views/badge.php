@@ -12,6 +12,11 @@
 						if($link == "hr"){
 							echo "<hr />";
 						} else {
+
+							if($link['text'] == "Guest Pass" && GUEST){
+								continue;
+							}
+
 							$linkAttribs = array('title' => $link['title']);
 							$listItemAttribs = array();
 

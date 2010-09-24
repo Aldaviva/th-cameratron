@@ -46,3 +46,7 @@
 ?>
 
 </div>
+
+<script type="text/javascript">
+	var gallery_title_url = '<?= $gallery_title_url ?>';
+</script>
