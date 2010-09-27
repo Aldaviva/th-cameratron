@@ -17,7 +17,7 @@ body {
 
 .pagination {
 	font: 14px "Univers LT Std 55", "U";
-	display: inline-block;
+/*	display: inline-block;*/
 }
 
 .pagination strong {
@@ -30,7 +30,8 @@ body {
 
 .pagination strong, .pagination a {
 	min-width: 13px;
-	float: left;
+/*	float: left;*/
+	display: inline-block;
 	text-align: center;
 	padding: 3px 8px;
 	border-right: 1px solid hsl(0, 0%, 67%);

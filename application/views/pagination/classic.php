@@ -17,7 +17,19 @@
 	<?php endif ?>
 
 
-	<?php for ($i = 1; $i <= $total_pages; $i++): ?>
+	<?php
+
+		for($i = 1; $i <= $total_pages; $i++){
+			if($i == $current_page){
+				echo "<strong>$i</strong>";
+			} else {
+				echo "<a href='" . str_replace('{page}', $i, $url) . "'>$i</a>";
+			}
+		}
+
+	?>
+
+	<?php /* for ($i = 1; $i <= $total_pages; $i++): ?>
 
 		<?php if ($i == $current_page): ?>
 			<strong><?php echo $i ?></strong>
@@ -25,7 +37,7 @@
 			<a href="<?php echo str_replace('{page}', $i, $url) ?>"><?php echo $i ?></a>
 		<?php endif ?>
 
-	<?php endfor ?>
+	<?php endfor */ ?>
 
 
 	<?php if ($next_page): ?>
