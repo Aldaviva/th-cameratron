@@ -48,5 +48,7 @@
 </div>
 
 <script type="text/javascript">
-	var gallery_title_url = '<?= $gallery_title_url ?>';
+	<? if(isset($gallery_title_url)){
+		echo 'var gallery_title_url = "' . $gallery_title_url . '";';
+	} ?>
 </script>
