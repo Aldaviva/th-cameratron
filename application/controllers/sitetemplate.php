@@ -33,6 +33,8 @@ abstract class SiteTemplate_Controller extends HTML_Controller {
 			$this->scripts[] = "dojo/dojo/dojo.js";
 			$this->scripts[] = "init.js";
 		}
+		
+		$this->scripts[] = '/js/mint?js';
 	}
 
 	function _render(){

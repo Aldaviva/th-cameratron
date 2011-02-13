@@ -43,13 +43,13 @@ dojo.declare('Cameratron.Navigation', null, {
 				,onItem: function(item){
 					dojo.mixin(item, new Cameratron.Photo(this.grandparent));
 					if(this.selectedPhoto == null
-							&& this.store.getValue(item, 'basename') == dojo.hash().substr(1)){
+							&& encodeURIComponent(this.store.getValue(item, 'basename')) == dojo.hash().substr(1)){
 						this.selectedPhoto = item;
 					}
 				}
 				,onComplete: function(){
 					if(this.selectedPhoto != null){
-						this.replaceImage(this.selectedPhoto, true, true);
+						this.replaceImage(this.selectedPhoto, false, true);
 						this.resizeWindowHandler();
 					} else {
 						this.firstImage();
@@ -254,10 +254,14 @@ dojo.declare('Cameratron.Navigation', null, {
 		}
 	},
 	hashHandler: function(hash){
+		var basename = hash.substr(1);
 		this.store.fetch({
-			query: {basename: hash.substr(1)}
+			query: {basename: basename}
 			,onItem: function(item){
 				this.replaceImage(item, false);
+			}
+			,onError: function(msg){
+				alert(msg);
 			}
 			,scope: this
 		});
@@ -370,7 +374,8 @@ dojo.declare('Cameratron.Navigation', null, {
 //		alert(dojo.toJson(data, true));
 		dojo.xhrPost({
 			 url: this.editMetadataScript
-			,postData: 'metadata='+dojo.toJson(data)
+			//,postData: 'metadata='+dojo.toJson(data)
+			,content: {metadata: dojo.toJson(data)}
 			,handleAs: 'json'
 			,load: dojo.hitch(this, function(responseObj){
 				if(responseObj.stat == 'ok'){

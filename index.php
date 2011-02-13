@@ -33,7 +33,7 @@ define('GUEST', isset($_SERVER['PHP_AUTH_USER']) && strncmp($_SERVER['PHP_AUTH_U
  *
  * @see http://docs.kohanaphp.com/installation/deployment
  */
-define('IN_PRODUCTION', false);
+define('IN_PRODUCTION', true);
 
 /**
  * Website application directory. This directory should contain your application
@@ -78,7 +78,7 @@ error_reporting(E_ALL & ~E_STRICT);
  * Turning off display_errors will effectively disable Kohana error display
  * and logging. You can turn off Kohana errors in application/config/config.php
  */
-ini_set('display_errors', true);
+ini_set('display_errors', false);
 
 /**
  * If you rename all of your .php files to a different extension, set the new

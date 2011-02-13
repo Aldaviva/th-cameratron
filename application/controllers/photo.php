@@ -105,14 +105,21 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 		$response = array('stat' => 'ok');
 
-		foreach(json_decode($_POST['metadata']) as $metadata){
+		if(null === ($encodedMetadata = json_decode(urldecode($_POST['metadata'])))){
+			throw new Kohana_Exception("Could not decode JSON metadata ".$_POST['metadata']);
+		}
+
+		foreach($encodedMetadata as $metadata){
 
 			$photo = ORM::factory('photo', $metadata->id);
 
 			foreach(array('description', 'people', 'location', 'photographer') as $field){
 				$photo->$field = $metadata->$field;
 			}
-			$photo->datetime = date(TIMESTAMP_SQL, $metadata->datetime->_value);
+			
+			if($metadata->datetime != null){
+				$photo->datetime = date(TIMESTAMP_SQL, $metadata->datetime->_value);
+			}
 
 			$photo->gallery->enforceMinPhotoDate();
 

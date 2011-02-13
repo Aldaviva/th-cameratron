@@ -84,7 +84,7 @@ class html extends html_Core {
 		{
 			if(strpos($script, '/') === 0){
 				//Omit prefix for URLS with leading '/'
-				$script = url::base((bool) $index).$script;
+				$script = $script;
 
 			} else if (strpos($script, '://') === FALSE)
 			{
@@ -92,11 +92,11 @@ class html extends html_Core {
 				$script = url::base((bool) $index).$prefix.$script;
 			}
 
-			if (substr_compare($script, '.js', -3, 3, FALSE) !== 0)
+			/*if (substr_compare($script, 'js', -2, 2, FALSE) !== 0)
 			{
 				// Add the javascript suffix
 				$script .= '.js';
-			}
+			}*/
 
 			$compiled = '<script src="'.$script.'" type="text/javascript"></script>';
 		}
