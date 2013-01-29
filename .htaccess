@@ -1,7 +1,8 @@
 Satisfy any
 # Allow either AuthShadow...
 AuthName "Techhouse Server Login"
-AuthShadow on
+AuthBasicProvider external
+AuthExternal pwauth
 AuthType Basic
 AuthBasicAuthoritative off
 require valid-user
@@ -15,7 +16,7 @@ Auth_PG_host localhost
 Auth_PG_port 5432
 Auth_PG_user photo
 Auth_PG_database photo
-Auth_PG_pwd DirabquadAbHidyonuk6
+Auth_PG_pwd O5uKwnJwRzthQPB8YmTE 
 Auth_PG_pwd_table valid_guestpasses
 Auth_PG_uid_field username
 Auth_PG_pwd_field password

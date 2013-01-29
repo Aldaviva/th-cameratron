@@ -117,7 +117,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 				$photo->$field = $metadata->$field;
 			}
 			
-			if($metadata->datetime != null){
+			if($metadata->datetime != null && !empty($metadata->datetime)){
 				$photo->datetime = date(TIMESTAMP_SQL, $metadata->datetime->_value);
 			}
 
@@ -139,7 +139,13 @@ class Photo_Controller extends SiteTemplate_Controller {
 		$this->_cancelTemplate();
 
 		$this->gallery = new Gallery_Model($gallery_id);
+		
+		//var_dump($basename);
+
 		$photo = $this->gallery->getPhoto($basename);
+		if($photo == null){
+			throw new Kohana_404_Exception($basename);
+		}
 
 		$filename = $photo->getFilename();
 
@@ -173,7 +179,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 		if(!file_exists($filename)){
 			throw new Kohana_404_Exception("Image with id = $id, cwd = ".getcwd().", filename = $filename");
 		}
-
+		
 		$image = new Image($filename);
 		$originalWidth = $image->width;
 		$originalHeight = $image->height;
@@ -199,7 +205,7 @@ class Photo_Controller extends SiteTemplate_Controller {
 
 		if($shouldBeCached){
 			$directory = DOCROOT . "photo/resample/$size/";
-			if(!file_exists($directory)){
+			if(!is_dir($directory)){
 				mkdir($directory);
 				chmod($directory, 0775);
 			}

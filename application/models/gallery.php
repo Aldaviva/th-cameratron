@@ -73,8 +73,11 @@ class Gallery_Model extends ORM {
 	}
 
 	function enforceMinPhotoDate(){
-		$this->date = $this->db->select('MIN(datetime) AS mindate')->where('gallery_id', $this->id)->get('photos')->current()->mindate;
-		$this->save();
+		$date = $this->db->select('MIN(datetime) AS mindate')->where('gallery_id', $this->id)->get('photos')->current()->mindate;
+		if(!empty($date)){
+			$this->date = $date;
+			$this->save();
+		}
 	}
 
 	static function getPagination(){

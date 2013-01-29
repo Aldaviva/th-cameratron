@@ -31,7 +31,7 @@ $config['default'] = array
 	(
 		'type'     => 'pgsql',
 		'user'     => 'photo',
-		'pass'     => 'DirabquadAbHidyonuk6',
+		'pass'     => 'O5uKwnJwRzthQPB8YmTE',
 		'host'     => 'localhost',
 		'port'     => 5432,
 		'socket'   => FALSE,

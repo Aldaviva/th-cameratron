@@ -2,7 +2,7 @@
 
 	<div class="dialog nihilo">
 
-		<?= form::open('', array('id' => 'upload', 'method' => 'post')); ?>
+		<form id="upload">
 
 			<h3>Photo Transfer</h3>
 			
@@ -50,7 +50,7 @@
 				<button id="submit" type="submit">Upload</button>
 			</div>
 
-		<?= form::close(); ?>
+		</form>
 
 		<div class="left"></div>
 		<div class="right"></div>

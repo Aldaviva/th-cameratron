@@ -1,6 +1,7 @@
 <?php
 
 Kohana::config_set('core.site_domain', 'techhouse.org'.Kohana::config('core.site_domain'));
+Kohana::config_set('core.site_protocol', 'https');
 
 $doc = new DOMDocument('1.0', 'UTF-8');
 $rss = $doc->appendChild($doc->createElement('rss'));

@@ -97,8 +97,8 @@ dojo.declare('Cameratron.Uploader', null, {
 	},
 
 	submit: function(event){
-
 		event.preventDefault();
+		window.event.returnValue = false;
 
 		this.setModeToActive();
 
@@ -142,7 +142,7 @@ dojo.declare('Cameratron.Uploader', null, {
 	submitGalleryCreation: function(){
 
 		this.setStatusText('Construction', 'GalleryFactory.createNewGallery()');
-
+		
 		dojo.xhrPost({
 
 			url: this.galleryCreationScript
@@ -179,7 +179,6 @@ dojo.declare('Cameratron.Uploader', null, {
 	},
 
 	submitPhotos: function(){
-
 		var postData = {
 			SID: this.SID,
 			gallery_id: this.gallery_id
@@ -248,10 +247,7 @@ dojo.declare('Cameratron.Uploader', null, {
 	},
 
 	uploadCompleteHandler: function(event){
-
 		var file = this.getFileById(event.id);
-
-		this.transferredFiles++;
 
 		var responseObj = dojo.fromJson(event.data);
 

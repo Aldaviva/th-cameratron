@@ -21,7 +21,7 @@ class ip_Core {
 			|| !is_int($maskLen)
 			|| $maskLen < 0
 			|| $maskLen > 32){
-			throw new Kohana_User_Exception('Invalid input', 'query_ip and subnet must be string of the form "xxx.xxx.xxx.xxx" and maskLen must be an integer in the range [0,32].');
+			throw new Kohana_User_Exception('Invalid input', "query_ip ($query_ip) and subnet ($subnet) must be string of the form 'xxx.xxx.xxx.xxx' and maskLen ($maskLen) must be an integer in the range [0,32].");
 			}
 
 		$query_ip_bits = self::convertToBits($query_ip);
